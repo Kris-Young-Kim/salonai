@@ -12,6 +12,7 @@ import {
   CalendarCheck,
 } from 'lucide-react';
 import { HairDyeRecommendation } from '@/components/prescription/HairDyeRecommendation';
+import { PrescriptionShareButtons } from '@/components/prescription/PrescriptionShareButtons';
 import { getRecommendedDyesByKorean } from '@/lib/data/hairDyeChart';
 
 interface PrescriptionPageProps {
@@ -305,7 +306,14 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
           </div>
         </div>
 
-        {/* Section 5: Salon Direct Contact & Action Card */}
+        {/* Section 5: Viral Share & Copy Link Card */}
+        <PrescriptionShareButtons
+          customerName={customer?.name}
+          faceShape={faceShape}
+          personalColor={personalColor}
+        />
+
+        {/* Section 6: Salon Direct Contact & Action Card */}
         <div className="rounded-3xl bg-gradient-to-b from-zinc-900/90 to-zinc-950 border border-zinc-800 p-6 text-center space-y-4 shadow-2xl">
           <div>
             <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest block mb-1">

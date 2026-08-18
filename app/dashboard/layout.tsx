@@ -21,53 +21,53 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-[calc(100vh-64px)] bg-[#F9FAFB]">
+    <div className="flex min-h-[calc(100vh-64px)] bg-zinc-950">
       {/* Sidebar — tablet landscape */}
-      <aside className="hidden md:flex w-64 flex-col border-r border-stone-200 bg-white shadow-sm shrink-0">
-        {/* Brand mark inside sidebar */}
-        <div className="flex items-center gap-3 px-6 py-6 border-b border-stone-100">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 shadow-md">
-            <Scissors className="h-5 w-5 text-white" />
+      <aside className="hidden md:flex w-56 flex-col border-r border-zinc-800/80 bg-zinc-900/70 backdrop-blur-md shrink-0">
+        {/* Brand mark */}
+        <div className="flex items-center gap-3 px-5 py-6 border-b border-zinc-800/80">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 shadow-md shadow-amber-900/40">
+            <Scissors className="h-4.5 w-4.5 text-zinc-950" />
           </div>
           <div>
-            <p className="text-sm font-bold text-stone-800 tracking-tight">유니헤어샵</p>
-            <p className="text-[10px] text-stone-400 tracking-widest uppercase font-medium">원주 무실점</p>
+            <p className="text-sm font-bold text-white tracking-tight">유니헤어샵</p>
+            <p className="text-[9px] text-zinc-500 tracking-widest uppercase font-medium">원주 무실점</p>
           </div>
         </div>
 
         {/* Nav links */}
-        <nav className="flex-1 px-3 py-5 space-y-1">
+        <nav className="flex-1 px-3 py-4 space-y-1">
           {navItems.map(({ href, icon: Icon, label }) => (
             <Link
               key={href}
               href={href}
-              className="flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-semibold text-stone-500 hover:bg-amber-50 hover:text-amber-700 transition-colors group"
+              className="flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-semibold text-zinc-400 hover:bg-zinc-800/80 hover:text-white transition-colors group"
             >
-              <Icon className="h-5 w-5 shrink-0 group-hover:text-amber-600 transition-colors" />
+              <Icon className="h-4.5 w-4.5 shrink-0 group-hover:text-amber-400 transition-colors" />
               {label}
             </Link>
           ))}
         </nav>
 
         {/* Bottom: User */}
-        <div className="border-t border-stone-100 px-6 py-5">
+        <div className="border-t border-zinc-800/80 px-5 py-4">
           <div className="flex items-center gap-3">
             <UserButton />
-            <p className="text-xs text-stone-400 font-medium">계정 관리</p>
+            <p className="text-xs text-zinc-500 font-medium">계정 관리</p>
           </div>
         </div>
       </aside>
 
       {/* Mobile bottom nav */}
-      <div className="md:hidden fixed bottom-0 inset-x-0 z-50 border-t border-stone-200 bg-white/95 backdrop-blur-md">
+      <div className="md:hidden fixed bottom-0 inset-x-0 z-50 border-t border-zinc-800/80 bg-zinc-900/95 backdrop-blur-md">
         <nav className="flex items-center justify-around py-2">
           {navItems.map(({ href, icon: Icon, label }) => (
             <Link
               key={href}
               href={href}
-              className="flex flex-col items-center gap-1 px-4 py-2 text-stone-400 hover:text-amber-600 transition-colors"
+              className="flex flex-col items-center gap-1 px-4 py-2 text-zinc-500 hover:text-amber-400 transition-colors"
             >
-              <Icon className="h-6 w-6" />
+              <Icon className="h-5 w-5" />
               <span className="text-[10px] font-semibold">{label}</span>
             </Link>
           ))}

@@ -151,7 +151,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
 
           <div className="flex flex-wrap gap-2 mb-4">
             {selectedStyleTags && selectedStyleTags.length > 0 ? (
-              selectedStyleTags.map((tag, idx) => (
+              selectedStyleTags.map((tag: string, idx: number) => (
                 <span
                   key={idx}
                   className="rounded-xl bg-amber-400/15 border border-amber-400/40 px-3 py-1.5 text-xs font-bold text-amber-300"

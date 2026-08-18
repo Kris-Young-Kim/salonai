@@ -57,7 +57,7 @@ export async function GET(_req: NextRequest) {
       where: { salonId: salon.id },
       select: { id: true },
     });
-    const customerIds = salonCustomers.map((c) => c.id);
+    const customerIds = (salonCustomers as Array<{ id: string }>).map((c) => c.id);
 
     if (customerIds.length === 0) {
       return NextResponse.json({

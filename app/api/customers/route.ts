@@ -62,9 +62,9 @@ export async function GET(req: NextRequest) {
     ]);
 
     // diagnoses 배열 → latestDiagnosis 단일 필드로 변환
-    const result = customers.map(({ diagnoses, ...customer }) => ({
-      ...customer,
-      latestDiagnosis: diagnoses[0] ?? null,
+    const result = customers.map((c: any) => ({
+      ...c,
+      latestDiagnosis: c.diagnoses?.[0] ?? null,
     }));
 
     return NextResponse.json({

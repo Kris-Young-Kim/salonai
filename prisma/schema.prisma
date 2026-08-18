@@ -1,0 +1,91 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 1. 미용실 매장 (Clerk Organization과 매핑)
+model Salon {
+  id                  String       @id @default(uuid())
+  clerkOrganizationId String       @unique // Clerk Org ID
+  name                String       @db.VarChar(100)
+  address             String?
+  createdAt           DateTime     @default(now()) @map("created_at")
+  
+  designers           Designer[]
+  customers           Customer[]
+
+  @@map("salons")
+}
+
+// 2. 디자이너 계정 (Clerk User와 매핑)
+model Designer {
+  id            String      @id @default(uuid())
+  clerkUserId   String      @unique // Clerk User ID
+  salonId       String      @map("salon_id")
+  name          String      @db.VarChar(50)
+  email         String      @unique @db.VarChar(100)
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  salon         Salon       @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  diagnoses     Diagnosis[]
+
+  @@map("designers")
+}
+
+// 3. 고객 정보
+model Customer {
+  id          String      @id @default(uuid())
+  salonId     String      @map("salon_id")
+  name        String      @db.VarChar(50)
+  phone       String      @db.VarChar(20)
+  createdAt   DateTime    @default(now()) @map("created_at")
+
+  salon       Salon       @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  diagnoses   Diagnosis[]
+
+  @@index([salonId, phone])
+  @@map("customers")
+}
+
+// 4. AI 진단 및 시술 처방 이력
+model Diagnosis {
+  id                 String    @id @default(uuid())
+  customerId         String    @map("customer_id")
+  designerId         String?   @map("designer_id")
+  originalImageUrl   String    @map("original_image_url")
+  
+  // AI 진단 수치
+  faceShape          String    @map("face_shape") // 계란형, 둥근형, 각진형, 긴형 등
+  faceRatio          Json      @map("face_ratio") // {"upper": 1.0, "middle": 1.2, "lower": 0.9}
+  personalColor      String    @map("personal_color") // Spring_Warm, Summer_Cool 등
+  skinHexColor       String?   @map("skin_hex_color")
+  
+  // 추천 및 시술 내용
+  selectedStyleTags  String[]  @map("selected_style_tags") // ["#레이어드컷", "#애쉬브라운"]
+  designerNotes      String?   @map("designer_notes")
+  
+  // 고객 전달용 처방전 고유 토큰
+  prescriptionToken  String    @unique @default(uuid()) @map("prescription_token")
+  createdAt          DateTime  @default(now()) @map("created_at")
+
+  customer           Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  designer           Designer? @relation(fields: [designerId], references: [id], onDelete: SetNull)
+
+  @@map("diagnoses")
+}
+
+// 5. 헤어스타일 룩북 마스터 데이터
+model Lookbook {
+  id                   String    @id @default(uuid())
+  styleName            String    @map("style_name") @db.VarChar(100)
+  category             String    @db.VarChar(20) // CUT, PERM, COLOR
+  targetFaceShapes     String[]  @map("target_face_shapes")
+  targetPersonalColors String[]  @map("target_personal_colors")
+  imageUrl             String    @map("image_url")
+  description          String?
+
+  @@map("lookbooks")
+}

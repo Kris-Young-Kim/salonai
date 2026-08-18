@@ -1,0 +1,22 @@
+[     842ms] [ERROR] Mixed Content: The page at 'https://noonnu.cc/index' was loaded over HTTPS, but requested an insecure stylesheet 'http://fonts.googleapis.com/earlyaccess/nanumgothic.css'. This request has been blocked; the content must be served over HTTPS. @ https://noonnu.cc/index:2336
+[    1512ms] [ERROR] Access to font at 'https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Regular.woff2' from origin 'https://noonnu.cc' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://noonnu.cc/index:0
+[    1512ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Regular.woff2:0
+[    1512ms] [ERROR] Access to font at 'https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Bold.woff2' from origin 'https://noonnu.cc' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://noonnu.cc/index:0
+[    1512ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Bold.woff2:0
+[    1598ms] [ERROR] Access to font at 'https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Regular.woff' from origin 'https://noonnu.cc' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://noonnu.cc/index:0
+[    1598ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Regular.woff:0
+[    1631ms] [ERROR] Access to font at 'https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Bold.woff' from origin 'https://noonnu.cc' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://noonnu.cc/index:0
+[    1631ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Bold.woff:0
+[    1684ms] [ERROR] Access to font at 'https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Regular.ttf' from origin 'https://noonnu.cc' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://noonnu.cc/index:0
+[    1684ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Regular.ttf:0
+[    1715ms] [ERROR] Access to font at 'https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Bold.ttf' from origin 'https://noonnu.cc' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://noonnu.cc/index:0
+[    1715ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fonts.gstatic.com/ea/kopubbatang/v3/KoPubBatang-Bold.ttf:0
+[    1977ms] [WARNING] Failed to decode downloaded font: https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.woff2 @ https://noonnu.cc/index:0
+[    1978ms] [WARNING] OTS parsing error: Unable to instantiate font face from font data. @ https://noonnu.cc/index:0
+[    1978ms] [WARNING] Failed to decode downloaded font: https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.woff2 @ https://noonnu.cc/index:0
+[    1978ms] [WARNING] OTS parsing error: Unable to instantiate font face from font data. @ https://noonnu.cc/index:0
+[    1978ms] [WARNING] Failed to decode downloaded font: https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.woff2 @ https://noonnu.cc/index:0
+[    1978ms] [WARNING] OTS parsing error: Unable to instantiate font face from font data. @ https://noonnu.cc/index:0
+[    2176ms] [ERROR] Attestation check for Shared Storage on https://www.googleadservices.com failed. @ https://www.googleadservices.com/pagead/managed/js/activeview/current/reach_worklet.html:0
+[    2188ms] [ERROR] Attestation check for Shared Storage on https://www.googleadservices.com failed. @ https://www.googleadservices.com/pagead/managed/js/activeview/current/reach_worklet.html:0
+[    2198ms] [ERROR] Attestation check for Shared Storage on https://www.googleadservices.com failed. @ https://www.googleadservices.com/pagead/managed/js/activeview/current/reach_worklet.html:0

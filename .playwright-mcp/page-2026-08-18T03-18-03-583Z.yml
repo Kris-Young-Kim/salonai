@@ -1,0 +1,54 @@
+- generic [active] [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - link "S SalonAI Hair AI Solution" [ref=f1e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=f1e4]: S
+      - generic [ref=f1e5]:
+        - generic [ref=f1e6]: SalonAI
+        - generic [ref=f1e7]: Hair AI Solution
+    - generic [ref=f1e8]:
+      - link "진단 시작" [ref=f1e9] [cursor=pointer]:
+        - /url: /diagnose
+      - generic [ref=f1e14] [cursor=pointer]: 로그인
+  - main [ref=f1e15]:
+    - generic [ref=f1e82]:
+      - generic [ref=f1e83]:
+        - generic [ref=f1e85]:
+          - heading "Create your account" [level=1] [ref=f1e86]
+          - paragraph [ref=f1e87]: Welcome! Please fill in the details to get started.
+        - generic [ref=f1e88]:
+          - button "Sign in with Google Continue with Google" [ref=f1e91] [cursor=pointer]:
+            - generic [ref=f1e92]:
+              - generic "Sign in with Google" [ref=f1e94]
+              - generic [ref=f1e95]: Continue with Google
+          - paragraph [ref=f1e98]: or
+          - generic [ref=f1e100]:
+            - generic [ref=f1e101]:
+              - generic [ref=f1e104]:
+                - generic [ref=f1e105]: Username
+                - textbox "Username" [ref=f1e107]:
+                  - /placeholder: Enter your username
+              - generic [ref=f1e111]:
+                - generic [ref=f1e112]: Email address
+                - textbox "Email address" [ref=f1e114]:
+                  - /placeholder: Enter your email address
+              - generic [ref=f1e118]:
+                - generic [ref=f1e119]: Password
+                - generic [ref=f1e121]:
+                  - textbox "Password" [ref=f1e122]:
+                    - /placeholder: Create a password
+                  - button "Show password" [ref=f1e123] [cursor=pointer]
+            - button "Continue" [ref=f1e130] [cursor=pointer]
+      - generic [ref=f1e134]:
+        - generic [ref=f1e135]:
+          - generic [ref=f1e136]: Already have an account?
+          - link "Sign in" [ref=f1e137] [cursor=pointer]:
+            - /url: http://localhost:3000/sign-in#/?redirect_url=http%3A%2F%2Flocalhost%3A3000%2Fdashboard
+        - generic [ref=f1e139]:
+          - generic [ref=f1e141]:
+            - paragraph [ref=f1e142]: Secured by
+            - link "Clerk logo" [ref=f1e143] [cursor=pointer]:
+              - /url: https://go.clerk.com/components
+          - paragraph [ref=f1e149]: Development mode
+  - button "Open Next.js Dev Tools" [ref=f1e22] [cursor=pointer]
+  - alert [ref=f1e26]

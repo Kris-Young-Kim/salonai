@@ -1,0 +1,39 @@
+- generic [active] [ref=f3e1]:
+  - banner [ref=f3e2]:
+    - link "S SalonAI Hair AI Solution" [ref=f3e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=f3e4]: S
+      - generic [ref=f3e5]:
+        - generic [ref=f3e6]: SalonAI
+        - generic [ref=f3e7]: Hair AI Solution
+    - link "진단 시작" [ref=f3e9] [cursor=pointer]:
+      - /url: /diagnose
+  - main [ref=f3e15]:
+    - generic [ref=f3e16]:
+      - complementary [ref=f3e17]:
+        - generic [ref=f3e26]:
+          - paragraph [ref=f3e27]: SalonAI
+          - paragraph [ref=f3e28]: Designer Hub
+        - navigation [ref=f3e29]:
+          - link "홈" [ref=f3e30] [cursor=pointer]:
+            - /url: /dashboard
+          - link "진단 시작" [ref=f3e36] [cursor=pointer]:
+            - /url: /diagnose
+          - link "진단 기록" [ref=f3e40] [cursor=pointer]:
+            - /url: /dashboard/records
+          - link "설정" [ref=f3e44] [cursor=pointer]:
+            - /url: /dashboard/settings
+        - paragraph [ref=f3e50]: 계정 관리
+      - main [ref=f3e51]:
+        - generic [ref=f3e52]:
+          - generic [ref=f3e53]:
+            - heading "진단 기록" [level=1] [ref=f3e54]
+            - paragraph [ref=f3e58]: 고객별 AI 진단 이력을 확인하세요.
+          - textbox "고객 이름 또는 전화번호 검색" [ref=f3e61]
+          - generic [ref=f3e63]:
+            - paragraph [ref=f3e68]: 아직 진단 기록이 없어요
+            - paragraph [ref=f3e69]: 첫 번째 고객 진단을 완료하면이 곳에 기록이 쌓입니다.
+            - link "진단 시작하기" [ref=f3e70] [cursor=pointer]:
+              - /url: /dashboard/diagnose
+  - button "Open Next.js Dev Tools" [ref=f3e76] [cursor=pointer]
+  - alert [ref=f3e80]

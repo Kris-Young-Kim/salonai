@@ -1,0 +1,16 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "S SalonAI Hair AI Solution" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: S
+      - generic [ref=e5]:
+        - generic [ref=e6]: SalonAI
+        - generic [ref=e7]: Hair AI Solution
+    - link "진단 시작" [ref=e9] [cursor=pointer]:
+      - /url: /diagnose
+  - main [ref=e15]:
+    - generic [ref=e17]:
+      - heading "404" [level=1] [ref=e18]
+      - heading "This page could not be found." [level=2] [ref=e20]
+  - button "Open Next.js Dev Tools" [ref=e26] [cursor=pointer]
+  - alert [ref=e30]

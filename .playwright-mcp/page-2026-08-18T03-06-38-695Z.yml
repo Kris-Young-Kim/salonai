@@ -1,0 +1,48 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "S SalonAI Hair AI Solution" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e4]: S
+      - generic [ref=e5]:
+        - generic [ref=e6]: SalonAI
+        - generic [ref=e7]: Hair AI Solution
+    - link "진단 시작" [ref=e9] [cursor=pointer]:
+      - /url: /diagnose
+  - main [ref=e15]:
+    - generic [ref=e16]:
+      - generic [ref=e18]:
+        - generic [ref=e19]: 프리미엄 헤어살롱 전용 AI 진단 솔루션
+        - heading "1분 만에 완성되는 AI 헤어 진단 & 맞춤 처방전" [level=1] [ref=e24]
+        - paragraph [ref=e25]: 태블릿으로 얼굴 정면을 가이드에 맞춰 촬영하세요. AI가 얼굴형, 두상 비율, 퍼스널 컬러를 정밀 분석하여 최적의 룩북과 디지털 처방전을 발급합니다.
+        - generic [ref=e26]:
+          - link "FR-101 카메라 진단 시작" [ref=e27] [cursor=pointer]:
+            - /url: /diagnose
+          - link "기능 둘러보기" [ref=e34] [cursor=pointer]:
+            - /url: "#features"
+      - generic [ref=e36]:
+        - generic [ref=e37]:
+          - heading "미용실 태블릿에 최적화된 4단계 진단 여정" [level=2] [ref=e38]
+          - paragraph [ref=e39]: 디자이너의 전문성을 돋보이게 하는 신속하고 직관적인 워크플로우
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - generic [ref=e46]: Step 01 • FR-101
+            - heading "스마트 가이드 촬영" [level=3] [ref=e47]
+            - paragraph [ref=e48]: 계란형 가이드와 3단 안부(상·중·하) 보조선으로 흔들림 없는 정면 촬영 지원.
+            - generic [ref=e49]: 구현 완료 ✓
+          - generic [ref=e51]:
+            - generic [ref=e56]: Step 02 • FR-102/103
+            - heading "얼굴형 & 퍼스널컬러" [level=3] [ref=e57]
+            - paragraph [ref=e58]: 468개 미디어파이프 랜드마크 분석 및 피부 ROI 웜/쿨 사계절 색상 진단.
+            - generic [ref=e59]: 다음 개발 단계
+          - generic [ref=e60]:
+            - generic [ref=e68]: Step 03 • FR-104
+            - heading "맞춤 룩북 매칭" [level=3] [ref=e69]
+            - paragraph [ref=e70]: "#긴중안부 #여름쿨톤 등 고객 맞춤형 최적 헤어스타일 및 염색 카드 추천."
+            - generic [ref=e71]: Phase 1 MVP
+          - generic [ref=e72]:
+            - generic [ref=e76]: Step 04 • FR-202
+            - heading "카카오톡 처방전" [level=3] [ref=e77]
+            - paragraph [ref=e78]: 진단 결과와 시술 레시피를 모바일 웹 링크로 고객 카카오톡에 즉시 발송.
+            - generic [ref=e79]: Phase 2 CRM
+      - generic [ref=e80]: © 2026 SalonAI. All rights reserved. 미용실 전용 AI 헤어 진단 솔루션
+  - alert [ref=e81]

@@ -1,0 +1,351 @@
+- generic [active] [ref=f25e1]:
+  - generic [ref=f25e2]:
+    - navigation [ref=f25e3]:
+      - generic [ref=f25e5]:
+        - generic [ref=f25e6]:
+          - link [ref=f25e7] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f25e11]:
+            - link "추천 폰트" [ref=f25e12] [cursor=pointer]:
+              - /url: /
+            - link "무료 폰트" [ref=f25e13] [cursor=pointer]:
+              - /url: /index
+            - link "눈누마켓" [ref=f25e14] [cursor=pointer]:
+              - /url: /market
+            - link "무슨 폰트?" [ref=f25e15] [cursor=pointer]:
+              - /url: /posts
+        - generic [ref=f25e17]:
+          - generic [ref=f25e18]: 검색
+          - generic [ref=f25e19]:
+            - searchbox "검색" [ref=f25e21]
+            - button [ref=f25e22] [cursor=pointer]
+        - generic [ref=f25e26]:
+          - button [ref=f25e27] [cursor=pointer]
+          - button "User menu" [ref=f25e32] [cursor=pointer]
+          - link "로그인" [ref=f25e37] [cursor=pointer]:
+            - /url: /users/sign_in
+          - button "User menu" [ref=f25e45] [cursor=pointer]
+    - generic [ref=f25e47]:
+      - generic [ref=f25e48]:
+        - generic [ref=f25e49]:
+          - generic [ref=f25e50]:
+            - heading "프리텐다드" [level=2] [ref=f25e51]
+            - generic [ref=f25e52]:
+              - generic [ref=f25e53]:
+                - generic [ref=f25e54]: 제작
+                - generic [ref=f25e55]: 길형진 (orioncactus)
+              - generic [ref=f25e56]:
+                - generic [ref=f25e57]: 조회수
+                - generic [ref=f25e58]: 4.8M
+              - generic [ref=f25e59]:
+                - generic [ref=f25e60]: 형태
+                - generic [ref=f25e61]: 고딕
+              - generic [ref=f25e62]:
+                - generic [ref=f25e63]: 굵기
+                - generic [ref=f25e64]: 9가지
+            - generic [ref=f25e65]:
+              - link "기본 고딕" [ref=f25e66] [cursor=pointer]:
+                - /url: /index?search=%EA%B8%B0%EB%B3%B8+%EA%B3%A0%EB%94%95
+              - link "문서용" [ref=f25e67] [cursor=pointer]:
+                - /url: /index?search=%EB%AC%B8%EC%84%9C%EC%9A%A9
+          - generic [ref=f25e69]:
+            - link "다운로드 페이지로 이동" [ref=f25e71] [cursor=pointer]:
+              - /url: https://cactus.tistory.com/306
+            - generic [ref=f25e73]: 즐겨찾기
+        - generic [ref=f25e75]:
+          - generic [ref=f25e76]:
+            - heading "미리 써보기" [level=3] [ref=f25e79]
+            - generic [ref=f25e80]:
+              - searchbox "문구 적고 폰트 미리보기" [ref=f25e82]
+              - generic [ref=f25e88]:
+                - generic [ref=f25e89]: 크기
+                - generic [ref=f25e90]:
+                  - button [ref=f25e91] [cursor=pointer]
+                  - generic [ref=f25e93]:
+                    - spinbutton [ref=f25e94]: "24"
+                    - generic: px
+                  - button [ref=f25e95] [cursor=pointer]
+            - generic [ref=f25e97]:
+              - generic [ref=f25e98]:
+                - textbox "세상에 이런 폰트가 나오다니 천재인듯" [ref=f25e99]
+                - generic [ref=f25e100]: "100"
+              - generic [ref=f25e101]:
+                - textbox "세상에 이런 폰트가 나오다니 천재인듯" [ref=f25e102]
+                - generic [ref=f25e103]: "200"
+              - generic [ref=f25e104]:
+                - textbox "세상에 이런 폰트가 나오다니 천재인듯" [ref=f25e105]
+                - generic [ref=f25e106]: "300"
+              - generic [ref=f25e107]:
+                - textbox "세상에 이런 폰트가 나오다니 천재인듯" [ref=f25e108]
+                - generic [ref=f25e109]: "400"
+              - generic [ref=f25e110]:
+                - textbox "세상에 이런 폰트가 나오다니 천재인듯" [ref=f25e111]
+                - generic [ref=f25e112]: "500"
+              - generic [ref=f25e113]:
+                - textbox "세상에 이런 폰트가 나오다니 천재인듯" [ref=f25e114]
+                - generic [ref=f25e115]: "600"
+              - generic [ref=f25e116]:
+                - textbox "세상에 이런 폰트가 나오다니 천재인듯" [ref=f25e117]
+                - generic [ref=f25e118]: "700"
+              - generic [ref=f25e119]:
+                - textbox "세상에 이런 폰트가 나오다니 천재인듯" [ref=f25e120]
+                - generic [ref=f25e121]: "800"
+              - generic [ref=f25e122]:
+                - textbox "세상에 이런 폰트가 나오다니 천재인듯" [ref=f25e123]
+                - generic [ref=f25e124]: "900"
+            - insertion [ref=f25e126]:
+              - iframe [ref=f25e128]:
+                - generic [ref=f35e3]:
+                  - link "0" [ref=f35e4] [cursor=pointer]:
+                    - /url: "#"
+                  - link "1" [ref=f35e5] [cursor=pointer]:
+                    - /url: "#"
+                  - generic [ref=f35e6]:
+                    - generic [ref=f35e16]:
+                      - paragraph [ref=f35e18]: About this Ad
+                      - button "Report" [ref=f35e20] [cursor=pointer]
+                      - button "Opt Out Do not sell my personal information" [ref=f35e22] [cursor=pointer]
+                      - button "Why this Ad? ⓘ" [ref=f35e24] [cursor=pointer]
+                    - generic [ref=f35e29] [cursor=pointer]:
+                      - generic [ref=f35e32]:
+                        - generic [ref=f35e33]: Download
+                        - generic [ref=f35e34]: to use extension (Free)
+                      - generic [ref=f35e35]:
+                        - paragraph [ref=f35e36]: Only 2 Steps
+                        - paragraph [ref=f35e37]: Click "Download"
+                        - paragraph [ref=f35e39]: Add Browse Safely for Chrome
+                    - generic [ref=f35e45]:
+                      - button "Seen this ad multiple times" [ref=f35e48] [cursor=pointer]
+                      - button "Not interested in this ad" [ref=f35e51] [cursor=pointer]
+                      - button "Ad covered content" [ref=f35e54] [cursor=pointer]
+                      - button "Already bought this" [ref=f35e57] [cursor=pointer]
+                    - generic [ref=f35e61]:
+                      - paragraph [ref=f35e63]: About this Ad
+                      - paragraph [ref=f35e65]: Thank you for reporting the ad. We will review it promptly
+                    - generic [ref=f35e69]:
+                      - paragraph [ref=f35e71]: About this Ad
+                      - paragraph [ref=f35e73]: You have successfully opted out of our communications. We have removed your personal data from our systems and will no longer store or use it.
+                  - link "2" [ref=f35e74] [cursor=pointer]:
+                    - /url: "#"
+                  - link "3" [ref=f35e75] [cursor=pointer]:
+                    - /url: "#"
+            - generic [ref=f25e129]:
+              - text: 라이선스 본문
+              - article [ref=f25e130]:
+                - paragraph [ref=f25e131]:
+                  - text: SIL 오픈 폰트 라이선스
+                  - link "글꼴" [ref=f25e132] [cursor=pointer]:
+                    - /url: "#"
+                  - text: "단독 판매를 제외한 모든 상업적 행위 및 수정, 재배포가 가능합니다. 라이선스 전문: https://github.com/orioncactus/pretendard/blob/main/LICENSE"
+            - generic [ref=f25e135]:
+              - text: 라이선스 요약표
+              - table [ref=f25e140]:
+                - rowgroup [ref=f25e141]:
+                  - row [ref=f25e142]:
+                    - columnheader "카테고리" [ref=f25e143]
+                    - columnheader "사용 범위" [ref=f25e144]
+                    - columnheader "허용 여부" [ref=f25e145]
+                - rowgroup [ref=f25e146]:
+                  - row [ref=f25e147]:
+                    - cell "인쇄" [ref=f25e148]
+                    - cell "브로슈어, 포스터, 책, 잡지 및 출판용 인쇄물 등" [ref=f25e149]
+                    - cell "사용 가능" [ref=f25e150]
+                  - row [ref=f25e151]:
+                    - cell "웹사이트" [ref=f25e152]
+                    - cell [ref=f25e153]:
+                      - text: 웹페이지,
+                      - link "광고" [ref=f25e154] [cursor=pointer]:
+                        - /url: "#"
+                      - text: 배너, 메일, E-브로슈어 등
+                    - cell "사용 가능" [ref=f25e157]
+                  - row [ref=f25e158]:
+                    - cell "포장지" [ref=f25e159]
+                    - cell "판매용 상품의 패키지" [ref=f25e160]
+                    - cell "사용 가능" [ref=f25e161]
+                  - row [ref=f25e162]:
+                    - cell "영상" [ref=f25e163]
+                    - cell "유튜브, CF, 상업영화, 뮤직비디오, 영상 자막, 영상 오프닝/엔딩 크레딧 등" [ref=f25e164]
+                    - cell "사용 가능" [ref=f25e165]
+                  - row [ref=f25e166]:
+                    - cell "임베딩" [ref=f25e167]
+                    - cell "웹사이트 및 프로그램 서버 내 폰트 탑재, E-book 제작" [ref=f25e168]
+                    - cell "사용 가능" [ref=f25e169]
+                  - row [ref=f25e170]:
+                    - cell "BI/CI" [ref=f25e171]
+                    - cell "회사명, 브랜드명, 상품명, 로고, 마크, 슬로건, 캐치프레이즈" [ref=f25e172]
+                    - cell "사용 가능" [ref=f25e173]
+                  - row [ref=f25e174]:
+                    - cell "OFL" [ref=f25e175]
+                    - cell "폰트 파일 수정·복제·배포 가능 단, 폰트 파일의 유료 판매는 금지" [ref=f25e176]
+                    - cell [ref=f25e177]
+              - paragraph [ref=f25e178]: ※ 위 사용범위는 참고용으로, 정확한 사용범위는 이용 전 폰트 저작권자에게 확인바랍니다.사용범위는 저작권자의 규정에 따라 달라질 수 있습니다. 조건부 허용의 경우, 사용 조건을 꼭 원본 라이선스 내용에서 확인 후 이용하세요.저작권자는 페이지 상단의 폰트 이름 밑에 있습니다.
+          - generic [ref=f25e179]:
+            - generic [ref=f25e180]:
+              - generic [ref=f25e181]: 비슷한 폰트
+              - generic [ref=f25e184]:
+                - link "HCL 보이는소리 마켓" [ref=f25e185] [cursor=pointer]:
+                  - /url: https://noonnu.cc/market/fonts/806768
+                  - generic [ref=f25e186]:
+                    - img "HCL 보이는소리" [ref=f25e188]
+                    - generic [ref=f25e189]: 마켓
+                - link "HCL 들리는글자 마켓" [ref=f25e194] [cursor=pointer]:
+                  - /url: https://noonnu.cc/market/fonts/8ndvgp
+                  - generic [ref=f25e195]:
+                    - img "HCL 들리는글자" [ref=f25e197]
+                    - generic [ref=f25e198]: 마켓
+                - link [ref=f25e203] [cursor=pointer]:
+                  - /url: https://noonnu.cc/font_page/1013
+                  - img "모노플렉스WideNerd" [ref=f25e206]
+                - link [ref=f25e211] [cursor=pointer]:
+                  - /url: https://noonnu.cc/font_page/845
+                  - img "수트" [ref=f25e214]
+                - link [ref=f25e219] [cursor=pointer]:
+                  - /url: https://noonnu.cc/font_page/34
+                  - img "본고딕 (Noto Sans)" [ref=f25e222]
+                - link [ref=f25e227] [cursor=pointer]:
+                  - /url: https://noonnu.cc/font_page/1468
+                  - img "학교안심 알림장" [ref=f25e230]
+                - link [ref=f25e235] [cursor=pointer]:
+                  - /url: https://noonnu.cc/font_page/1900
+                  - img "자연산스" [ref=f25e238]
+                - link [ref=f25e243] [cursor=pointer]:
+                  - /url: https://noonnu.cc/font_page/1369
+                  - img "프리젠테이션" [ref=f25e246]
+                - link [ref=f25e251] [cursor=pointer]:
+                  - /url: https://noonnu.cc/font_page/875
+                  - img "순천체" [ref=f25e254]
+            - generic [ref=f25e259]:
+              - generic [ref=f25e261]:
+                - generic [ref=f25e262]: 웹폰트로 사용
+                - generic [ref=f25e263] [cursor=pointer]
+              - generic [ref=f25e268]: "@font-face { font-family: 'Pretendard'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2'); font-weight: 100; font-display: swap; } @font-face { font-family: 'Pretendard'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2'); font-weight: 200; font-display: swap; } @font-face { font-family: 'Pretendard'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2'); font-weight: 300; font-display: swap; } @font-face { font-family: 'Pretendard'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; } @font-face { font-family: 'Pretendard'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; } @font-face { font-family: 'Pretendard'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; } @font-face { font-family: 'Pretendard'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; } @font-face { font-family: 'Pretendard'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2'); font-weight: 800; font-display: swap; } @font-face { font-family: 'Pretendard'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2'); font-weight: 900; font-display: swap; }"
+            - generic [ref=f25e270]:
+              - generic [ref=f25e272]:
+                - generic [ref=f25e273]: 무슨 폰트?
+                - link "더보기 →" [ref=f25e274] [cursor=pointer]:
+                  - /url: /search/%ED%94%84%EB%A6%AC%ED%85%90%EB%8B%A4%EB%93%9C#posts
+              - generic [ref=f25e275]:
+                - generic [ref=f25e276]:
+                  - link [ref=f25e277] [cursor=pointer]:
+                    - /url: /posts/60443
+                  - generic [ref=f25e279]: 답변 1개
+                  - link [ref=f25e280] [cursor=pointer]:
+                    - /url: /posts/60443
+                    - paragraph [ref=f25e282]: 이 폰트 알려주세요!
+                  - generic [ref=f25e283]:
+                    - generic [ref=f25e284]:
+                      - generic [ref=f25e285]: 3분 전
+                      - generic [ref=f25e286]: "|"
+                      - generic [ref=f25e287]: 조회 7
+                    - link "지유" [ref=f25e288] [cursor=pointer]:
+                      - /url: /app/users/pmejrx
+                - generic [ref=f25e290]:
+                  - link [ref=f25e291] [cursor=pointer]:
+                    - /url: /posts/60405
+                  - generic [ref=f25e293]: 답변 1개
+                  - link [ref=f25e294] [cursor=pointer]:
+                    - /url: /posts/60405
+                    - paragraph [ref=f25e296]: 혹시 이 가운데에 있는 폰트 무슨 폰트일까요..?
+                  - generic [ref=f25e297]:
+                    - generic [ref=f25e298]:
+                      - generic [ref=f25e299]: 15분 전
+                      - generic [ref=f25e300]: "|"
+                      - generic [ref=f25e301]: 조회 19
+                    - link "q*z11" [ref=f25e302] [cursor=pointer]:
+                      - /url: /app/users/p9zlqw
+                - generic [ref=f25e304]:
+                  - link [ref=f25e305] [cursor=pointer]:
+                    - /url: /posts/60394
+                  - generic [ref=f25e307]: 답변 1개
+                  - link [ref=f25e308] [cursor=pointer]:
+                    - /url: /posts/60394
+                    - paragraph [ref=f25e310]: 이거 무슨 폰트일까요 ㅜ
+                  - generic [ref=f25e311]:
+                    - generic [ref=f25e312]:
+                      - generic [ref=f25e313]: 38분 전
+                      - generic [ref=f25e314]: "|"
+                      - generic [ref=f25e315]: 조회 19
+                    - link "a*oun" [ref=f25e316] [cursor=pointer]:
+                      - /url: /app/users/pglol1
+      - insertion [ref=f25e320]:
+        - iframe [ref=f25e322]:
+          - generic [ref=f36e1]:
+            - generic [ref=f36e3]:
+              - link:
+                - /url: https://www.googleadservices.com/pagead/aclk?sa=L&ai=CS-dXoriDapG4A9vEpt8Ppc6D4AKB6NHohwHY0bHh2hXap73VlA4QASDG2r9sYJuT6oS8KaABk-2tnQPIAQKpAv6av4YNQwg-qAMByAPJBKoE_gFP0EN3PJsQz8fHijaDBEgialEs1_GR-3IkxamD4n0Hu2XWhuACyZ6yTm2iZaWU62Qdg0LJOiSFL_KygGhsRNVfV3rVCM0mcAb-vLa25h2B3hav9mZZ_OJH3qEtTQqo7pzN5EhLYuuugzcGh2f7jmbWBQAwjPSZZDTgZA1-MN2Zs5HVt3v4MreXAKHYVjMVqzG6P15cTOdy0X4CTwpyRcvmV72CA5oliiBFssAHMwzinOvb38soiaCh54H8Swiq8tTsNZyD0q5ypW4FDoOqZVQumbsioEdFiXk3Nkol42O70_MhJ-No5owJIy8whE688jNcDS7WUzFqgQwVgusb9cAEnqCsw9oFiAWDsuiSWaAGAoAH1ZLSYqgHp8yxAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgH_uixAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgHn-GxAqgHpuuxAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAtgHAdIIMwiAYRABGJ8DMgiKgoCAgICACDoPgECAwICAgICogAKog4AQSL39wTpYnvOZwIaplgNgAbEJ1WgWCdWBU02ACgGYCwHICwGiDAwqCgoIjt-xApXisQKqDQJLUsgNAeoNEwiylZvAhqmWAxVboukFHSXnACzwDQKIDgnYEwzQFQHKFgIKAPgWAYAXAbIXEBgBKgo2Mjg1NTE0OTMyUAa6FwI4AaoYFwkAAAAAYOf9QBIKNjI4NTUxNDkzMhgBshgJEgLuThgCIgEA0BgBwhkCCAE&ae=1&gclid=EAIaIQobChMIkZGbwIaplgMVW6LpBR0l5wAsEAEYASAAEgKJ8_D_BwE&num=1&cid=CAQS9AEAEQoqgavZIINvhps2J4mqQK1ViuCproSdWM9UNhUk1ukdB80E-GPotlpVz0mwccoK7oH56AD-v-EbVw5S4-18T43l3tNr9IJS_9M19Rb9p0Qg6n01bLJcnxLFxdlVjVrqk7IVtZAbpaCShy9gkvsWWS8ErotNGcmKVgUN2lb1iZ1t_ZW9ohz4VUOeGVeu9FzARasyGElMgJ4p-qBFEX5QlXA4_Y4I7KWFomNZ9cgWPfNLkbqXmqBy-IWPacMBEYrOSWUDDQzVw0zNGG-Jtxv3KI1TfM296uwqnbxeppoN8w9Pd2KH41D5PBcf40SXJZ6k5UksGAE&sig=AOD64_2wBgK3IT7ksDygmoCNRss1PHg0Yg&client=ca-pub-1314414100334102&rf=2&nb=2&adurl=https://www.phonesafe.co.kr/join/65cc8e1160d247aa95564fc734bc9c88%3Futm_source%3Dgoogle%26utm_medium%3Dbanner%26utm_campaign%3Dnormal%26gad_source%3D5%26gad_campaignid%3D23930214659%26gclid%3DEAIaIQobChMIkZGbwIaplgMVW6LpBR0l5wAsEAEYASAAEgKJ8_D_BwE
+              - generic [ref=f36e4] [cursor=pointer]
+              - button [ref=f36e9] [cursor=pointer]
+            - iframe
+    - insertion [ref=f25e326]:
+      - iframe [ref=f25e328]:
+        - generic [ref=f38e3]:
+          - link "0" [ref=f38e4] [cursor=pointer]:
+            - /url: "#"
+          - link "1" [ref=f38e5] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=f38e6]:
+            - generic [ref=f38e16]:
+              - paragraph [ref=f38e18]: About this Ad
+              - button "Report" [ref=f38e20] [cursor=pointer]
+              - button "Opt Out Do not sell my personal information" [ref=f38e22] [cursor=pointer]
+              - button "Why this Ad? ⓘ" [ref=f38e24] [cursor=pointer]
+            - generic [ref=f38e29] [cursor=pointer]:
+              - generic [ref=f38e32]:
+                - generic [ref=f38e33]: Download
+                - generic [ref=f38e34]: to use extension (Free)
+              - generic [ref=f38e35]:
+                - paragraph [ref=f38e36]: Only 2 Steps
+                - paragraph [ref=f38e37]: Click "Download"
+                - paragraph [ref=f38e39]: Add Browse Safely for Chrome
+            - generic [ref=f38e45]:
+              - button "Seen this ad multiple times" [ref=f38e48] [cursor=pointer]
+              - button "Not interested in this ad" [ref=f38e51] [cursor=pointer]
+              - button "Ad covered content" [ref=f38e54] [cursor=pointer]
+              - button "Already bought this" [ref=f38e57] [cursor=pointer]
+            - generic [ref=f38e61]:
+              - paragraph [ref=f38e63]: About this Ad
+              - paragraph [ref=f38e65]: Thank you for reporting the ad. We will review it promptly
+            - generic [ref=f38e69]:
+              - paragraph [ref=f38e71]: About this Ad
+              - paragraph [ref=f38e73]: You have successfully opted out of our communications. We have removed your personal data from our systems and will no longer store or use it.
+          - link "2" [ref=f38e74] [cursor=pointer]:
+            - /url: "#"
+          - link "3" [ref=f38e75] [cursor=pointer]:
+            - /url: "#"
+    - generic [ref=f25e329] [cursor=pointer]
+  - generic [ref=f25e336]:
+    - generic [ref=f25e337]:
+      - link [ref=f25e338] [cursor=pointer]:
+        - /url: /
+      - paragraph [ref=f25e342]: © 2026 Project Noonnu Corp. All rights reserved.
+      - paragraph [ref=f25e343]: 모든 폰트의 저작권은 모두 각 폰트의 저작권자에게 있습니다.폰트 사용에 대한 라이센스 문의는 저작권자에게 문의해주세요.
+      - paragraph [ref=f25e344]: 제휴 및 광고 문의 team@noonnu.cc
+      - generic [ref=f25e345]:
+        - link "이용약관" [ref=f25e346] [cursor=pointer]:
+          - /url: /user_agreement
+        - text: "|"
+        - link "개인정보처리방침" [ref=f25e347] [cursor=pointer]:
+          - /url: /privacy_agreement
+      - paragraph [ref=f25e349] [cursor=pointer]: 눈누 사업자 정보
+    - generic [ref=f25e353]:
+      - generic [ref=f25e354]:
+        - generic [ref=f25e355]:
+          - paragraph [ref=f25e356]: 눈누
+          - generic [ref=f25e357]:
+            - link "무료 폰트 제보" [ref=f25e358] [cursor=pointer]:
+              - /url: /font_candidates/new
+            - link "기업 광고 문의" [ref=f25e359] [cursor=pointer]:
+              - /url: /about
+            - link "자주 묻는 질문" [ref=f25e360] [cursor=pointer]:
+              - /url: /questions
+        - generic [ref=f25e361]:
+          - paragraph [ref=f25e362]: 눈누마켓
+          - link "입점 신청" [ref=f25e364] [cursor=pointer]:
+            - /url: https://forms.gle/pCjTynDRvgsfU8Ci7
+      - generic [ref=f25e365]:
+        - link [ref=f25e366] [cursor=pointer]:
+          - /url: https://maily.so/noonnu
+        - link [ref=f25e370] [cursor=pointer]:
+          - /url: https://www.instagram.com/noonnu_official/
+        - link [ref=f25e374] [cursor=pointer]:
+          - /url: https://www.facebook.com/projectnoonnu/

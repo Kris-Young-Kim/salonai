@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_playwright_playwright__browser_snapshot",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "PowerShell(Get-ChildItem -Recurse \"C:\\\\Users\\\\rehab\\\\.claude\\\\plugins\\\\platoon\\\\skills\" | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem -Recurse \"C:\\\\Users\\\\rehab\\\\.claude\\\\plugins\\\\platoon\" -ErrorAction SilentlyContinue | Select-Object Name, @{Name=\"Size\";Expression={$_.Length}}, FullName)",
+      "Bash(New-Item -ItemType Directory -Force -Path \"C:\\\\Users\\\\rehab\\\\.claude\\\\plugins\\\\platoon\\\\.claude-plugin\")",
+      "Bash(Out-Null)",
+      "Bash(New-Item -ItemType Directory -Force -Path \"C:\\\\Users\\\\rehab\\\\.claude\\\\plugins\\\\platoon\\\\skills\\\\platoon\")",
+      "Bash(npm install *)",
+      "Bash(npx prisma *)",
+      "Bash(npm run *)",
+      "mcp__plugin_playwright_playwright__browser_fill_form",
+      "mcp__plugin_playwright_playwright__browser_type",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "Bash(node -e \"require\\('pg'\\); require\\('@prisma/adapter-pg'\\); console.log\\('OK'\\)\")",
+      "Bash(dir \"D:\\\\firstmover\\\\SALONAI\\\\app\\\\dashboard\\\\records\")",
+      "Bash(dir \"D:\\\\firstmover\\\\SALONAI\\\\app\\\\api\\\\customers\")",
+      "Bash(dir \"D:\\\\firstmover\\\\SALONAI\\\\app\\\\api\\\\stats\")",
+      "Bash(del \"D:\\\\firstmover\\\\SALONAI\\\\middleware.ts\")"
+    ]
+  }
+}

@@ -14,6 +14,7 @@ import {
   FileCheck2,
   Layers,
   ArrowUpRight,
+  ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RetentionReminderWidget } from '@/components/dashboard/RetentionReminderWidget';
@@ -80,14 +81,22 @@ export default function DashboardClient({ salonName, salonPhone }: Props) {
           </div>
         </div>
 
-        {/* 살롱 매장 상태 배지 */}
-        <div className="flex items-center gap-2.5 rounded-2xl border border-zinc-800 bg-zinc-900/80 px-4 py-2.5 backdrop-blur-md">
+        {/* 살롱 매장 상태 배지 (네이버 플레이스 연동) */}
+        <a
+          href="https://m.place.naver.com/hairshop/1724847178/home"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2.5 rounded-2xl border border-zinc-800 bg-zinc-900/80 hover:border-amber-400/40 px-4 py-2.5 backdrop-blur-md transition group"
+        >
           <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
           <div className="text-right">
-            <p className="text-xs font-bold text-zinc-200">{salonName}</p>
+            <div className="flex items-center justify-end gap-1">
+              <p className="text-xs font-bold text-zinc-200 group-hover:text-amber-300 transition">{salonName}</p>
+              <ExternalLink className="h-3 w-3 text-zinc-500 group-hover:text-amber-300 transition" />
+            </div>
             <p className="text-[10px] text-zinc-500 font-mono">{salonPhone}</p>
           </div>
-        </div>
+        </a>
       </header>
 
       {/* ── 메인 CTA: 1분 AI 스타일 컨설팅 시작 ──────────────────────────────── */}
@@ -158,6 +167,11 @@ export default function DashboardClient({ salonName, salonPhone }: Props) {
             <Users className="h-6 w-6" />
           </div>
         </div>
+      </section>
+
+      {/* ── CRM 마케팅: 이번 주 재방문 권장 고객 (D-Day 리마인더) ─────────────── */}
+      <section className="mb-8">
+        <RetentionReminderWidget />
       </section>
 
       {/* ── 퀵 살롱 액션 및 워크플로우 ──────────────────────────────────────── */}

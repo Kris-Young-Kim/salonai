@@ -10,6 +10,7 @@ import {
   Wind,
   Droplets,
   CalendarCheck,
+  ExternalLink,
 } from 'lucide-react';
 import { HairDyeRecommendation } from '@/components/prescription/HairDyeRecommendation';
 import { PrescriptionShareButtons } from '@/components/prescription/PrescriptionShareButtons';
@@ -335,20 +336,35 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
             <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest block mb-0.5">
               Hair Salon & AI Studio
             </span>
-            <p className="font-extrabold text-xl text-white">유니헤어샵</p>
-            <p className="text-xs text-zinc-400 mt-1 flex items-center justify-center gap-1">
-              <MapPin className="h-3.5 w-3.5 text-zinc-500" />
+            <a
+              href="https://m.place.naver.com/hairshop/1724847178/home"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-zinc-400 mt-1 flex items-center justify-center gap-1 hover:text-amber-300 transition group"
+            >
+              <MapPin className="h-3.5 w-3.5 text-zinc-500 group-hover:text-amber-400 transition" />
               <span>강원 원주시 무실로 91, 한주아파트 상가 101호</span>
-            </p>
+              <ExternalLink className="h-3 w-3 text-zinc-600 group-hover:text-amber-300 transition ml-0.5" />
+            </a>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2.5 pt-2">
+            <a
+              href="https://m.place.naver.com/hairshop/1724847178/home"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[#03C75A] hover:bg-[#02b350] py-3.5 text-xs font-bold text-white shadow-md transition active:scale-[0.99]"
+            >
+              <span className="font-black text-sm">N</span>
+              <span>네이버 지도 · 플레이스 보기</span>
+            </a>
+
             <a
               href="tel:033-734-4754"
               className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 py-3.5 text-xs font-bold text-zinc-950 shadow-[0_0_20px_rgba(245,208,97,0.3)] hover:brightness-105 transition active:scale-[0.99]"
             >
               <Phone className="h-4 w-4" />
-              <span>원장님께 전화 예약 / 문의</span>
+              <span>원장님 전화 예약 / 문의</span>
             </a>
           </div>
 

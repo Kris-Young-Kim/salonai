@@ -74,13 +74,14 @@
   - `lib/data/hairDyeChart.ts`: 6개 컬러 틴트 × 3개 브랜드(밀본/로레알/웰라) 실물 레시피 데이터베이스
   - `app/api/hair-dye/route.ts`: `?season=` 및 `?tintName=` 쿼리 기반 레시피 조회 API
   - `components/prescription/HairDyeRecommendation.tsx`: 아코디언형 브랜드 레시피 UI (Step 4 & 처방전 공개 뷰에 통합)
-- [x] `[Antigravity]` **[PWA & Tablet UX] 태블릿 전용 PWA & 풀스크린 모드 및 좌우 수평 장면 전환 최적화**:
-  - [x] `public/manifest.json` (Standalone 모드, 가로 화면 Landscape 우선, 살롱 브랜드 테마)
-  - [x] PWA 고해상도 앱 아이콘 (192x192, 512x512, Maskable SVG/PNG 생성)
-  - [x] 원터치 풀스크린 토글 컴포넌트 (`components/common/FullscreenToggle.tsx`)
-  - [x] 태블릿 홈 화면 추가 & PWA 설치 유도 모달 (`components/pwa/PwaInstallPrompt.tsx`)
-  - [x] 4단계 진단 워크플로우 **좌우 수평 슬라이드 장면 전환(Horizontal Scene Slide)** 및 가로 2-Column Split 최적화
-  - [x] 터치 제스처(더블 탭 확대 방지, 바운스 방지, 슬라이더 햅틱 피드백) 적용
+- [x] `[Antigravity]` **[CRM & Retention] 시술별 재방문 주기 자동 계산 & D-Day 리마인더 마케팅 대시보드**:
+  - [x] `lib/crm/retentionCalculator.ts`: 뿌리염색(4주), 숏컷(3주), 펌(8주), 매직(12주) 등 시술 키워드 기반 D-Day 산출
+  - [x] `app/api/crm/retention/route.ts`: 이번 주 방문 권장(D-7~D+7), 주기 초과 고객 자동 필터링 API
+  - [x] `components/dashboard/RetentionReminderWidget.tsx`: 대시보드 내 원클릭 안부/예약 알림톡 발송 모달
+- [x] `[Antigravity]` **[Viral Marketing] 고객 처방전 '인스타그램 스토리용 9:16 고화질 카드' 생성/다운로드**:
+  - [x] `lib/prescription/storyCardRenderer.ts`: 1080×1920 Instagram Story 고화질 Canvas 카드 렌더러
+  - [x] `components/prescription/InstagramStoryCardModal.tsx`: 원클릭 스마트폰 갤러리 저장 및 모바일 공유
+  - [x] `components/prescription/PrescriptionShareButtons.tsx`: 처방전 열람 뷰 연동 완료
 
 ---
 

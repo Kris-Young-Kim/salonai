@@ -22,6 +22,7 @@ interface RealtimeHairFittingProps {
   landmarks?: NormalizedLandmark[] | null;
   defaultGender?: 'female' | 'male' | 'unisex';
   initialPieceId?: string;
+  initialPieceVersion?: number;
   onSelectHairPiece?: (hairPiece: VirtualHairPiece) => void;
   className?: string;
 }
@@ -40,6 +41,7 @@ export function RealtimeHairFitting({
   landmarks,
   defaultGender = 'female',
   initialPieceId,
+  initialPieceVersion,
   onSelectHairPiece,
   className = '',
 }: RealtimeHairFittingProps) {
@@ -90,7 +92,7 @@ export function RealtimeHairFitting({
     return () => observer.disconnect();
   }, []);
 
-  // 외부 initialPieceId 변경 시 동기화
+  // 외부 initialPieceId 변경 시 동기화 (version 포함하여 동일 ID 재요청도 감지)
   useEffect(() => {
     if (initialPieceId) {
       setActivePieceId(initialPieceId);
@@ -99,7 +101,8 @@ export function RealtimeHairFitting({
         setSelectedGender(piece.category);
       }
     }
-  }, [initialPieceId]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialPieceId, initialPieceVersion]);
 
   // 랜드마크 기반 자동 변환 계산
   const baseTransform = useMemo(() => {
@@ -224,59 +227,74 @@ export function RealtimeHairFitting({
 
     // ─── 3. 정밀 모발 텍스처 결 드로잉 (Hair Strands Texture) ───────────
     ctx.shadowColor = 'transparent';
-    ctx.lineWidth = 1.4;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
 
-    const strandCount = 70;
+    const strandCount = 110;
     for (let i = 0; i < strandCount; i++) {
       const t = i / strandCount;
-      const startX = width * (0.24 + t * 0.52);
-      const startY = height * (0.16 + Math.sin(t * Math.PI) * 0.06);
+      const startX = width * (0.22 + t * 0.56);
+      const startY = height * (0.14 + Math.sin(t * Math.PI) * 0.08);
 
-      ctx.strokeStyle = i % 3 === 0
-        ? hexToRgba(highlightColor, 0.45)
+      ctx.lineWidth = i % 4 === 0 ? 1.8 : 1.1;
+      ctx.strokeStyle = i % 4 === 0
+        ? hexToRgba(highlightColor, 0.55)
         : i % 2 === 0
-        ? hexToRgba(mainColor, 0.65)
-        : hexToRgba('#000000', 0.4);
+        ? hexToRgba(mainColor, 0.75)
+        : hexToRgba('#080808', 0.5);
 
       ctx.beginPath();
       ctx.moveTo(startX, startY);
 
       if (shape.includes('curl') || shape.includes('wave') || shape.includes('perm')) {
         // 부드러운 S-컬 흐름
-        const ctrl1X = startX + (t > 0.5 ? 24 : -24);
-        const ctrl1Y = startY + height * 0.22;
-        const ctrl2X = startX + (t > 0.5 ? -18 : 18);
-        const ctrl2Y = startY + height * 0.44;
-        const endX = startX + (t > 0.5 ? 28 : -28);
-        const endY = startY + height * 0.58;
+        const ctrl1X = startX + (t > 0.5 ? 28 : -28);
+        const ctrl1Y = startY + height * 0.24;
+        const ctrl2X = startX + (t > 0.5 ? -22 : 22);
+        const ctrl2Y = startY + height * 0.46;
+        const endX = startX + (t > 0.5 ? 32 : -32);
+        const endY = startY + height * 0.62;
         ctx.bezierCurveTo(ctrl1X, ctrl1Y, ctrl2X, ctrl2Y, endX, endY);
       } else {
         // 스트레이트/슬릭/가일 흐름
-        const ctrlX = startX + (t > 0.5 ? 12 : -12);
-        const ctrlY = startY + height * 0.2;
-        const endX = startX + (t > 0.5 ? 16 : -16);
-        const endY = startY + height * 0.38;
+        const ctrlX = startX + (t > 0.5 ? 14 : -14);
+        const ctrlY = startY + height * 0.22;
+        const endX = startX + (t > 0.5 ? 18 : -18);
+        const endY = startY + height * 0.42;
         ctx.quadraticCurveTo(ctrlX, ctrlY, endX, endY);
       }
 
       ctx.stroke();
     }
 
+    // ─── 3.1. 헤어라인 잔머리 및 페더링 텍스처 (Natural Baby Hairs) ────────
+    for (let b = 0; b < 25; b++) {
+      const bt = b / 25;
+      const bx = width * (0.35 + bt * 0.3);
+      const by = height * 0.24 + Math.sin(bt * Math.PI) * 12;
+      ctx.lineWidth = 0.8;
+      ctx.strokeStyle = hexToRgba(mainColor, 0.4);
+      ctx.beginPath();
+      ctx.moveTo(bx, by);
+      ctx.quadraticCurveTo(bx + (bt > 0.5 ? 6 : -6), by + 14, bx + (bt > 0.5 ? 10 : -10), by + 24);
+      ctx.stroke();
+    }
+
     // ─── 4. 탑 크라운 살롱 광택 하이라이트 (Salon Gloss Sheen) ───────────
     const sheenGrad = ctx.createLinearGradient(
-      width * 0.3,
-      height * 0.16,
-      width * 0.7,
+      width * 0.28,
+      height * 0.14,
+      width * 0.72,
       height * 0.28
     );
     sheenGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-    sheenGrad.addColorStop(0.4, hexToRgba('#FFFFFF', 0.28));
-    sheenGrad.addColorStop(0.6, hexToRgba(highlightColor, 0.4));
+    sheenGrad.addColorStop(0.35, hexToRgba('#FFFFFF', 0.32));
+    sheenGrad.addColorStop(0.55, hexToRgba(highlightColor, 0.45));
     sheenGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
     ctx.fillStyle = sheenGrad;
     ctx.beginPath();
-    ctx.ellipse(width * 0.5, height * 0.22, width * 0.28, height * 0.08, -0.05, 0, Math.PI * 2);
+    ctx.ellipse(width * 0.5, height * 0.21, width * 0.3, height * 0.08, -0.04, 0, Math.PI * 2);
     ctx.fill();
 
     // ─── 5. 앞머리 / 사이드뱅 자연스러운 페이스 프레임 ────────────────────

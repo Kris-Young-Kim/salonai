@@ -63,7 +63,9 @@ export default function DiagnosePage() {
   const [synthesizedImageUrl, setSynthesizedImageUrl] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [targetedPieceId, setTargetedPieceId] = useState<string | undefined>(undefined);
+  const [targetedPieceVersion, setTargetedPieceVersion] = useState(0);
   const [targetedStyle, setTargetedStyle] = useState<MatchedLookbookItem | null>(null);
+  const [targetedStyleVersion, setTargetedStyleVersion] = useState(0);
   const [successModalData, setSuccessModalData] = useState<{
     token: string;
     url: string;
@@ -116,6 +118,9 @@ export default function DiagnosePage() {
     setSelectedStyles([]);
     setSynthesizedImageUrl(null);
     setSuccessModalData(null);
+    setStep3SubTab('gallery');
+    setTargetedPieceId(undefined);
+    setTargetedStyle(null);
     setCurrentStep(1);
   };
 
@@ -143,6 +148,7 @@ export default function DiagnosePage() {
       'lb-m-04': 'vh-m-ivy',
     };
     setTargetedPieceId(pieceMap[item.id] || (isMale ? 'vh-m-guile' : 'vh-f-layered-c'));
+    setTargetedPieceVersion((v) => v + 1);
     setStep3SubTab('fitting');
   };
 
@@ -150,6 +156,7 @@ export default function DiagnosePage() {
   const handleQuickSimulate = (item: MatchedLookbookItem) => {
     setSelectedStyles((prev) => (prev.some((s) => s.id === item.id) ? prev : [item, ...prev]));
     setTargetedStyle(item);
+    setTargetedStyleVersion((v) => v + 1);
     setStep3SubTab('simulation');
   };
 
@@ -481,6 +488,7 @@ export default function DiagnosePage() {
                       }))}
                       defaultGender={capturedData.customerMeta.gender}
                       initialPieceId={targetedPieceId}
+                      initialPieceVersion={targetedPieceVersion}
                     />
                   </div>
                 )}
@@ -492,6 +500,7 @@ export default function DiagnosePage() {
                       selectedStyles={selectedStyles.length > 0 ? selectedStyles : matchedLookbooks.slice(0, 3)}
                       personalColorHex={personalColor.skinTone.hex}
                       initialStyle={targetedStyle}
+                      initialStyleVersion={targetedStyleVersion}
                       onSynthesized={setSynthesizedImageUrl}
                     />
                   </div>
@@ -508,10 +517,10 @@ export default function DiagnosePage() {
                 {/* Top Banner */}
                 <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
                   <div>
-                    <span className="rounded-full bg-amber-400/10 px-3 py-1 text-xs font-bold text-amber-300 border border-amber-400/20 mb-1 inline-block">
+                    <span className="rounded-full bg-amber-400/10 px-3 py-1 text-xs font-bold text-amber-300 border border-amber-400/20 mb-1 inline-block break-keep">
                       Step 04 • 전문가 종합 상담 & 맞춤 스타일 레시피 발행
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-extrabold text-white">
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-white break-keep">
                       [{capturedData.customerMeta.name}] 고객님 맞춤 스타일 레시피
                     </h2>
                   </div>
@@ -519,7 +528,7 @@ export default function DiagnosePage() {
                   <button
                     type="button"
                     onClick={() => setCurrentStep(3)}
-                    className="rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2 text-xs font-semibold text-zinc-300 hover:text-white transition"
+                    className="rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2 text-xs font-semibold text-zinc-300 hover:text-white transition whitespace-nowrap"
                   >
                     ← 스타일 다시 선택
                   </button>

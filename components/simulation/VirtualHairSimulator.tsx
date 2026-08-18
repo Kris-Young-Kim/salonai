@@ -25,6 +25,7 @@ interface VirtualHairSimulatorProps {
   selectedStyles: MatchedLookbookItem[];
   personalColorHex: string;
   initialStyle?: MatchedLookbookItem | null;
+  initialStyleVersion?: number;
   onApplyStyle?: (style: MatchedLookbookItem) => void;
   onSynthesized?: (url: string) => void;
 }
@@ -62,6 +63,7 @@ export function VirtualHairSimulator({
   selectedStyles,
   personalColorHex,
   initialStyle,
+  initialStyleVersion,
   onApplyStyle,
   onSynthesized,
 }: VirtualHairSimulatorProps) {
@@ -96,12 +98,13 @@ export function VirtualHairSimulator({
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // external initialStyle 변경 동기화
+  // external initialStyle 변경 동기화 (version 포함하여 동일 스타일 재요청도 감지)
   useEffect(() => {
     if (initialStyle) {
       setActiveStyle(initialStyle);
     }
-  }, [initialStyle]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialStyle, initialStyleVersion]);
 
   // ─── 0.1초 실시간 캔버스 컬러 틴트 렌더링 ────────────────────────────────
   useEffect(() => {
@@ -259,7 +262,7 @@ export function VirtualHairSimulator({
       const maskDataUrl = await generateRefinedHairMask(resizedImg, { styleConfig });
       maskCacheRef.current = maskDataUrl;
 
-      // 3. Replicate Inpainting API 요청
+      // 3. fal.ai / Replicate Inpainting API 요청
       const res = await fetch('/api/hair-synthesis', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -275,12 +278,26 @@ export function VirtualHairSimulator({
 
       const data = await res.json();
 
-      if (!res.ok || !data.success || !data.predictionId) {
+      if (!res.ok || !data.success) {
         throw new Error(data.error || 'AI 서버 생성 요청 실패');
       }
 
-      // 4. 폴링 시작
-      startPolling(data.predictionId);
+      // 4. fal.ai 직접 반환인 경우 즉시 결과 적용
+      if (data.outputImageUrl) {
+        stopTimer();
+        setAiOutputUrl(data.outputImageUrl);
+        setAiGenerating(false);
+        setSimulationMode('ai');
+        onSynthesized?.(data.outputImageUrl);
+        return;
+      }
+
+      // 5. 비동기 Polling 필요한 경우 (Replicate)
+      if (data.predictionId) {
+        startPolling(data.predictionId);
+      } else {
+        throw new Error('AI 결과 URL 또는 작업 ID가 반환되지 않았습니다.');
+      }
     } catch (err: any) {
       stopTimer();
       setAiError(err?.message || '가상 헤어 생성 중 오류가 발생했습니다.');

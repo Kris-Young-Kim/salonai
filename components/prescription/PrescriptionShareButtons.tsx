@@ -1,20 +1,28 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Share2, Copy, Check, MessageCircle, Heart } from 'lucide-react';
+import { Share2, Copy, Check, MessageCircle, Heart, Camera } from 'lucide-react';
+import { InstagramStoryCardModal } from './InstagramStoryCardModal';
 
 interface PrescriptionShareButtonsProps {
   customerName?: string;
   faceShape?: string;
   personalColor?: string;
+  originalImageUrl?: string;
+  skinHexColor?: string;
+  selectedStyles?: string[];
 }
 
 export function PrescriptionShareButtons({
   customerName = '고객',
-  faceShape,
-  personalColor,
+  faceShape = '계란형',
+  personalColor = '여름 쿨톤',
+  originalImageUrl,
+  skinHexColor,
+  selectedStyles,
 }: PrescriptionShareButtonsProps) {
   const [copied, setCopied] = useState(false);
+  const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
 
   const handleCopyLink = async () => {
     try {
@@ -24,7 +32,6 @@ export function PrescriptionShareButtons({
         setTimeout(() => setCopied(false), 2500);
       }
     } catch {
-      // fallback
       const textArea = document.createElement('textarea');
       textArea.value = window.location.href;
       document.body.appendChild(textArea);
@@ -49,7 +56,6 @@ export function PrescriptionShareButtons({
       try {
         await navigator.share(shareData);
       } catch (err) {
-        // 사용자가 취소한 경우는 무시
         if ((err as Error).name !== 'AbortError') {
           handleCopyLink();
         }
@@ -61,7 +67,6 @@ export function PrescriptionShareButtons({
 
   return (
     <div className="rounded-3xl border border-amber-400/30 bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-950 p-5 sm:p-6 backdrop-blur-md shadow-xl text-center space-y-4 mb-6">
-      
       {/* Header */}
       <div className="flex items-center justify-center gap-2">
         <Heart className="h-4 w-4 text-rose-400 fill-rose-400 animate-pulse" />
@@ -74,9 +79,18 @@ export function PrescriptionShareButtons({
         나만을 위해 분석된 인생 헤어스타일과 퍼스널 컬러를 친구·가족에게 자랑하고 의견을 물어보세요!
       </p>
 
-      {/* Share Actions */}
+      {/* Instagram Story Featured Action Button */}
+      <button
+        type="button"
+        onClick={() => setIsStoryModalOpen(true)}
+        className="w-full flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:brightness-110 py-4 px-4 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-pink-900/20 transition active:scale-[0.99]"
+      >
+        <Camera className="h-4 w-4 text-white" />
+        <span>📸 인스타 스토리용 처방전 카드 저장 (9:16)</span>
+      </button>
+
+      {/* Share Actions Grid */}
       <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
-        
         {/* Kakao / Native Share Button */}
         <button
           type="button"
@@ -84,7 +98,7 @@ export function PrescriptionShareButtons({
           className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[#FEE500] hover:bg-[#FADA0A] py-3.5 px-4 text-xs font-black text-[#191919] shadow-md transition active:scale-[0.99]"
         >
           <MessageCircle className="h-4 w-4 fill-[#191919]" />
-          <span>카카오톡 / 스마트폰으로 공유</span>
+          <span>카카오톡 / 문자로 공유</span>
         </button>
 
         {/* Copy Link Button */}
@@ -105,7 +119,6 @@ export function PrescriptionShareButtons({
             </>
           )}
         </button>
-
       </div>
 
       {copied && (
@@ -114,6 +127,20 @@ export function PrescriptionShareButtons({
         </p>
       )}
 
+      {/* Instagram Story Modal */}
+      <InstagramStoryCardModal
+        isOpen={isStoryModalOpen}
+        onClose={() => setIsStoryModalOpen(false)}
+        options={{
+          customerName,
+          faceShape,
+          personalColor,
+          originalImageUrl,
+          skinHexColor,
+          selectedStyles,
+        }}
+      />
     </div>
   );
 }
+

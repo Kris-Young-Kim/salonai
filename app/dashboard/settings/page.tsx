@@ -11,6 +11,7 @@ export default async function SettingsPage() {
       initialSalon={{
         name: ctx.salon.name ?? '',
         address: ctx.salon.address ?? '',
+        phone: ctx.salon.phone ?? '',
       }}
       initialDesigner={{
         name: ctx.designer?.name ?? '',

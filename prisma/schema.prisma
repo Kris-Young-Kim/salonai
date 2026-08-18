@@ -12,6 +12,7 @@ model Salon {
   clerkOrganizationId String       @unique // Clerk Org ID
   name                String       @db.VarChar(100)
   address             String?
+  phone               String?      @db.VarChar(20)
   createdAt           DateTime     @default(now()) @map("created_at")
   
   designers           Designer[]

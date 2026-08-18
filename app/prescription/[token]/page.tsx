@@ -316,6 +316,9 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
           customerName={customer?.name}
           faceShape={faceShape}
           personalColor={personalColor}
+          originalImageUrl={originalImageUrl}
+          skinHexColor={diagnosis.skinHexColor !== null ? diagnosis.skinHexColor : undefined}
+          selectedStyles={selectedStyleTags}
         />
 
         {/* Section 6: Salon Direct Contact & Action Card */}

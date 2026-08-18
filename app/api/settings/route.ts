@@ -28,9 +28,10 @@ export async function PATCH(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { salonName, salonAddress, designerName, designerEmail } = body as {
+    const { salonName, salonAddress, salonPhone, designerName, designerEmail } = body as {
       salonName?: string;
       salonAddress?: string;
+      salonPhone?: string;
       designerName?: string;
       designerEmail?: string;
     };
@@ -54,6 +55,7 @@ export async function PATCH(req: NextRequest) {
         data: {
           ...(salonName?.trim() ? { name: salonName.trim() } : {}),
           ...(salonAddress !== undefined ? { address: salonAddress.trim() || null } : {}),
+          ...(salonPhone !== undefined ? { phone: salonPhone.trim() || null } : {}),
         },
       }),
       ctx.designer

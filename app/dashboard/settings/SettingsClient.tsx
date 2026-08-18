@@ -6,13 +6,14 @@ import { Building2, User, ShieldCheck, CheckCircle2, AlertCircle, ArrowLeft } fr
 import Link from 'next/link';
 
 interface Props {
-  initialSalon: { name: string; address: string };
+  initialSalon: { name: string; address: string; phone: string };
   initialDesigner: { name: string; email: string };
 }
 
 export default function SettingsClient({ initialSalon, initialDesigner }: Props) {
   const [salonName, setSalonName] = useState(initialSalon.name);
   const [salonAddress, setSalonAddress] = useState(initialSalon.address);
+  const [salonPhone, setSalonPhone] = useState(initialSalon.phone);
   const [designerName, setDesignerName] = useState(initialDesigner.name);
   const [designerEmail, setDesignerEmail] = useState(initialDesigner.email);
 
@@ -26,7 +27,7 @@ export default function SettingsClient({ initialSalon, initialDesigner }: Props)
       const res = await fetch('/api/settings', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ salonName, salonAddress, designerName, designerEmail }),
+        body: JSON.stringify({ salonName, salonAddress, salonPhone, designerName, designerEmail }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -91,6 +92,16 @@ export default function SettingsClient({ initialSalon, initialDesigner }: Props)
                 value={salonAddress}
                 onChange={(e) => setSalonAddress(e.target.value)}
                 placeholder="살롱 주소를 입력하세요"
+                className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/90 px-4 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:border-amber-400 focus:outline-none transition"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">전화번호</label>
+              <input
+                type="tel"
+                value={salonPhone}
+                onChange={(e) => setSalonPhone(e.target.value)}
+                placeholder="033-000-0000"
                 className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/90 px-4 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:border-amber-400 focus:outline-none transition"
               />
             </div>

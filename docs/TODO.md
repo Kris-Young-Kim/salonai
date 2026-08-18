@@ -69,7 +69,10 @@
   - [x] `/diagnose` Step 3 진단 워크플로우 연동 완료
 - [ ] `[Claude Code]` **[FR-301-API] 생성형 AI 가상 헤어 합성 파이프라인 (Inpainting)**:
   - Stable Diffusion / Replicate API 기반 고객 사진 헤어 합성 백엔드 워크플로우
-- [ ] `[Claude Code]` **[FR-302] 브랜드별 염색약 실물 차트 매칭 (밀본/로레알 1:1 레시피 매핑)**
+- [x] `[Claude Code]` **[FR-302] 브랜드별 염색약 실물 차트 매칭 (밀본/로레알 1:1 레시피 매핑)**
+  - `lib/data/hairDyeChart.ts`: 6개 컬러 틴트 × 3개 브랜드(밀본/로레알/웰라) 실물 레시피 데이터베이스
+  - `app/api/hair-dye/route.ts`: `?season=` 및 `?tintName=` 쿼리 기반 레시피 조회 API
+  - `components/prescription/HairDyeRecommendation.tsx`: 아코디언형 브랜드 레시피 UI (Step 4 & 처방전 공개 뷰에 통합)
 
 ---
 

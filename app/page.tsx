@@ -1,58 +1,13 @@
 import Link from "next/link";
-import { Camera, Sparkles, Smartphone, ArrowRight, Scissors, CheckCircle2, SlidersHorizontal } from "lucide-react";
+import { Camera, Sparkles, Smartphone, CheckCircle2, SlidersHorizontal } from "lucide-react";
+import { InteractiveHero } from "@/components/home/InteractiveHero";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-full bg-zinc-950 text-zinc-100 font-sans selection:bg-amber-400 selection:text-zinc-950">
       
-      {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16 pb-24 lg:pt-24 lg:pb-32">
-        {/* Ambient Glows */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-amber-500/20 to-yellow-600/10 blur-[130px] pointer-events-none rounded-full" />
-
-        <div className="mx-auto max-w-5xl px-6 lg:px-8 text-center relative z-10">
-          
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-semibold text-amber-300 backdrop-blur-md mb-8 shadow-sm">
-            <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
-            <span>프리미엄 헤어살롱 전용 AI 진단 솔루션</span>
-          </div>
-
-          {/* Main Title */}
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-100 leading-[1.2] sm:leading-[1.15] mb-6 break-keep">
-            1분 만에 완성되는
-            <br />
-            <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-              AI 헤어 진단 & 맞춤 스타일 레시피
-            </span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="mx-auto max-w-2xl text-base sm:text-lg text-zinc-400 leading-relaxed mb-10 break-keep">
-            태블릿으로 얼굴 정면을 가이드에 맞춰 촬영하세요. AI가 얼굴형, 두상 비율, 퍼스널 컬러를 정밀 분석하여 최적의 룩북과 맞춤 헤어 레시피 리포트를 발급합니다.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/diagnose"
-              className="group flex h-14 w-full sm:w-auto items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 px-8 text-base font-bold text-zinc-950 shadow-[0_0_30px_rgba(245,208,97,0.35)] hover:brightness-105 active:scale-95 transition"
-            >
-              <Camera className="h-5 w-5 text-zinc-950" />
-              <span>1분 AI 진단 시작하기</span>
-              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-
-            <Link
-              href="/dashboard"
-              className="flex h-14 w-full sm:w-auto items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-900/80 px-8 text-sm font-semibold text-zinc-300 hover:bg-zinc-800 hover:text-white transition"
-            >
-              디자이너 대시보드
-            </Link>
-          </div>
-
-        </div>
-      </section>
+      {/* ── High-Fashion 3D Parallax Interactive Hero Section ──────────────── */}
+      <InteractiveHero />
 
       {/* Feature Highlights Grid */}
       <section id="features" className="border-t border-zinc-800/80 bg-zinc-900/40 py-20">

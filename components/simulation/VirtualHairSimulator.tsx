@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { MatchedLookbookItem } from '@/types/lookbook';
-import { Sparkles, SlidersHorizontal, Eye, Scissors, Palette, ArrowLeftRight, Check, Heart } from 'lucide-react';
+import { Sparkles, SlidersHorizontal, Eye, Scissors, Palette, ArrowLeftRight, Check, Heart, Wand2, Loader2 } from 'lucide-react';
 
 interface VirtualHairSimulatorProps {
   originalImageUrl: string;
@@ -21,7 +21,53 @@ export function VirtualHairSimulator({
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [activeColorTint, setActiveColorTint] = useState<string>(personalColorHex || '#7D7571');
   const [colorIntensity, setColorIntensity] = useState<number>(65); // 0 ~ 100%
+  const [aiGenerating, setAiGenerating] = useState(false);
+  const [aiOutputUrl, setAiOutputUrl] = useState<string | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const COLOR_SWATCHES = [
+    { name: '스모키 애쉬', hex: '#7D7571' },
+    { name: '밀크티 베이지', hex: '#D6B494' },
+    { name: '올리브 카키', hex: '#635B47' },
+    { name: '블루 블랙', hex: '#161B2E' },
+    { name: '로즈 플럼', hex: '#9E6D76' },
+    { name: '다크 초콜릿', hex: '#4A3B32' },
+  ] as const;
+
+  const activeSwatch = COLOR_SWATCHES.find((c) => c.hex === activeColorTint);
+
+  const handleAIGenerate = async () => {
+    if (!activeSwatch) return;
+    setAiGenerating(true);
+    setAiError(null);
+    setAiOutputUrl(null);
+
+    try {
+      const res = await fetch('/api/hair-synthesis', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imageDataUrl: originalImageUrl,
+          tintName: activeSwatch.name,
+          tintHex: activeSwatch.hex,
+          colorIntensity,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success && data.outputImageUrl) {
+        setAiOutputUrl(data.outputImageUrl);
+      } else {
+        setAiError(data.error ?? 'AI 합성 실패');
+      }
+    } catch {
+      setAiError('네트워크 오류. 다시 시도하세요.');
+    } finally {
+      setAiGenerating(false);
+    }
+  };
 
   // Handle Dragging
   const handleTouchOrMouseMove = (clientX: number) => {
@@ -88,34 +134,42 @@ export function VirtualHairSimulator({
         onTouchMove={handleTouchMove}
         className="relative aspect-[4/3] sm:aspect-[16/10] w-full select-none overflow-hidden rounded-3xl border-2 border-zinc-800 bg-zinc-950 cursor-ew-resize shadow-2xl"
       >
-        {/* Background / After Layer (Simulated Transformation) */}
+        {/* Background / After Layer (Simulated or AI-Generated Transformation) */}
         <div className="absolute inset-0 h-full w-full">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={originalImageUrl}
+            src={aiOutputUrl ?? originalImageUrl}
             alt="Simulated Transformation"
             className="h-full w-full object-cover"
           />
 
-          {/* Color Matrix Overlay on Hair */}
-          <div
-            className="absolute inset-0 mix-blend-color pointer-events-none transition-opacity duration-300"
-            style={{
-              backgroundColor: activeColorTint,
-              opacity: colorIntensity / 100,
-            }}
-          />
-          <div
-            className="absolute inset-0 mix-blend-soft-light pointer-events-none transition-opacity duration-300"
-            style={{
-              backgroundColor: activeColorTint,
-              opacity: (colorIntensity / 100) * 0.7,
-            }}
-          />
+          {/* CSS Color Overlay — hidden when AI output is shown */}
+          {!aiOutputUrl && (
+            <>
+              <div
+                className="absolute inset-0 mix-blend-color pointer-events-none transition-opacity duration-300"
+                style={{ backgroundColor: activeColorTint, opacity: colorIntensity / 100 }}
+              />
+              <div
+                className="absolute inset-0 mix-blend-soft-light pointer-events-none transition-opacity duration-300"
+                style={{ backgroundColor: activeColorTint, opacity: (colorIntensity / 100) * 0.7 }}
+              />
+            </>
+          )}
+
+          {/* AI Generating Spinner Overlay */}
+          {aiGenerating && (
+            <div className="absolute inset-0 bg-zinc-950/70 flex flex-col items-center justify-center backdrop-blur-sm">
+              <Loader2 className="h-10 w-10 text-amber-400 animate-spin mb-3" />
+              <p className="text-xs text-amber-300 font-bold">AI 헤어 합성 중...</p>
+              <p className="text-[10px] text-zinc-400 mt-1">약 30~60초 소요됩니다</p>
+            </div>
+          )}
 
           {/* After Badge */}
-          <div className="absolute bottom-4 right-4 rounded-full bg-black/80 px-3.5 py-1.5 text-xs font-black text-amber-300 border border-amber-400/40 backdrop-blur-md">
-            AFTER • AI 스타일 적용
+          <div className="absolute bottom-4 right-4 rounded-full bg-black/80 px-3.5 py-1.5 text-xs font-black border backdrop-blur-md"
+            style={{ color: aiOutputUrl ? '#34d399' : '#fcd34d', borderColor: aiOutputUrl ? 'rgba(52,211,153,0.4)' : 'rgba(245,208,97,0.4)' }}>
+            {aiOutputUrl ? 'AFTER • AI 합성 결과' : 'AFTER • CSS 프리뷰'}
           </div>
         </div>
 
@@ -151,43 +205,77 @@ export function VirtualHairSimulator({
       </div>
 
       {/* Color Swatch Preset Palette */}
-      <div className="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-5 border-t border-zinc-800">
-        <div>
-          <span className="text-xs font-bold text-zinc-300 block mb-2">
-            🎨 실시간 염색 컬러 반사빛 변경:
-          </span>
-          <div className="flex flex-wrap items-center gap-2.5">
-            {[
-              { name: '스모키 애쉬', hex: '#7D7571' },
-              { name: '밀크티 베이지', hex: '#D6B494' },
-              { name: '올리브 카키', hex: '#635B47' },
-              { name: '블루 블랙', hex: '#161B2E' },
-              { name: '로즈 플럼', hex: '#9E6D76' },
-              { name: '다크 초콜릿', hex: '#4A3B32' },
-            ].map((color) => (
-              <button
-                key={color.name}
-                type="button"
-                onClick={() => setActiveColorTint(color.hex)}
-                className={`flex items-center gap-2 rounded-xl px-3 py-1.5 text-xs font-semibold transition border ${
-                  activeColorTint === color.hex
-                    ? 'bg-zinc-800 text-amber-300 border-amber-400 shadow-md ring-1 ring-amber-400/50'
-                    : 'bg-zinc-950/80 text-zinc-400 border-zinc-800 hover:text-white'
-                }`}
-              >
-                <span
-                  className="h-3.5 w-3.5 rounded-full border border-white/30 shadow-inner"
-                  style={{ backgroundColor: color.hex }}
-                />
-                <span>{color.name}</span>
-              </button>
-            ))}
+      <div className="mt-6 pt-5 border-t border-zinc-800 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+          <div>
+            <span className="text-xs font-bold text-zinc-300 block mb-2">
+              🎨 실시간 염색 컬러 반사빛 변경:
+            </span>
+            <div className="flex flex-wrap items-center gap-2.5">
+              {COLOR_SWATCHES.map((color) => (
+                <button
+                  key={color.name}
+                  type="button"
+                  onClick={() => { setActiveColorTint(color.hex); setAiOutputUrl(null); setAiError(null); }}
+                  className={`flex items-center gap-2 rounded-xl px-3 py-1.5 text-xs font-semibold transition border ${
+                    activeColorTint === color.hex
+                      ? 'bg-zinc-800 text-amber-300 border-amber-400 shadow-md ring-1 ring-amber-400/50'
+                      : 'bg-zinc-950/80 text-zinc-400 border-zinc-800 hover:text-white'
+                  }`}
+                >
+                  <span
+                    className="h-3.5 w-3.5 rounded-full border border-white/30 shadow-inner"
+                    style={{ backgroundColor: color.hex }}
+                  />
+                  <span>{color.name}</span>
+                </button>
+              ))}
+            </div>
           </div>
+
+          <p className="text-[11px] text-zinc-500 max-w-xs leading-tight shrink-0">
+            💡 슬라이더를 좌우로 드래그하여 전/후 비교 이미지를 실시간으로 확인하세요.
+          </p>
         </div>
 
-        <p className="text-[11px] text-zinc-500 max-w-xs leading-tight">
-          💡 슬라이더를 좌우로 드래그하여 전/후 비교 이미지를 고객님과 함께 실시간으로 확인해보세요.
-        </p>
+        {/* AI Hair Synthesis CTA */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 rounded-2xl bg-zinc-950 border border-zinc-800 p-4">
+          <div className="flex-1">
+            <p className="text-xs font-bold text-white flex items-center gap-1.5 mb-0.5">
+              <Wand2 className="h-3.5 w-3.5 text-amber-400" />
+              AI 생성 합성 (FR-301-API · Replicate Instruct-Pix2Pix)
+            </p>
+            <p className="text-[10px] text-zinc-500 leading-relaxed">
+              선택한 컬러로 실제 헤어를 AI 합성합니다. REPLICATE_API_TOKEN 설정 시 활성화. 약 30~60초 소요.
+            </p>
+            {aiError && (
+              <p className="text-[10px] text-rose-400 mt-1 font-semibold">{aiError}</p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={handleAIGenerate}
+            disabled={aiGenerating}
+            className="flex shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-400 px-4 py-2.5 text-xs font-bold text-zinc-950 hover:brightness-105 disabled:opacity-50 transition"
+          >
+            {aiGenerating ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                <span>합성 중...</span>
+              </>
+            ) : aiOutputUrl ? (
+              <>
+                <Wand2 className="h-3.5 w-3.5" />
+                <span>다시 합성</span>
+              </>
+            ) : (
+              <>
+                <Wand2 className="h-3.5 w-3.5" />
+                <span>AI 헤어 합성</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
     </div>

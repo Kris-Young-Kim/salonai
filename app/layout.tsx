@@ -36,7 +36,6 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "유니헤어샵 (원주 원동점)" }],
   creator: "유니헤어샵",
-  manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

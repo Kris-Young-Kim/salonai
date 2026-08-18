@@ -140,7 +140,7 @@ export function LookbookDetailModal({
               ) : (
                 <>
                   <Heart className="h-4 w-4 fill-zinc-950 text-zinc-950" />
-                  <span>이 스타일로 처방전 담기</span>
+                  <span>이 스타일 레시피에 담기</span>
                 </>
               )}
             </button>

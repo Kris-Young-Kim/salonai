@@ -6,8 +6,8 @@ import { HeaderAuth } from "@/components/layout/HeaderAuth";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SalonAI — AI 헤어 진단 솔루션",
-  description: "미용실 전용 AI 얼굴형·퍼스널컬러 진단 & 디지털 처방전",
+  title: "SalonAI | 프리미엄 살롱 전용 AI 진단 솔루션",
+  description: "미용실 전용 AI 얼굴형·퍼스널컬러 진단 & 맞춤 헤어 스타일 레시피",
 };
 
 export default function RootLayout({

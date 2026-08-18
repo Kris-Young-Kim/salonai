@@ -190,8 +190,8 @@ export default function DashboardPage() {
               },
               {
                 step: '04',
-                title: '모바일 헤어 처방전 발송',
-                desc: '디자이너 시술 메모와 함께 고객 카카오톡으로 즉시 전송',
+                title: '모바일 맞춤 스타일 레시피 발송',
+                desc: '디자이너 시술 레시피 및 홈케어 가이드를 고객 카카오톡으로 전송',
                 color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30',
               },
             ].map((item) => (

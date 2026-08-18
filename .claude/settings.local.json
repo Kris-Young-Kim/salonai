@@ -18,7 +18,8 @@
       "Bash(dir \"D:\\\\firstmover\\\\SALONAI\\\\app\\\\dashboard\\\\records\")",
       "Bash(dir \"D:\\\\firstmover\\\\SALONAI\\\\app\\\\api\\\\customers\")",
       "Bash(dir \"D:\\\\firstmover\\\\SALONAI\\\\app\\\\api\\\\stats\")",
-      "Bash(del \"D:\\\\firstmover\\\\SALONAI\\\\middleware.ts\")"
+      "Bash(del \"D:\\\\firstmover\\\\SALONAI\\\\middleware.ts\")",
+      "PowerShell(New-Item *)"
     ]
   }
 }

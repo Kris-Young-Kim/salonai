@@ -44,7 +44,7 @@ function EmptyState({ search }: { search: string }) {
             아직 등록된 고객 진단 이력이 없습니다
           </p>
           <p className="text-xs text-zinc-500 leading-relaxed max-w-xs mb-6">
-            첫 번째 고객 진단을 완료하면 이 곳에 처방전과 분석 기록이 안전하게 누적됩니다.
+            첫 번째 고객 진단을 완료하면 이 곳에 맞춤 스타일 레시피와 분석 기록이 안전하게 누적됩니다.
           </p>
           <Link
             href="/diagnose"
@@ -120,10 +120,10 @@ export default async function RecordsPage({ searchParams }: PageProps) {
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
-            고객 진단 및 처방전 보관함
+            고객 진단 및 스타일 레시피 보관함
           </h1>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1 font-medium">
-            살롱 고객별 AI 얼굴형·퍼스널컬러 진단 데이터와 발송된 디지털 처방전 이력을 확인합니다.
+            살롱 고객별 AI 얼굴형·퍼스널컬러 진단 데이터와 발송된 맞춤 스타일 레시피 이력을 확인합니다.
           </p>
         </div>
 
@@ -162,7 +162,7 @@ export default async function RecordsPage({ searchParams }: PageProps) {
       {hasRecords && (
         <div className="flex items-center justify-between mb-4 px-1">
           <p className="text-xs text-zinc-400 font-medium">
-            총 <span className="font-bold text-amber-300">{customers.length}</span>명의 고객 처방 기록
+            총 <span className="font-bold text-amber-300">{customers.length}</span>명의 고객 스타일 레시피 기록
             {trimmedSearch && (
               <span className="text-zinc-500">
                 {' '}— &ldquo;{trimmedSearch}&rdquo; 검색 결과
@@ -185,7 +185,7 @@ export default async function RecordsPage({ searchParams }: PageProps) {
               <span>진단 얼굴형</span>
               <span>퍼스널 컬러</span>
               <span>최근 진단일</span>
-              <span className="text-right">처방전</span>
+              <span className="text-right">스타일 레시피</span>
             </div>
 
             {/* 행 목록 */}
@@ -234,7 +234,7 @@ export default async function RecordsPage({ searchParams }: PageProps) {
                           target="_blank"
                           className="flex items-center gap-1 rounded-xl bg-amber-400/10 border border-amber-400/30 px-3.5 py-2 text-xs font-bold text-amber-300 hover:bg-amber-400 hover:text-zinc-950 transition-colors whitespace-nowrap"
                         >
-                          처방전 보기
+                          레시피 보기
                           <ChevronRight className="h-3.5 w-3.5" />
                         </Link>
                       </div>
@@ -263,7 +263,7 @@ export default async function RecordsPage({ searchParams }: PageProps) {
                           target="_blank"
                           className="shrink-0 flex items-center gap-1 rounded-xl bg-amber-400/15 border border-amber-400/30 px-3 py-1.5 text-xs font-bold text-amber-300"
                         >
-                          처방전 열기
+                          레시피 열기
                           <ChevronRight className="h-3.5 w-3.5" />
                         </Link>
                       </div>

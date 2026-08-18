@@ -307,3 +307,25 @@ export function getDyeByTintName(tintName: string): ColorTintEntry | undefined {
     (c) => c.tintName === tintName || c.tintNameEn === tintName
   );
 }
+
+const KOREAN_TO_SEASON: Record<string, SeasonType> = {
+  '봄 웜톤': 'SPRING_WARM',
+  '봄': 'SPRING_WARM',
+  '여름 쿨톤': 'SUMMER_COOL',
+  '여름': 'SUMMER_COOL',
+  '가을 웜톤': 'AUTUMN_WARM',
+  '가을': 'AUTUMN_WARM',
+  '겨울 쿨톤': 'WINTER_COOL',
+  '겨울': 'WINTER_COOL',
+};
+
+export function koreanToSeason(korean: string): SeasonType {
+  for (const [key, val] of Object.entries(KOREAN_TO_SEASON)) {
+    if (korean.includes(key)) return val;
+  }
+  return 'AUTUMN_WARM'; // safe fallback
+}
+
+export function getRecommendedDyesByKorean(korean: string): ColorTintEntry[] {
+  return getRecommendedDyes(koreanToSeason(korean));
+}

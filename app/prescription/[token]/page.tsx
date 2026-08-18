@@ -15,6 +15,8 @@ import {
   Flame,
 } from 'lucide-react';
 import Link from 'next/link';
+import { HairDyeRecommendation } from '@/components/prescription/HairDyeRecommendation';
+import { getRecommendedDyesByKorean } from '@/lib/data/hairDyeChart';
 
 interface PrescriptionPageProps {
   params: Promise<{ token: string }>;
@@ -65,14 +67,14 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
                 SalonAI 헤어살롱
               </span>
               <span className="text-[9px] text-zinc-400 font-mono">
-                DIGITAL HAIR PRESCRIPTION
+                DIGITAL HAIR STYLE RECIPE
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-1.5 rounded-full bg-amber-400/10 px-2.5 py-1 text-[10px] font-bold text-amber-300 border border-amber-400/20">
             <Sparkles className="h-3 w-3 text-amber-400" />
-            <span>AI 맞춤 처방전</span>
+            <span>AI 맞춤 헤어 레시피</span>
           </div>
         </div>
 
@@ -84,7 +86,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
                 Valued Client
               </span>
               <h1 className="text-xl font-extrabold text-white">
-                {customer?.name || '고객'} 님의 헤어 처방전
+                {customer?.name || '고객'} 님의 맞춤 헤어 레시피
               </h1>
             </div>
             <div className="text-right">
@@ -165,6 +167,14 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
           </div>
         </div>
 
+        {/* Brand Hair Dye Recipe (FR-302) */}
+        {personalColor && (
+          <HairDyeRecommendation
+            tints={getRecommendedDyesByKorean(personalColor)}
+            className="mb-6"
+          />
+        )}
+
         {/* Designer Notes Card */}
         <div className="rounded-3xl border border-amber-400/30 bg-zinc-900/90 p-5 mb-6 backdrop-blur-md shadow-lg">
           <div className="flex items-center gap-2 mb-3">
@@ -173,7 +183,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
           </div>
 
           <div className="rounded-2xl bg-zinc-950/80 p-4 border border-zinc-800 text-xs text-zinc-300 leading-relaxed whitespace-pre-line">
-            {designerNotes || '살롱 맞춤 디자인 처방이 완료되었습니다.'}
+            {designerNotes || '살롱 맞춤 스타일 레시피 작성이 완료되었습니다.'}
           </div>
         </div>
 

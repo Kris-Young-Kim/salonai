@@ -23,13 +23,13 @@ export default function Home() {
             1분 만에 완성되는
             <br />
             <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-              AI 헤어 진단 & 맞춤 처방전
+              AI 헤어 진단 & 맞춤 스타일 레시피
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="mx-auto max-w-2xl text-base sm:text-lg text-zinc-400 leading-relaxed mb-10 break-keep">
-            태블릿으로 얼굴 정면을 가이드에 맞춰 촬영하세요. AI가 얼굴형, 두상 비율, 퍼스널 컬러를 정밀 분석하여 최적의 룩북과 디지털 처방전을 발급합니다.
+            태블릿으로 얼굴 정면을 가이드에 맞춰 촬영하세요. AI가 얼굴형, 두상 비율, 퍼스널 컬러를 정밀 분석하여 최적의 룩북과 맞춤 헤어 레시피 리포트를 발급합니다.
           </p>
 
           {/* CTA Buttons */}
@@ -137,7 +137,7 @@ export default function Home() {
                 Step 04
               </span>
               <h3 className="text-base font-bold text-zinc-100 mb-2">
-                모바일 처방전 & 알림톡
+                모바일 스타일 레시피 & 알림톡
               </h3>
               <p className="text-xs text-zinc-400 leading-relaxed flex-1 break-keep">
                 맞춤 스타일, 시술 레시피 및 홈케어 가이드를 고객 스마트폰으로 즉시 전송.

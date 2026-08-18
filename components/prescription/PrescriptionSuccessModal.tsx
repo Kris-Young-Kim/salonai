@@ -54,10 +54,10 @@ export function PrescriptionSuccessModal({
             <CheckCircle2 className="h-9 w-9" />
           </div>
           <span className="rounded-full bg-amber-400/10 px-3 py-0.5 text-[11px] font-bold text-amber-300 border border-amber-400/20 mb-1">
-            처방전 발행 완료
+            맞춤 스타일 레시피 발행 완료
           </span>
           <h3 className="text-2xl font-extrabold text-white">
-            디지털 헤어 처방전이 발행되었습니다!
+            디지털 스타일 레시피가 발행되었습니다!
           </h3>
           <p className="text-xs text-zinc-400 mt-1">
             아래 링크를 복사해 <strong className="text-zinc-200">{customerName}</strong> 고객님께 직접 공유하세요.
@@ -71,12 +71,12 @@ export function PrescriptionSuccessModal({
             <span>고객에게 공유하는 방법</span>
           </div>
           <p className="text-zinc-400 leading-relaxed">
-            아래 링크를 복사해 카카오톡 · 문자 · 이메일로 직접 전송하세요.<br />
-            고객이 링크를 열면 AI 진단 결과와 디자이너 처방 레시피를 확인할 수 있습니다.
+            아래 링크를 복사해 카카오톡 · 문자 · SNS로 직접 전송하세요.<br />
+            고객이 링크를 열면 AI 진단 결과와 디자이너 맞춤 시술 레시피를 확인할 수 있습니다.
           </p>
         </div>
 
-        {/* Prescription Link Copy Box */}
+        {/* Recipe Link Copy Box */}
         <div className="rounded-2xl bg-zinc-950 border border-zinc-800 p-3 mb-6 flex items-center justify-between gap-2">
           <span className="text-xs text-zinc-400 font-mono truncate px-2">
             {fullUrl}
@@ -108,7 +108,7 @@ export function PrescriptionSuccessModal({
             className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 py-3.5 text-xs font-bold text-zinc-950 shadow-md hover:brightness-105 transition"
           >
             <ExternalLink className="h-4 w-4" />
-            <span>고객용 처방전 웹 바로보기</span>
+            <span>고객용 레시피 리포트 바로보기</span>
           </Link>
 
           <button

@@ -13,14 +13,14 @@ export async function POST(req: NextRequest) {
     const alimtalkPayload = {
       templateCode: 'SALON_AI_PRESCRIPTION_V1',
       recipient: customerPhone,
-      title: `[SalonAI] ${customerName || '고객'}님의 맞춤 헤어 처방전이 도착했습니다.`,
+      title: `[SalonAI] ${customerName || '고객'}님의 맞춤 헤어 스타일 레시피가 도착했습니다.`,
       content: `안녕하세요, ${customerName || '고객'}님! 
-오늘 살롱에서 진행된 AI 정밀 진단 결과와 디자이너 맞춤 시술 처방전입니다.
+오늘 살롱에서 진행된 AI 정밀 진단 결과와 디자이너 맞춤 시술 레시피입니다.
 
 • 진단 요약: ${summary || '맞춤 헤어 디자인'}
-• 처방전 링크: ${prescriptionUrl}
+• 레시피 리포트 링크: ${prescriptionUrl}
 
-아래 버튼을 눌러 모바일 처방전을 확인해보세요!`,
+아래 링크를 눌러 모바일 맞춤 스타일 레시피를 확인해보세요!`,
       sentAt: new Date().toISOString(),
     };
 

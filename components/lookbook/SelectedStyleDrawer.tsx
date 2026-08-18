@@ -68,7 +68,7 @@ export function SelectedStyleDrawer({
           onClick={onProceedToPrescription}
           className="group w-full sm:w-auto flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 px-6 py-3.5 text-xs sm:text-sm font-bold text-zinc-950 shadow-[0_0_25px_rgba(245,208,97,0.4)] hover:brightness-105 active:scale-95 transition shrink-0"
         >
-          <span>선택 완료 및 모바일 처방전 생성</span>
+          <span>선택 완료 및 스타일 레시피 생성</span>
           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </button>
 

@@ -11,6 +11,8 @@ import { LookbookGallery } from '@/components/lookbook/LookbookGallery';
 import { DesignerNotesEditor } from '@/components/prescription/DesignerNotesEditor';
 import { PrescriptionSuccessModal } from '@/components/prescription/PrescriptionSuccessModal';
 import { VirtualHairSimulator } from '@/components/simulation/VirtualHairSimulator';
+import { HairDyeRecommendation } from '@/components/prescription/HairDyeRecommendation';
+import { getRecommendedDyes } from '@/lib/data/hairDyeChart';
 import { detectFaceMesh } from '@/lib/ai/faceMeshService';
 import { extractSkinColorFromImage } from '@/lib/ai/skinSampling';
 import { analyzePersonalColor } from '@/lib/ai/personalColor';
@@ -171,7 +173,7 @@ export default function DiagnosePage() {
       }
     } catch (err) {
       console.error('Save diagnosis error:', err);
-      alert('처방전 저장 중 오류가 발생했습니다.');
+      alert('맞춤 레시피 저장 중 오류가 발생했습니다.');
     } finally {
       setIsSaving(false);
     }
@@ -181,7 +183,7 @@ export default function DiagnosePage() {
     { num: 1, label: '고객 촬영', desc: '정면 가이드라인 촬영' },
     { num: 2, label: 'AI 정밀 진단', desc: '얼굴형 & 퍼스널컬러' },
     { num: 3, label: '룩북 & 시뮬레이션', desc: '맞춤 매칭 및 전후비교' },
-    { num: 4, label: '모바일 처방전', desc: 'DB저장 & 카카오톡 발송' },
+    { num: 4, label: '스타일 레시피', desc: '리포트 저장 & 알림톡 발송' },
   ];
 
   return (
@@ -204,7 +206,7 @@ export default function DiagnosePage() {
                 SalonAI Diagnostic
               </span>
               <span className="rounded-full bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold text-amber-300 border border-amber-400/20">
-                {currentStep === 1 ? '1단계 촬영' : currentStep === 2 ? '2단계 AI 정밀 진단' : currentStep === 3 ? '3단계 룩북 & 시뮬레이션' : '4단계 리포트 & 처방전'}
+                {currentStep === 1 ? '1단계 촬영' : currentStep === 2 ? '2단계 AI 정밀 진단' : currentStep === 3 ? '3단계 룩북 & 시뮬레이션' : '4단계 스타일 레시피'}
               </span>
             </div>
             <h1 className="text-base sm:text-lg font-bold text-zinc-100">
@@ -406,7 +408,7 @@ export default function DiagnosePage() {
                     onClick={() => setCurrentStep(4)}
                     className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 px-7 py-3.5 text-xs sm:text-sm font-bold text-zinc-950 shadow-lg hover:brightness-105"
                   >
-                    <span>처방전 발급 단계로 이동</span>
+                    <span>맞춤 레시피 리포트 발급으로 이동</span>
                     <ChevronRight className="h-4 w-4" />
                   </button>
                 </div>
@@ -423,10 +425,10 @@ export default function DiagnosePage() {
             <div className="flex items-center justify-between border-b border-zinc-800 pb-4 mb-6">
               <div>
                 <span className="rounded-full bg-amber-400/10 px-3 py-1 text-xs font-bold text-amber-300 border border-amber-400/20 mb-1 inline-block">
-                  Step 04 • 전문가 종합 상담 & 디지털 처방전 발행
+                  Step 04 • 전문가 종합 상담 & 맞춤 스타일 레시피 발행
                 </span>
                 <h2 className="text-xl sm:text-2xl font-extrabold text-white">
-                  [{capturedData.customerMeta.name}] 고객님 종합 진단 처방
+                  [{capturedData.customerMeta.name}] 고객님 맞춤 스타일 레시피
                 </h2>
               </div>
 
@@ -516,6 +518,11 @@ export default function DiagnosePage() {
                   )}
                 </div>
 
+                {/* Hair Dye Formula Recommendation (FR-302) */}
+                <HairDyeRecommendation
+                  tints={getRecommendedDyes(personalColor.season)}
+                />
+
               </div>
 
               {/* Right Column: Designer Notes & Kakao Dispatch Form (6 cols) */}
@@ -543,7 +550,7 @@ export default function DiagnosePage() {
                     className="w-full rounded-2xl bg-zinc-950 border border-zinc-700/80 px-4 py-3 text-sm text-white focus:border-amber-400 focus:outline-none transition font-mono"
                   />
                   <p className="text-[11px] text-zinc-500">
-                    발행 즉시 고객님 스마트폰으로 모바일 처방전 웹 링크가 전송됩니다.
+                    발행 즉시 고객님 스마트폰으로 맞춤 헤어 레시피 리포트 웹 링크가 전송됩니다.
                   </p>
                 </div>
 
@@ -562,7 +569,7 @@ export default function DiagnosePage() {
                   ) : (
                     <>
                       <Send className="h-4 w-4 text-zinc-950" />
-                      <span>Neon DB 저장 & 카카오톡 처방전 발송</span>
+                      <span>진단 저장 & 카카오톡 스타일 레시피 발송</span>
                     </>
                   )}
                 </button>

@@ -48,9 +48,9 @@ export function DesignerNotesEditor({
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-bold text-zinc-100 flex items-center gap-2">
           <Edit3 className="h-4 w-4 text-amber-400" />
-          디자이너 시술 메모 & 홈케어 레시피 (FR-203)
+          디자이너 시술 메모 & 홈케어 레시피
         </h3>
-        <span className="text-[11px] text-zinc-500 font-medium">고객 처방전에 함께 표기됩니다</span>
+        <span className="text-[11px] text-zinc-500 font-medium">고객 맞춤 레시피에 함께 표기됩니다</span>
       </div>
 
       {/* Hair Condition Quick Selector */}

@@ -18,7 +18,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://salonai-firstmover.vercel.app"),
+  metadataBase: new URL("https://salon-vivid.vercel.app"),
   title: {
     default: "유니헤어샵 | AI 헤어 스타일 컨설팅 & 맞춤 레시피",
     template: "%s | 유니헤어샵",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "유니헤어샵 (원주 원동점)" }],
   creator: "유니헤어샵",
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    url: "https://salonai-firstmover.vercel.app",
+    url: "https://salon-vivid.vercel.app",
     siteName: "유니헤어샵 AI 살롱",
     title: "유니헤어샵 | 1분 AI 헤어 스타일 컨설팅 & 맞춤 레시피",
     description: "내 얼굴형과 피부톤에 딱 맞는 인생 헤어스타일을 AI로 1분 만에 진단받으세요. (강원 원주시 무실로 91, 원동)",

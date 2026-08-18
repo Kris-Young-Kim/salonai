@@ -1,0 +1,42 @@
+import type { MetadataRoute } from 'next';
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: '유니헤어샵 AI 살롱 컨설팅',
+    short_name: '유니헤어샵',
+    description: '원주 원동 유니헤어샵 전용 1분 AI 얼굴형·퍼스널컬러 진단 및 맞춤 헤어 레시피 솔루션',
+    start_url: '/diagnose',
+    display: 'standalone',
+    orientation: 'landscape',
+    background_color: '#09090b',
+    theme_color: '#09090b',
+    lang: 'ko',
+    categories: ['lifestyle', 'business', 'utilities'],
+    icons: [
+      {
+        src: '/icon.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/icons/icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/icons/icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/icons/icon-maskable-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
+    ],
+  };
+}

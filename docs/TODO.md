@@ -1,7 +1,8 @@
 # SalonAI 프로젝트 TODO & 작업 맥락
 
 **최종 업데이트**: 2026-08-18  
-**협업 체계**: Antigravity IDE (UI/UX & Vision) ⚔️ Claude Code CLI (Backend & Infra) 듀얼 AI 협업
+**협업 체계**: Antigravity IDE (UI/UX & Vision) ⚔️ Claude Code CLI (Backend & Infra) 듀얼 AI 협업  
+**GitHub 저장소**: https://github.com/Kris-Young-Kim/salonai.git
 
 ---
 
@@ -16,22 +17,22 @@
 
 ## 2. 확정 기술 스택
 
-| 계층 | 기술 | 담당 AI |
-|------|------|------|
-| Frontend | Next.js (App Router) + Tailwind CSS | **Antigravity IDE** |
-| Vision / Color | Google MediaPipe Face Mesh + Canvas CIE-Lab | **Antigravity IDE** |
-| Design & Typography | Pretendard + 살롱 다크/골드 테마 | **Antigravity IDE** |
-| Auth & Multi-tenant | Clerk (조직/디자이너 관리) | **Claude Code** |
-| DB & ORM | Neon (Serverless PostgreSQL) + Prisma | **Claude Code** (DB) & **공통** |
-| Storage | Cloudflare R2 (이미지 오브젝트 스토리지) | **Claude Code** |
-| Messaging | 카카오 알림톡 (Solapi/비즈톡 API 연동) | **Claude Code** |
-| Hosting & CI/CD | Vercel + GitHub Actions | **Claude Code** |
+| 계층 | 기술 | 담당 AI | 상태 |
+|------|------|------|------|
+| Frontend | Next.js 16 (App Router) + Tailwind CSS | **Antigravity IDE** | **연동 완료** |
+| Vision / Color | Google MediaPipe Face Mesh + Canvas CIE-Lab | **Antigravity IDE** | **연동 완료** |
+| Design & Typography | Pretendard CDN + 살롱 다크/골드 테마 | **Antigravity IDE** | **적용 완료** |
+| Auth & Multi-tenant | Clerk (조직/디자이너 관리 & HeaderAuth) | **Claude Code** | **연동 완료** |
+| DB & ORM | Neon (Serverless PostgreSQL 18.4) + Prisma 7 | **Claude Code & Antigravity** | **연동 & 시딩 완료** |
+| Storage | Cloudflare R2 (이미지 오브젝트 스토리지) | **Claude Code** | 연동 대기 |
+| Messaging | 카카오 알림톡 (Solapi/비즈톡 API 연동) | **Claude Code** | 모의 발송 완료 |
+| Hosting & CI/CD | Vercel + GitHub Actions | **Claude Code** | GitHub 푸시 완료 |
 
 ---
 
 ## 3. 개발 단계별 역할 및 진행 현황 (PRD Phase별)
 
-### 🟢 Phase 1 — MVP (P0) 핵심 진단 & 룩북 (완료)
+### 🟢 Phase 1 — MVP (P0) 핵심 진단 & 룩북 (100% 완료)
 
 - [x] `[Antigravity]` **[FR-101]** 태블릿 카메라 촬영 UI (계란형 오버레이 가이드, 타이머, 좌우반전, 파일업로드 폴백, 프리뷰)
 - [x] `[Antigravity]` **[FR-102]** 얼굴형 & 두상 랜드마크 분석 (MediaPipe 468 포인트 3D 메쉬, 상/중/하안부 3단 비율, 6대 얼굴형 분류)
@@ -41,30 +42,33 @@
 
 ---
 
-### 🟡 Phase 2 — 살롱 워크플로우 & CRM (P1) (진행 중)
+### 🟢 Phase 2 — 살롱 워크플로우 & CRM (P1) (핵심 완료)
 
 - [x] `[Antigravity]` **[FR-202-UI]** 고객 전용 모바일 웹 처방전 뷰 (`/prescription/[token]`)
 - [x] `[Antigravity]` **[FR-203]** 디자이너 시술 메모 & 홈케어 레시피 에디터 (스마트 템플릿 작성기)
-- [ ] `[Claude Code]` **[FR-201] 고객 및 디자이너 CRM 시스템**:
-  - 고객 목록 및 연락처 검색/필터링 API (`/api/customers`)
-  - 고객별 과거 진단 및 처방 이력 누적 조회 (`/dashboard/records`)
-  - 살롱 매장별 진단 통계 대시보드 데이터 연동
-- [ ] `[Claude Code]` **[FR-202-API] 실 카카오 알림톡 발송 백엔드 연동**:
-  - 카카오 비즈메시지 / Solapi API 키 연동 및 실제 템플릿 등록/발송
+- [x] `[Claude Code & Antigravity]` **[FR-201] 고객 및 디자이너 CRM 시스템**:
+  - [x] 고객 목록 및 연락처 검색/필터링 API (`/api/customers`, `/api/customers/[id]`, `/api/stats`)
+  - [x] 고객별 과거 진단 및 처방 이력 누적 조회 UI (`/dashboard/records`)
+  - [x] 살롱 매장별 진단 통계 대시보드 연동 (`/dashboard`)
+- [x] `[Claude Code & Antigravity]` **[FR-202-API] 카카오 알림톡 발송 백엔드 API & 모달**:
+  - [x] 알림톡 발송 모의 API (`/api/prescriptions/send-kakao`) 및 발행 완료 모달
+  - [ ] 카카오 비즈메시지 / Solapi 실제 유료 API 키 바인딩 (배포 시 연동)
 - [ ] `[Claude Code]` **[Infra] Cloudflare R2 이미지 스토리지 연동** *(우선순위 낮음 — Phase 3 또는 파일럿 직전)*:
   - 고객 촬영 원본 사진의 Cloudflare R2 Presigned URL 업로드 API 구축
-  - 현재는 base64를 Neon DB에 직접 저장 중 (MVP 단계 허용)
-- [ ] `[Claude Code]` **[Auth] Clerk 멀티테넌트 살롱 조직 연동 고도화**:
-  - 매장(Salon) ↔ 디자이너(Designer) 계정 권한 바인딩 및 라우트 보호
+  - 현재는 base64를 Neon DB에 직접 저장 중 (MVP 단계 정상 작동)
+- [x] `[Claude Code]` **[Auth] Clerk 멀티테넌트 살롱 조직 연동**:
+  - Next.js 16 `proxy.ts` 및 `HeaderAuth` 클라이언트 연동 완료
 
 ---
 
-### 🟣 Phase 3 — 고도화 & 생성형 AI (P2) (대기)
+### 🟡 Phase 3 — 고도화 & 생성형 AI (P2) (진행 중)
 
+- [x] `[Antigravity]` **[FR-301-UI] 가상 헤어 시뮬레이션 인터랙티브 뷰어**:
+  - [x] `VirtualHairSimulator.tsx`: Before / After 좌우 스플릿 슬라이더
+  - [x] 실시간 염색약 컬러 틴트(애쉬, 밀크티, 카키, 블루블랙 등) 블렌드 필터 및 농도 조절
+  - [x] `/diagnose` Step 3 진단 워크플로우 연동 완료
 - [ ] `[Claude Code]` **[FR-301-API] 생성형 AI 가상 헤어 합성 파이프라인 (Inpainting)**:
   - Stable Diffusion / Replicate API 기반 고객 사진 헤어 합성 백엔드 워크플로우
-- [ ] `[Antigravity]` **[FR-301-UI] 가상 헤어 시뮬레이션 인터랙티브 뷰어**:
-  - Before / After 슬라이더 및 시뮬레이션 비교 UI
 - [ ] `[Claude Code]` **[FR-302] 브랜드별 염색약 실물 차트 매칭 (밀본/로레알 1:1 레시피 매핑)**
 
 ---

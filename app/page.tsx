@@ -19,13 +19,16 @@ export default function Home() {
           </div>
 
           {/* Main Title */}
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-100 leading-tight sm:leading-none mb-6">
-            1분 만에 완성되는<br className="sm:hidden" />
-            <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent"> AI 헤어 진단 & 맞춤 처방전</span>
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-100 leading-[1.2] sm:leading-[1.15] mb-6 break-keep">
+            1분 만에 완성되는
+            <br />
+            <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
+              AI 헤어 진단 & 맞춤 처방전
+            </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="mx-auto max-w-2xl text-base sm:text-lg text-zinc-400 leading-relaxed mb-10">
+          <p className="mx-auto max-w-2xl text-base sm:text-lg text-zinc-400 leading-relaxed mb-10 break-keep">
             태블릿으로 얼굴 정면을 가이드에 맞춰 촬영하세요. AI가 얼굴형, 두상 비율, 퍼스널 컬러를 정밀 분석하여 최적의 룩북과 디지털 처방전을 발급합니다.
           </p>
 

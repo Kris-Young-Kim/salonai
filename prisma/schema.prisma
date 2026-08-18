@@ -13,6 +13,7 @@ model Salon {
   name                String       @db.VarChar(100)
   address             String?
   phone               String?      @db.VarChar(20)
+  logoUrl             String?      @map("logo_url")
   createdAt           DateTime     @default(now()) @map("created_at")
   
   designers           Designer[]

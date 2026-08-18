@@ -123,7 +123,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
             <div className="relative h-10 w-10 rounded-2xl overflow-hidden border border-amber-400/40 shadow-[0_0_15px_rgba(245,208,97,0.35)] shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logo.jpg"
+                src={salon?.logoUrl ?? '/logo.jpg'}
                 alt={`${salonName} 로고`}
                 className="h-full w-full object-cover"
               />
@@ -332,7 +332,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
             <div className="relative h-14 w-14 rounded-2xl overflow-hidden border border-amber-400/40 shadow-[0_0_20px_rgba(245,208,97,0.3)] mb-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logo.jpg"
+                src={salon?.logoUrl ?? '/logo.jpg'}
                 alt={salonName}
                 className="h-full w-full object-cover"
               />

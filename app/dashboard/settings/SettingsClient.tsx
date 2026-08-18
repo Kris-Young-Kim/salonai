@@ -6,7 +6,7 @@ import { Building2, User, ShieldCheck, CheckCircle2, AlertCircle, ArrowLeft } fr
 import Link from 'next/link';
 
 interface Props {
-  initialSalon: { name: string; address: string; phone: string };
+  initialSalon: { name: string; address: string; phone: string; logoUrl: string };
   initialDesigner: { name: string; email: string };
 }
 
@@ -14,6 +14,7 @@ export default function SettingsClient({ initialSalon, initialDesigner }: Props)
   const [salonName, setSalonName] = useState(initialSalon.name);
   const [salonAddress, setSalonAddress] = useState(initialSalon.address);
   const [salonPhone, setSalonPhone] = useState(initialSalon.phone);
+  const [salonLogoUrl, setSalonLogoUrl] = useState(initialSalon.logoUrl);
   const [designerName, setDesignerName] = useState(initialDesigner.name);
   const [designerEmail, setDesignerEmail] = useState(initialDesigner.email);
 
@@ -27,7 +28,7 @@ export default function SettingsClient({ initialSalon, initialDesigner }: Props)
       const res = await fetch('/api/settings', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ salonName, salonAddress, salonPhone, designerName, designerEmail }),
+        body: JSON.stringify({ salonName, salonAddress, salonPhone, salonLogoUrl, designerName, designerEmail }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -104,6 +105,28 @@ export default function SettingsClient({ initialSalon, initialDesigner }: Props)
                 placeholder="033-000-0000"
                 className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/90 px-4 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:border-amber-400 focus:outline-none transition"
               />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">로고 이미지 URL</label>
+              <input
+                type="url"
+                value={salonLogoUrl}
+                onChange={(e) => setSalonLogoUrl(e.target.value)}
+                placeholder="https://... (비워두면 기본 로고 사용)"
+                className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/90 px-4 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:border-amber-400 focus:outline-none transition"
+              />
+              {salonLogoUrl && (
+                <div className="mt-2 flex items-center gap-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={salonLogoUrl}
+                    alt="로고 미리보기"
+                    className="h-10 w-10 rounded-xl border border-zinc-700 object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                  <span className="text-xs text-zinc-500">미리보기</span>
+                </div>
+              )}
             </div>
           </div>
         </section>

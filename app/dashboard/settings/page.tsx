@@ -12,6 +12,7 @@ export default async function SettingsPage() {
         name: ctx.salon.name ?? '',
         address: ctx.salon.address ?? '',
         phone: ctx.salon.phone ?? '',
+        logoUrl: ctx.salon.logoUrl ?? '',
       }}
       initialDesigner={{
         name: ctx.designer?.name ?? '',

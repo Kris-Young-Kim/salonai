@@ -66,7 +66,7 @@ export function calculateHairFittingTransform(
   // 4. 헤어피스 중심점 (이마 상단보다 약간 위 정수리 기준점)
   // 이마 최상단(10번)에서 얼굴 세로 길이의 약 15% 위쪽으로 오프셋
   const offsetNormY = -faceHeightNorm * 0.14;
-  const anchorNormX = forehead.x + offsetNormY * Math.sin(-rotationRad);
+  const anchorNormX = forehead.x + offsetNormY * Math.sin(rotationRad);
   const anchorNormY = forehead.y + offsetNormY * Math.cos(rotationRad);
 
   // 5. 헤어피스 스케일 (실제 머리숱과 두상을 감싸도록 얼굴 폭의 약 1.45~1.6배)

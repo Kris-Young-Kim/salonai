@@ -24,6 +24,8 @@ interface LookbookGalleryProps {
   personalColor: PersonalColorResult;
   customerMeta: CustomerQuickMeta;
   onProceedToPrescription: (selectedStyles: MatchedLookbookItem[]) => void;
+  onQuickFit?: (item: MatchedLookbookItem) => void;
+  onQuickSimulate?: (item: MatchedLookbookItem) => void;
 }
 
 export function LookbookGallery({
@@ -32,6 +34,8 @@ export function LookbookGallery({
   personalColor,
   customerMeta,
   onProceedToPrescription,
+  onQuickFit,
+  onQuickSimulate,
 }: LookbookGalleryProps) {
   const [selectedCategory, setSelectedCategory] = useState<LookbookCategory>('ALL');
   const [selectedLength, setSelectedLength] = useState<HairLengthType | 'ALL'>('ALL');
@@ -213,6 +217,8 @@ export function LookbookGallery({
               isSelected={selectedItems.some((i) => i.id === item.id)}
               onToggleSelect={handleToggleSelect}
               onOpenDetail={setDetailItem}
+              onQuickFit={onQuickFit}
+              onQuickSimulate={onQuickSimulate}
             />
           ))}
         </div>
@@ -225,6 +231,8 @@ export function LookbookGallery({
         isSelected={Boolean(detailItem && selectedItems.some((i) => i.id === detailItem.id))}
         onClose={() => setDetailItem(null)}
         onToggleSelect={handleToggleSelect}
+        onQuickFit={onQuickFit}
+        onQuickSimulate={onQuickSimulate}
       />
 
       {/* Floating Selected Styles Bottom Drawer */}

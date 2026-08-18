@@ -2,13 +2,15 @@
 
 import React from 'react';
 import { MatchedLookbookItem } from '@/types/lookbook';
-import { Sparkles, Check, Info, Clock, Scissors, Palette, Flame } from 'lucide-react';
+import { Sparkles, Check, Info, Wand2, Scissors } from 'lucide-react';
 
 interface LookbookCardProps {
   item: MatchedLookbookItem;
   isSelected: boolean;
   onToggleSelect: (item: MatchedLookbookItem) => void;
   onOpenDetail: (item: MatchedLookbookItem) => void;
+  onQuickFit?: (item: MatchedLookbookItem) => void;
+  onQuickSimulate?: (item: MatchedLookbookItem) => void;
 }
 
 export function LookbookCard({
@@ -16,6 +18,8 @@ export function LookbookCard({
   isSelected,
   onToggleSelect,
   onOpenDetail,
+  onQuickFit,
+  onQuickSimulate,
 }: LookbookCardProps) {
   const isColor = item.category === 'COLOR';
 
@@ -27,8 +31,20 @@ export function LookbookCard({
           : 'border-zinc-800 hover:border-zinc-700 hover:shadow-2xl'
       }`}
     >
-      {/* Top Image & Overlays */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-950">
+      {/* Top Image & Overlays (Click to open detail modal) */}
+      <div
+        onClick={() => onOpenDetail(item)}
+        className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-950 cursor-pointer"
+        role="button"
+        tabIndex={0}
+        aria-label={`${item.styleName} 상세정보 보기`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onOpenDetail(item);
+          }
+        }}
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={item.imageUrl}
@@ -67,8 +83,13 @@ export function LookbookCard({
       {/* Card Content Body */}
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         
-        {/* Style Name & En */}
-        <div className="mb-2">
+        {/* Style Name & En (Clickable to open detail) */}
+        <div
+          onClick={() => onOpenDetail(item)}
+          className="mb-2 cursor-pointer"
+          role="button"
+          tabIndex={0}
+        >
           <h4 className="text-base font-bold text-zinc-100 group-hover:text-amber-300 transition-colors">
             {item.styleName}
           </h4>
@@ -88,24 +109,47 @@ export function LookbookCard({
           ))}
         </div>
 
-        {/* Tags */}
-        <div className="mt-auto flex flex-wrap gap-1 mb-4">
-          {item.tags.slice(0, 3).map((tag) => (
-            <span
-              key={tag}
-              className="rounded-lg bg-zinc-800/80 px-2 py-0.5 text-[10px] font-medium text-zinc-400"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+        {/* Quick Simulation Shortcuts */}
+        {(onQuickFit || onQuickSimulate) && (
+          <div className="flex items-center gap-1.5 mb-3">
+            {onQuickFit && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onQuickFit(item);
+                }}
+                className="flex-1 flex items-center justify-center gap-1 rounded-xl bg-zinc-800/80 hover:bg-amber-400/20 hover:text-amber-300 border border-zinc-700/60 py-1.5 text-[11px] font-semibold text-zinc-300 transition"
+              >
+                <Wand2 className="h-3 w-3 text-amber-400" />
+                <span>0.1초 피팅</span>
+              </button>
+            )}
+            {onQuickSimulate && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onQuickSimulate(item);
+                }}
+                className="flex-1 flex items-center justify-center gap-1 rounded-xl bg-zinc-800/80 hover:bg-amber-400/20 hover:text-amber-300 border border-zinc-700/60 py-1.5 text-[11px] font-semibold text-zinc-300 transition"
+              >
+                <Sparkles className="h-3 w-3 text-sky-400" />
+                <span>AI 시뮬레이션</span>
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-zinc-800/80">
+        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-zinc-800/80 mt-auto">
           <button
             type="button"
-            onClick={() => onOpenDetail(item)}
-            className="flex items-center justify-center gap-1.5 rounded-xl border border-zinc-700/80 bg-zinc-800/60 py-2.5 text-xs font-semibold text-zinc-300 hover:bg-zinc-700 hover:text-white transition"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenDetail(item);
+            }}
+            className="flex items-center justify-center gap-1.5 rounded-xl border border-zinc-700/80 bg-zinc-800/60 py-2.5 text-xs font-semibold text-zinc-300 hover:bg-zinc-700 hover:text-white transition active:scale-95 cursor-pointer"
           >
             <Info className="h-3.5 w-3.5" />
             <span>상세정보</span>
@@ -113,8 +157,11 @@ export function LookbookCard({
 
           <button
             type="button"
-            onClick={() => onToggleSelect(item)}
-            className={`flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition shadow-md ${
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleSelect(item);
+            }}
+            className={`flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition shadow-md active:scale-95 cursor-pointer ${
               isSelected
                 ? 'bg-amber-400 text-zinc-950 shadow-[0_0_15px_rgba(245,208,97,0.4)]'
                 : 'bg-zinc-800 text-amber-300 hover:bg-amber-400/20 border border-amber-400/30'

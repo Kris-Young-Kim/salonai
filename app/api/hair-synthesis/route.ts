@@ -5,8 +5,8 @@ const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
 
 import { getHairPromptConfig, buildCompositePrompt } from '@/lib/data/hairPromptMap';
 
-// Stability AI SD Inpainting — hair region only (mask required)
-const REPLICATE_MODEL_PATH = 'stability-ai/stable-diffusion-inpainting';
+// Stability AI SD Inpainting — version-pinned (POST /v1/predictions)
+const REPLICATE_MODEL_VERSION = 'stability-ai/stable-diffusion-inpainting:95b7223104132402a9ae91cc677285bc5eb997834bd2349fa486f53910fd68b3';
 
 export interface HairSynthesisRequest {
   imageDataUrl: string; // resized base64 data URL
@@ -72,27 +72,26 @@ export async function POST(req: NextRequest) {
     colorIntensity,
   });
 
-  const replicateRes = await fetch(
-    `https://api.replicate.com/v1/models/${REPLICATE_MODEL_PATH}/predictions`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Token ${REPLICATE_API_TOKEN}`,
-        'Content-Type': 'application/json',
+  const replicateRes = await fetch('https://api.replicate.com/v1/predictions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Token ${REPLICATE_API_TOKEN}`,
+      'Content-Type': 'application/json',
+      Prefer: 'wait',
+    },
+    body: JSON.stringify({
+      version: REPLICATE_MODEL_VERSION,
+      input: {
+        prompt,
+        negative_prompt: negativePrompt,
+        image: imageDataUrl,
+        mask: maskDataUrl,
+        num_inference_steps: 30,
+        guidance_scale: 8.0,
+        num_outputs: 1,
       },
-      body: JSON.stringify({
-        input: {
-          prompt,
-          negative_prompt: negativePrompt,
-          image: imageDataUrl,
-          mask: maskDataUrl,
-          num_inference_steps: 30,
-          guidance_scale: 8.0,
-          num_outputs: 1,
-        },
-      }),
-    }
-  );
+    }),
+  });
 
   if (!replicateRes.ok) {
     const errText = await replicateRes.text();

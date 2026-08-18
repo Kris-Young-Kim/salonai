@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { MatchedLookbookItem } from '@/types/lookbook';
-import { X, Sparkles, Check, Clock, Scissors, Flame, ShieldAlert, Heart } from 'lucide-react';
+import { X, Sparkles, Check, Wand2, Heart } from 'lucide-react';
 
 interface LookbookDetailModalProps {
   item: MatchedLookbookItem | null;
@@ -10,6 +11,8 @@ interface LookbookDetailModalProps {
   isSelected: boolean;
   onClose: () => void;
   onToggleSelect: (item: MatchedLookbookItem) => void;
+  onQuickFit?: (item: MatchedLookbookItem) => void;
+  onQuickSimulate?: (item: MatchedLookbookItem) => void;
 }
 
 export function LookbookDetailModal({
@@ -18,42 +21,97 @@ export function LookbookDetailModal({
   isSelected,
   onClose,
   onToggleSelect,
+  onQuickFit,
+  onQuickSimulate,
 }: LookbookDetailModalProps) {
-  if (!isOpen || !item) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 sm:p-6 backdrop-blur-md">
-      <div className="relative flex flex-col lg:flex-row w-full max-w-4xl max-h-[90vh] rounded-3xl border border-zinc-700 bg-zinc-900 overflow-hidden shadow-2xl text-white">
-        
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Close on ESC key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  if (!isOpen || !item || !mounted) return null;
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 p-4 sm:p-6 backdrop-blur-md animate-in fade-in duration-200"
+      onClick={onClose}
+    >
+      <div
+        className="relative flex flex-col lg:flex-row w-full max-w-4xl max-h-[90vh] rounded-3xl border border-zinc-700 bg-zinc-900 overflow-hidden shadow-2xl text-white"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 rounded-full bg-black/60 p-2 text-zinc-400 hover:bg-zinc-800 hover:text-white backdrop-blur-md transition"
+          className="absolute top-4 right-4 z-20 rounded-full bg-black/70 p-2 text-zinc-400 hover:bg-zinc-800 hover:text-white backdrop-blur-md transition shadow-lg"
+          aria-label="닫기"
         >
           <X className="h-5 w-5" />
         </button>
 
         {/* Left / Top: Style Image */}
-        <div className="relative lg:w-1/2 min-h-[280px] lg:min-h-full bg-zinc-950">
+        <div className="relative lg:w-1/2 min-h-[260px] sm:min-h-[320px] lg:min-h-full bg-zinc-950 flex flex-col justify-end">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={item.imageUrl}
             alt={item.styleName}
-            className="h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-black/30 lg:hidden" />
-          
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent" />
+
           {/* Match Score Badge */}
-          <div className="absolute top-4 left-4 flex items-center gap-1.5 rounded-full bg-black/80 px-3.5 py-1.5 text-xs font-bold text-amber-300 backdrop-blur-md border border-amber-400/40">
+          <div className="absolute top-4 left-4 flex items-center gap-1.5 rounded-full bg-black/80 px-3.5 py-1.5 text-xs font-bold text-amber-300 backdrop-blur-md border border-amber-400/40 shadow-lg">
             <Sparkles className="h-4 w-4 text-amber-400" />
             <span>{item.matchScore}% 고객 맞춤 매칭</span>
           </div>
+
+          {/* Quick Simulation Shortcuts on Image Footer */}
+          {(onQuickFit || onQuickSimulate) && (
+            <div className="relative z-10 p-4 flex gap-2">
+              {onQuickFit && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onQuickFit(item);
+                    onClose();
+                  }}
+                  className="flex-1 flex items-center justify-center gap-1.5 rounded-2xl bg-zinc-900/90 hover:bg-amber-400 hover:text-zinc-950 text-amber-300 border border-amber-400/40 py-2.5 text-xs font-bold backdrop-blur-md transition shadow-lg"
+                >
+                  <Wand2 className="h-3.5 w-3.5" />
+                  <span>0.1초 실시간 피팅</span>
+                </button>
+              )}
+              {onQuickSimulate && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onQuickSimulate(item);
+                    onClose();
+                  }}
+                  className="flex-1 flex items-center justify-center gap-1.5 rounded-2xl bg-zinc-900/90 hover:bg-sky-400 hover:text-zinc-950 text-sky-300 border border-sky-400/40 py-2.5 text-xs font-bold backdrop-blur-md transition shadow-lg"
+                >
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>AI 시뮬레이션</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Right / Bottom: Detailed Info & Advice */}
-        <div className="flex-1 flex flex-col p-6 sm:p-8 overflow-y-auto">
-          
+        <div className="flex-1 flex flex-col p-6 sm:p-8 overflow-y-auto max-h-[60vh] lg:max-h-[85vh]">
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-1">
               <span className="rounded-md bg-amber-400/20 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-400/30 uppercase">
@@ -145,9 +203,9 @@ export function LookbookDetailModal({
               )}
             </button>
           </div>
-
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

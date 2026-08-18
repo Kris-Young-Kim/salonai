@@ -38,7 +38,9 @@
       "PowerShell(Get-Content *)",
       "Bash(node *)",
       "Bash(git add *)",
-      "PowerShell(Set-Location \"D:\\\\firstmover\\\\SALONAI\"; $dbUrl = \\(Get-Content \".env.local\" | Where-Object { $_ -match \"^DATABASE_URL=\" } | Select-Object -First 1\\) -replace \"^DATABASE_URL=\", \"\"; $env:DATABASE_URL = $dbUrl.Trim\\('\"'\\); npx tsx prisma/seed.ts 2>&1)"
+      "PowerShell(Set-Location \"D:\\\\firstmover\\\\SALONAI\"; $dbUrl = \\(Get-Content \".env.local\" | Where-Object { $_ -match \"^DATABASE_URL=\" } | Select-Object -First 1\\) -replace \"^DATABASE_URL=\", \"\"; $env:DATABASE_URL = $dbUrl.Trim\\('\"'\\); npx tsx prisma/seed.ts 2>&1)",
+      "WebFetch(domain:replicate.com)",
+      "WebFetch(domain:dev.to)"
     ]
   }
 }

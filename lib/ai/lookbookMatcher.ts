@@ -62,7 +62,7 @@ export function matchLookbooks(
     }
 
     // Cap between 60% and 99%
-    const finalScore = Math.max(55, Math.min(99, Math.round(score)));
+    const finalScore = Math.max(60, Math.min(99, Math.round(score)));
 
     // Fallback reason if empty
     if (matchReasons.length === 0) {
@@ -72,7 +72,7 @@ export function matchLookbooks(
     return {
       ...item,
       matchScore: finalScore,
-      matchReasons: matchReasons.slice(0, 2),
+      matchReasons: matchReasons.slice(0, 3),
       isTopMatch: finalScore >= 90,
     };
   });

@@ -62,6 +62,8 @@ export default function DiagnosePage() {
 
   const [synthesizedImageUrl, setSynthesizedImageUrl] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [targetedPieceId, setTargetedPieceId] = useState<string | undefined>(undefined);
+  const [targetedStyle, setTargetedStyle] = useState<MatchedLookbookItem | null>(null);
   const [successModalData, setSuccessModalData] = useState<{
     token: string;
     url: string;
@@ -85,8 +87,16 @@ export default function DiagnosePage() {
 
     try {
       const faceResult = await detectFaceMesh(image.dataUrl);
-      const skinSample = await extractSkinColorFromImage(image.dataUrl, faceResult.landmarks);
-      const colorResult = analyzePersonalColor(skinSample.combinedAverage);
+
+      let skinAvg = { r: 210, g: 170, b: 140 };
+      try {
+        const skinSample = await extractSkinColorFromImage(image.dataUrl, faceResult.landmarks);
+        skinAvg = skinSample.combinedAverage;
+      } catch (skinErr) {
+        console.warn('Skin sampling fallback (default warm tone):', skinErr);
+      }
+
+      const colorResult = analyzePersonalColor(skinAvg);
 
       setTimeout(() => {
         setFaceAnalysis(faceResult);
@@ -116,6 +126,31 @@ export default function DiagnosePage() {
   const handleProceedToPrescription = (styles: MatchedLookbookItem[]) => {
     setSelectedStyles(styles);
     setCurrentStep(4);
+  };
+
+  // Quick Action: 0.1s Realtime Fitting trigger from Lookbook
+  const handleQuickFit = (item: MatchedLookbookItem) => {
+    const isMale = item.id.startsWith('lb-m') || capturedData?.customerMeta.gender === 'male';
+    const pieceMap: Record<string, string> = {
+      'lb-f-01': 'vh-f-layered-c',
+      'lb-f-02': 'vh-f-hershey',
+      'lb-f-03': 'vh-f-build-perm',
+      'lb-f-04': 'vh-f-tassel-bob',
+      'lb-f-06': 'vh-f-hippie',
+      'lb-m-01': 'vh-m-dandy',
+      'lb-m-02': 'vh-m-guile',
+      'lb-m-03': 'vh-m-as-perm',
+      'lb-m-04': 'vh-m-ivy',
+    };
+    setTargetedPieceId(pieceMap[item.id] || (isMale ? 'vh-m-guile' : 'vh-f-layered-c'));
+    setStep3SubTab('fitting');
+  };
+
+  // Quick Action: AI Simulation trigger from Lookbook
+  const handleQuickSimulate = (item: MatchedLookbookItem) => {
+    setSelectedStyles((prev) => (prev.some((s) => s.id === item.id) ? prev : [item, ...prev]));
+    setTargetedStyle(item);
+    setStep3SubTab('simulation');
   };
 
   // Execute Save to Neon DB & Send KakaoTalk Alimtalk
@@ -430,6 +465,8 @@ export default function DiagnosePage() {
                     personalColor={personalColor}
                     customerMeta={capturedData.customerMeta}
                     onProceedToPrescription={handleProceedToPrescription}
+                    onQuickFit={handleQuickFit}
+                    onQuickSimulate={handleQuickSimulate}
                   />
                 )}
 
@@ -437,8 +474,13 @@ export default function DiagnosePage() {
                   <div className="space-y-6 max-w-5xl mx-auto pb-12">
                     <RealtimeHairFitting
                       originalImageUrl={capturedData.image.dataUrl}
-                      landmarks={faceAnalysis.landmarks}
+                      landmarks={faceAnalysis.landmarks.map((p) => ({
+                        x: p.x / capturedData.image.width,
+                        y: p.y / capturedData.image.height,
+                        z: p.z,
+                      }))}
                       defaultGender={capturedData.customerMeta.gender}
+                      initialPieceId={targetedPieceId}
                     />
                   </div>
                 )}
@@ -447,8 +489,9 @@ export default function DiagnosePage() {
                   <div className="space-y-6 max-w-5xl mx-auto pb-12">
                     <VirtualHairSimulator
                       originalImageUrl={capturedData.image.dataUrl}
-                      selectedStyles={selectedStyles}
+                      selectedStyles={selectedStyles.length > 0 ? selectedStyles : matchedLookbooks.slice(0, 3)}
                       personalColorHex={personalColor.skinTone.hex}
+                      initialStyle={targetedStyle}
                       onSynthesized={setSynthesizedImageUrl}
                     />
                   </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useUser } from '@clerk/nextjs';
 import {
@@ -19,6 +19,12 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+interface StatsData {
+  today: number;
+  thisMonth: number;
+  total: number;
+}
+
 // ─── 날짜 포맷 헬퍼 ──────────────────────────────────────────────────────────
 function getTodayKorean() {
   const d = new Date();
@@ -32,6 +38,14 @@ function getTodayKorean() {
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
+  const [stats, setStats] = useState<StatsData>({ today: 0, thisMonth: 0, total: 0 });
+
+  useEffect(() => {
+    fetch('/api/stats')
+      .then((r) => r.json())
+      .then((data) => setStats(data))
+      .catch(() => {});
+  }, []);
 
   const displayName =
     isLoaded && user
@@ -111,7 +125,7 @@ export default function DashboardPage() {
           <div>
             <p className="text-xs font-bold text-amber-400 mb-1">오늘 AI 진단 완료</p>
             <p className="text-3xl font-black text-white">
-              12<span className="text-sm font-semibold text-zinc-400 ml-1">건</span>
+              {stats.today}<span className="text-sm font-semibold text-zinc-400 ml-1">건</span>
             </p>
           </div>
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-400/10 text-amber-400 border border-amber-400/30">
@@ -121,9 +135,9 @@ export default function DashboardPage() {
 
         <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-5 backdrop-blur-md shadow-lg flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-zinc-400 mb-1">처방전 알림톡 발송률</p>
+            <p className="text-xs font-bold text-zinc-400 mb-1">이번 달 진단</p>
             <p className="text-3xl font-black text-white">
-              98.5<span className="text-sm font-semibold text-zinc-400 ml-1">%</span>
+              {stats.thisMonth}<span className="text-sm font-semibold text-zinc-400 ml-1">건</span>
             </p>
           </div>
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-800 text-sky-400 border border-zinc-700">
@@ -133,9 +147,9 @@ export default function DashboardPage() {
 
         <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-5 backdrop-blur-md shadow-lg flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-zinc-400 mb-1">이번 달 누적 진단</p>
+            <p className="text-xs font-bold text-zinc-400 mb-1">누적 진단</p>
             <p className="text-3xl font-black text-white">
-              148<span className="text-sm font-semibold text-zinc-400 ml-1">명</span>
+              {stats.total}<span className="text-sm font-semibold text-zinc-400 ml-1">건</span>
             </p>
           </div>
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-800 text-rose-400 border border-zinc-700">

@@ -51,8 +51,9 @@
   - 살롱 매장별 진단 통계 대시보드 데이터 연동
 - [ ] `[Claude Code]` **[FR-202-API] 실 카카오 알림톡 발송 백엔드 연동**:
   - 카카오 비즈메시지 / Solapi API 키 연동 및 실제 템플릿 등록/발송
-- [ ] `[Claude Code]` **[Infra] Cloudflare R2 이미지 스토리지 연동**:
+- [ ] `[Claude Code]` **[Infra] Cloudflare R2 이미지 스토리지 연동** *(우선순위 낮음 — Phase 3 또는 파일럿 직전)*:
   - 고객 촬영 원본 사진의 Cloudflare R2 Presigned URL 업로드 API 구축
+  - 현재는 base64를 Neon DB에 직접 저장 중 (MVP 단계 허용)
 - [ ] `[Claude Code]` **[Auth] Clerk 멀티테넌트 살롱 조직 연동 고도화**:
   - 매장(Salon) ↔ 디자이너(Designer) 계정 권한 바인딩 및 라우트 보호
 

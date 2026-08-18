@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { CheckCircle2, Copy, Check, ExternalLink, Share2, MessageCircle, X, Sparkles } from 'lucide-react';
+import { CheckCircle2, Copy, Check, ExternalLink, Share2, X } from 'lucide-react';
 
 interface PrescriptionSuccessModalProps {
   isOpen: boolean;
@@ -54,25 +54,25 @@ export function PrescriptionSuccessModal({
             <CheckCircle2 className="h-9 w-9" />
           </div>
           <span className="rounded-full bg-amber-400/10 px-3 py-0.5 text-[11px] font-bold text-amber-300 border border-amber-400/20 mb-1">
-            발행 및 발송 완료 (FR-202)
+            처방전 발행 완료
           </span>
           <h3 className="text-2xl font-extrabold text-white">
             디지털 헤어 처방전이 발행되었습니다!
           </h3>
           <p className="text-xs text-zinc-400 mt-1">
-            <strong className="text-zinc-200">[{customerName}]</strong> 고객님({customerPhone})께 알림톡 링크가 전송되었습니다.
+            아래 링크를 복사해 <strong className="text-zinc-200">{customerName}</strong> 고객님께 직접 공유하세요.
           </p>
         </div>
 
-        {/* KakaoTalk Alimtalk Preview Box */}
-        <div className="rounded-2xl bg-[#FEE500]/10 border border-[#FEE500]/30 p-4 mb-5 text-[#FEE500] text-xs space-y-2">
-          <div className="flex items-center gap-2 font-bold text-sm text-[#FEE500]">
-            <MessageCircle className="h-4 w-4" />
-            <span>카카오톡 알림톡 발송 내역</span>
+        {/* Share Guide Box */}
+        <div className="rounded-2xl bg-zinc-800/60 border border-zinc-700 p-4 mb-5 text-xs space-y-2">
+          <div className="flex items-center gap-2 font-bold text-sm text-zinc-200">
+            <Share2 className="h-4 w-4 text-amber-400" />
+            <span>고객에게 공유하는 방법</span>
           </div>
-          <p className="text-zinc-300 text-[11px] leading-relaxed">
-            [SalonAI] {customerName}님의 맞춤 헤어 처방전이 도착했습니다.<br />
-            아래 링크를 통해 얼굴형 분석 및 추천 룩북, 디자이너 시술 레시피를 열람하실 수 있습니다.
+          <p className="text-zinc-400 leading-relaxed">
+            아래 링크를 복사해 카카오톡 · 문자 · 이메일로 직접 전송하세요.<br />
+            고객이 링크를 열면 AI 진단 결과와 디자이너 처방 레시피를 확인할 수 있습니다.
           </p>
         </div>
 

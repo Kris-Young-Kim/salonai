@@ -116,7 +116,7 @@ export default async function RecordsPage({ searchParams }: PageProps) {
             </Link>
             <span className="rounded-full bg-amber-400/10 px-3 py-1 text-[11px] font-bold text-amber-300 border border-amber-400/20 flex items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5" />
-              SalonAI CRM
+              유니헤어샵 CRM
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">

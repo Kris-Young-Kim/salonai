@@ -108,8 +108,17 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-900 bg-zinc-950 py-8 text-center text-xs text-zinc-600">
-        © 2026 SalonAI. All rights reserved. 미용실 전용 AI 헤어 진단 솔루션
+      <footer className="border-t border-zinc-900 bg-zinc-950 py-10 text-center text-xs text-zinc-500 space-y-2">
+        <div className="flex flex-wrap items-center justify-center gap-4 text-zinc-400 font-medium">
+          <span className="text-zinc-200 font-bold">유니헤어샵</span>
+          <span>•</span>
+          <span>📞 033-734-4754</span>
+          <span>•</span>
+          <span>📍 강원 원주시 무실로 91, 한주아파트 상가 101호</span>
+        </div>
+        <p className="text-[11px] text-zinc-600">
+          © 2026 유니헤어샵. All rights reserved. AI 헤어 진단 & 맞춤 스타일 레시피
+        </p>
       </footer>
 
     </div>

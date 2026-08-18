@@ -23,7 +23,8 @@
       "PowerShell(Invoke-RestMethod \"http://localhost:3000/api/hair-dye?season=SUMMER_COOL\" | ConvertTo-Json -Depth 3 | Select-Object -First 60)",
       "PowerShell(cd \"D:\\\\firstmover\\\\SALONAI\" ; Start-Process powershell -ArgumentList \"-NoProfile -Command `\"cd 'D:\\\\firstmover\\\\SALONAI' ; npx next dev --port 3000 2>&1 | Tee-Object -FilePath '.next\\\\dev\\\\logs\\\\next-dev.log'`\"\" -WindowStyle Hidden ; Start-Sleep -Seconds 8 ; Invoke-RestMethod \"http://localhost:3000/api/hair-dye?season=SUMMER_COOL\" | ConvertTo-Json -Depth 4 | Select-Object -First 80)",
       "PowerShell(Start-Sleep -Seconds 5 ; try { $r = Invoke-WebRequest \"http://localhost:3000/api/hair-dye?season=SUMMER_COOL\" -UseBasicParsing ; $r.Content | ConvertFrom-Json | Select-Object -ExpandProperty data | Select-Object -First 2 | ConvertTo-Json -Depth 5 } catch { $_.Exception.Message })",
-      "PowerShell(try { $r = Invoke-WebRequest \"http://localhost:3000/api/hair-dye?season=SUMMER_COOL\" -UseBasicParsing ; Write-Host \"Status: $\\($r.StatusCode\\)\"; Write-Host $r.Content.Substring\\(0, [Math]::Min\\(500, $r.Content.Length\\)\\) } catch { $_.Exception.Message })"
+      "PowerShell(try { $r = Invoke-WebRequest \"http://localhost:3000/api/hair-dye?season=SUMMER_COOL\" -UseBasicParsing ; Write-Host \"Status: $\\($r.StatusCode\\)\"; Write-Host $r.Content.Substring\\(0, [Math]::Min\\(500, $r.Content.Length\\)\\) } catch { $_.Exception.Message })",
+      "Bash(Select-String *)"
     ]
   }
 }

@@ -60,11 +60,11 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
         <div className="flex items-center justify-between border-b border-zinc-800 pb-4 mb-6">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-amber-300 to-amber-500 text-zinc-950 font-black text-sm shadow-[0_0_15px_rgba(245,208,97,0.4)]">
-              S
+              U
             </div>
             <div>
               <span className="text-sm font-extrabold tracking-tight text-white block">
-                SalonAI 헤어살롱
+                유니헤어샵
               </span>
               <span className="text-[9px] text-zinc-400 font-mono">
                 DIGITAL HAIR STYLE RECIPE
@@ -188,10 +188,17 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
         </div>
 
         {/* Salon Contact & Footer */}
-        <div className="rounded-3xl bg-zinc-900/40 border border-zinc-800/60 p-5 text-center text-xs text-zinc-400 space-y-2">
-          <p className="font-bold text-zinc-200">SalonAI 플래그십 강남점</p>
-          <p className="text-[11px] text-zinc-500">서울특별시 강남구 테헤란로 152 • Tel: 02-555-0123</p>
-          <p className="text-[10px] text-zinc-600 pt-2">© 2026 SalonAI. All rights reserved.</p>
+        <div className="rounded-3xl bg-zinc-900/60 border border-zinc-800/80 p-5 text-center text-xs text-zinc-400 space-y-2">
+          <p className="font-bold text-base text-zinc-100">유니헤어샵</p>
+          <p className="text-xs text-zinc-300">
+            강원 원주시 무실로 91, 한주아파트 상가 101호
+          </p>
+          <p className="text-xs font-semibold text-amber-400">
+            📞 예약 및 문의: 033-734-4754
+          </p>
+          <p className="text-[10px] text-zinc-600 pt-2 border-t border-zinc-800/60">
+            © 2026 유니헤어샵. All rights reserved.
+          </p>
         </div>
 
       </div>

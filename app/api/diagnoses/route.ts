@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
       skinHexColor,
       selectedStyleTags,
       designerNotes,
+      synthesizedImageUrl,
     } = body;
 
     // 2. Create or Find Customer
@@ -64,6 +65,7 @@ export async function POST(req: NextRequest) {
         skinHexColor: skinHexColor || '#F5D061',
         selectedStyleTags: selectedStyleTags || [],
         designerNotes: designerNotes || '살롱 맞춤 디자인 처방이 완료되었습니다.',
+        synthesizedImageUrl: synthesizedImageUrl ?? null,
         prescriptionToken: prescriptionToken,
       },
     });

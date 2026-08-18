@@ -16,7 +16,6 @@
 │      │ (Serverless PostgreSQL Pooler)
 │      ▼
 │   [Neon DB] (Serverless Postgres)
-├── [AWS S3 or Cloudflare R2] (촬영 원본/처방전 이미지 스토리지)
 └── [External Messaging API] (카카오 알림톡 발송)
 
 
@@ -34,7 +33,6 @@
 | **Deployment** | **Vercel** | Next.js 최적화 호스팅, 깃허브 푸시 시 자동 빌드/프리뷰 배포 |
 | **Vision / AI** | **Google MediaPipe Face Mesh** | 468개 3D 랜드마크 추출 기반 얼굴형/두상 비율 계산 |
 | **Color Analysis** | **Canvas API / CIE-Lab 알고리즘** | 피부 관심 영역(ROI) 색상 추출 및 웜/쿨/사계절 퍼스널 컬러 진단 |
-| **Image Storage** | **Cloudflare R2 or AWS S3** | 원본 촬영 사진 및 처방전 이미지 저장용 오브젝트 스토리지 |
 
 ---
 
@@ -150,13 +148,7 @@ NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
 NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
 
-# 3. Storage (Cloudflare R2 or AWS S3)
-STORAGE_ACCESS_KEY_ID=...
-STORAGE_SECRET_ACCESS_KEY=...
-STORAGE_BUCKET_NAME=salon-ai-storage
-STORAGE_ENDPOINT=...
-
-# 4. Kakao Notification (Solapi / CoolSMS)
+# 3. Kakao Notification (Solapi / CoolSMS)
 ALIMTALK_API_KEY=...
 ALIMTALK_API_SECRET=...
 ALIMTALK_SENDER_NUMBER=02-0000-0000

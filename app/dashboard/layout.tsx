@@ -4,8 +4,8 @@ import { UserButton } from "@clerk/nextjs";
 import { Scissors, LayoutDashboard, Camera, ClipboardList, Settings } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "SalonAI — 대시보드",
-  description: "디자이너 전용 AI 헤어 진단 대시보드",
+  title: "유니헤어샵 — 디자이너 대시보드",
+  description: "유니헤어샵 AI 헤어 진단 & 고객 레시피 관리 대시보드",
 };
 
 const navItems = [
@@ -30,8 +30,8 @@ export default function DashboardLayout({
             <Scissors className="h-5 w-5 text-white" />
           </div>
           <div>
-            <p className="text-sm font-bold text-stone-800 tracking-tight">SalonAI</p>
-            <p className="text-[10px] text-stone-400 tracking-widest uppercase font-medium">Designer Hub</p>
+            <p className="text-sm font-bold text-stone-800 tracking-tight">유니헤어샵</p>
+            <p className="text-[10px] text-stone-400 tracking-widest uppercase font-medium">원주 무실점</p>
           </div>
         </div>
 

@@ -67,6 +67,9 @@ model Diagnosis {
   selectedStyleTags  String[]  @map("selected_style_tags") // ["#레이어드컷", "#애쉬브라운"]
   designerNotes      String?   @map("designer_notes")
   
+  // AI 헤어 합성 결과 이미지 URL (Replicate CDN)
+  synthesizedImageUrl String?  @map("synthesized_image_url")
+
   // 고객 전달용 처방전 고유 토큰
   prescriptionToken  String    @unique @default(uuid()) @map("prescription_token")
   createdAt          DateTime  @default(now()) @map("created_at")

@@ -62,6 +62,7 @@ export default function DiagnosePage() {
     '• 모질 분석: 보통 굵기의 건강모\n• 맞춤 처방: 턱선을 보정하는 레이어드 디자인과 피부 톤을 화사하게 정돈하는 컬러 조합을 추천합니다.'
   );
 
+  const [synthesizedImageUrl, setSynthesizedImageUrl] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [successModalData, setSuccessModalData] = useState<{
     token: string;
@@ -105,6 +106,7 @@ export default function DiagnosePage() {
     setFaceAnalysis(null);
     setPersonalColor(null);
     setSelectedStyles([]);
+    setSynthesizedImageUrl(null);
     setSuccessModalData(null);
     setCurrentStep(1);
   };
@@ -145,6 +147,7 @@ export default function DiagnosePage() {
           skinHexColor: personalColor.skinTone.hex,
           selectedStyleTags: styleTags,
           designerNotes: `[모질: ${hairCondition}]\n${designerNotes}`,
+          synthesizedImageUrl: synthesizedImageUrl ?? undefined,
         }),
       });
 
@@ -202,8 +205,8 @@ export default function DiagnosePage() {
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold tracking-widest text-amber-400 uppercase">
-                SalonAI Diagnostic
+              <span className="text-xs font-bold tracking-widest text-amber-400">
+                유니헤어샵 AI 진단
               </span>
               <span className="rounded-full bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold text-amber-300 border border-amber-400/20">
                 {currentStep === 1 ? '1단계 촬영' : currentStep === 2 ? '2단계 AI 정밀 진단' : currentStep === 3 ? '3단계 룩북 & 시뮬레이션' : '4단계 스타일 레시피'}
@@ -391,6 +394,7 @@ export default function DiagnosePage() {
                   originalImageUrl={capturedData.image.dataUrl}
                   selectedStyles={selectedStyles}
                   personalColorHex={personalColor.skinTone.hex}
+                  onSynthesized={setSynthesizedImageUrl}
                 />
 
                 {/* Bottom Action */}

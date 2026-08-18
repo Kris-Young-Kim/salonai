@@ -10,7 +10,7 @@
 
 | 구분 | 🌟 Antigravity IDE Agent | ⚡ Claude Code CLI (`/platoon`) |
 |---|---|---|
-| **핵심 강점** | • 고품질 프론트엔드 UI/UX & 반응형 태블릿 뷰<br>• MediaPipe 비전 & Canvas 그래픽스<br>• CIE-Lab 색공간 & 인터랙티브 시각화 | • 대규모 백엔드 API & DB 트랜잭션<br>• Clerk 멀티테넌트 조직 & 미들웨어<br>• Cloudflare R2 스토리지 & 카카오 알림톡 연동<br>• `/platoon` 소대 편제 대량 작업 및 품질 관리 |
+| **핵심 강점** | • 고품질 프론트엔드 UI/UX & 반응형 태블릿 뷰<br>• MediaPipe 비전 & Canvas 그래픽스<br>• CIE-Lab 색공간 & 인터랙티브 시각화 | • 대규모 백엔드 API & DB 트랜잭션<br>• Clerk 멀티테넌트 조직 & 미들웨어<br>• 카카오 알림톡 연동<br>• `/platoon` 소대 편제 대량 작업 및 품질 관리 |
 | **주요 역할** | **[Frontend & Client AI]**<br>UI 컴포넌트, 캔버스 렌더러, 클라이언트 뷰어 | **[Backend & Cloud Infra & CRM]**<br>DB 스키마/마이그레이션, 서버 API, 외부 연동 |
 
 ---
@@ -24,7 +24,6 @@
 | Design & Typography | Pretendard CDN + 살롱 다크/골드 테마 | **Antigravity IDE** | **적용 완료** |
 | Auth & Multi-tenant | Clerk (조직/디자이너 관리 & HeaderAuth) | **Claude Code** | **연동 완료** |
 | DB & ORM | Neon (Serverless PostgreSQL 18.4) + Prisma 7 | **Claude Code & Antigravity** | **연동 & 시딩 완료** |
-| Storage | Cloudflare R2 (이미지 오브젝트 스토리지) | **Claude Code** | 연동 대기 |
 | Messaging | 카카오 알림톡 (Solapi/비즈톡 API 연동) | **Claude Code** | 모의 발송 완료 |
 | Hosting & CI/CD | Vercel + GitHub Actions | **Claude Code** | GitHub 푸시 완료 |
 
@@ -53,9 +52,6 @@
 - [x] `[Claude Code & Antigravity]` **[FR-202-API] 카카오 알림톡 발송 백엔드 API & 모달**:
   - [x] 알림톡 발송 모의 API (`/api/prescriptions/send-kakao`) 및 발행 완료 모달
   - [ ] 카카오 비즈메시지 / Solapi 실제 유료 API 키 바인딩 (배포 시 연동)
-- [ ] `[Claude Code]` **[Infra] Cloudflare R2 이미지 스토리지 연동** *(우선순위 낮음 — Phase 3 또는 파일럿 직전)*:
-  - 고객 촬영 원본 사진의 Cloudflare R2 Presigned URL 업로드 API 구축
-  - 현재는 base64를 Neon DB에 직접 저장 중 (MVP 단계 정상 작동)
 - [x] `[Claude Code]` **[Auth] Clerk 멀티테넌트 살롱 조직 연동**:
   - Next.js 16 `proxy.ts` 및 `HeaderAuth` 클라이언트 연동 완료
 
@@ -67,8 +63,12 @@
   - [x] `VirtualHairSimulator.tsx`: Before / After 좌우 스플릿 슬라이더
   - [x] 실시간 염색약 컬러 틴트(애쉬, 밀크티, 카키, 블루블랙 등) 블렌드 필터 및 농도 조절
   - [x] `/diagnose` Step 3 진단 워크플로우 연동 완료
-- [ ] `[Claude Code]` **[FR-301-API] 생성형 AI 가상 헤어 합성 파이프라인 (Inpainting)**:
-  - Stable Diffusion / Replicate API 기반 고객 사진 헤어 합성 백엔드 워크플로우
+- [x] `[Claude Code]` **[FR-301-API] 생성형 AI 가상 헤어 합성 파이프라인 (Inpainting)**:
+  - Stable Diffusion Inpainting (stability-ai/stable-diffusion-inpainting) via Replicate API
+  - 클라이언트 Canvas 헤어 마스크 자동 생성 (타원형, blur 처리)
+  - 클라이언트 사이드 폴링 (2초 간격, 최대 2분) — Vercel 타임아웃 회피
+  - 이미지 768px 자동 리사이징 전처리
+  - 합성 결과 URL DB 저장 (Diagnosis.synthesizedImageUrl)
 - [x] `[Claude Code]` **[FR-302] 브랜드별 염색약 실물 차트 매칭 (밀본/로레알 1:1 레시피 매핑)**
   - `lib/data/hairDyeChart.ts`: 6개 컬러 틴트 × 3개 브랜드(밀본/로레알/웰라) 실물 레시피 데이터베이스
   - `app/api/hair-dye/route.ts`: `?season=` 및 `?tintName=` 쿼리 기반 레시피 조회 API
@@ -103,4 +103,4 @@
 1. **Antigravity 작업 시**:
    - `components/`, `app/diagnose/`, `app/prescription/`, `lib/ai/` 등 UI 및 비전 알고리즘 영역 집중
 2. **Claude Code 작업 시**:
-   - `app/api/customers/`, `app/dashboard/records/`, `lib/storage/`, Cloudflare R2 및 알림톡 API 등 백엔드/인프라 영역 집중
+   - `app/api/customers/`, `app/dashboard/records/`, 알림톡 API 등 백엔드/인프라 영역 집중

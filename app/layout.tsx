@@ -6,8 +6,8 @@ import { HeaderAuth } from "@/components/layout/HeaderAuth";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SalonAI | 프리미엄 살롱 전용 AI 진단 솔루션",
-  description: "미용실 전용 AI 얼굴형·퍼스널컬러 진단 & 맞춤 헤어 스타일 레시피",
+  title: "유니헤어샵 | AI 헤어 진단 & 맞춤 스타일 레시피",
+  description: "유니헤어샵 전용 AI 얼굴형·퍼스널컬러 진단 & 맞춤 헤어 스타일 레시피 (원주 무실로 91)",
 };
 
 export default function RootLayout({
@@ -22,14 +22,14 @@ export default function RootLayout({
           <header className="flex h-16 items-center justify-between border-b border-zinc-800/80 bg-zinc-950/90 px-6 backdrop-blur-md sticky top-0 z-50">
             <Link href="/" className="flex items-center gap-2.5 group">
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-amber-300 to-amber-500 text-zinc-950 font-black text-sm shadow-[0_0_15px_rgba(245,208,97,0.4)]">
-                S
+                U
               </div>
               <div className="flex flex-col">
                 <span className="text-base font-extrabold tracking-tight text-white group-hover:text-amber-300 transition">
-                  SalonAI
+                  유니헤어샵
                 </span>
                 <span className="text-[9px] tracking-widest text-zinc-400 uppercase font-medium">
-                  Hair AI Solution
+                  Hair Salon & AI Studio
                 </span>
               </div>
             </Link>

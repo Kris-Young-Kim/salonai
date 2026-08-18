@@ -61,7 +61,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2 mb-1.5">
             <span className="rounded-full bg-amber-400/10 px-3 py-1 text-[11px] font-bold text-amber-300 border border-amber-400/20 flex items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5" />
-              SalonAI Pro 태블릿 에디션
+              유니헤어샵 Pro 태블릿 에디션
             </span>
           </div>
           {isLoaded ? (
@@ -81,8 +81,8 @@ export default function DashboardPage() {
         <div className="flex items-center gap-2.5 rounded-2xl border border-zinc-800 bg-zinc-900/80 px-4 py-2.5 backdrop-blur-md">
           <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
           <div className="text-right">
-            <p className="text-xs font-bold text-zinc-200">플래그십 강남점</p>
-            <p className="text-[10px] text-zinc-500 font-mono">Neon Live Connected</p>
+            <p className="text-xs font-bold text-zinc-200">유니헤어샵 (원주 무실점)</p>
+            <p className="text-[10px] text-zinc-500 font-mono">033-734-4754</p>
           </div>
         </div>
       </header>

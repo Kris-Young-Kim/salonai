@@ -37,7 +37,8 @@ export async function getSalonContext(): Promise<SalonContext | null> {
       salon = await prisma.salon.create({
         data: {
           clerkOrganizationId: `org_auto_${randomUUID().substring(0, 8)}`,
-          name: 'SalonAI 기본 살롱',
+          name: '유니헤어샵',
+          address: '강원 원주시 무실로 91, 한주아파트 상가 101호',
         },
       });
       await prisma.designer.update({
@@ -55,7 +56,8 @@ export async function getSalonContext(): Promise<SalonContext | null> {
       salon = await prisma.salon.create({
         data: {
           clerkOrganizationId: `org_auto_${randomUUID().substring(0, 8)}`,
-          name: 'SalonAI 기본 살롱',
+          name: '유니헤어샵',
+          address: '강원 원주시 무실로 91, 한주아파트 상가 101호',
         },
       });
     }

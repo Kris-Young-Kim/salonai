@@ -122,7 +122,7 @@ export function InteractiveHero() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/logo.jpg" alt="유니헤어샵 로고" className="h-full w-full object-cover" />
               </div>
-              <span>유니헤어샵 태블릿 전용 AI 정밀 스타일 컨설팅</span>
+              <span>유니헤어샵 프리미엄 AI 정밀 스타일 컨설팅</span>
             </div>
           </div>
 
@@ -147,7 +147,7 @@ export function InteractiveHero() {
               transform: `translate3d(${mousePos.x * 18}px, ${mousePos.y * 18}px, 0)`,
             }}
           >
-            태블릿 카메라로 얼굴 정면을 가이드에 맞춰 3초 촬영하세요. AI가 얼굴형 랜드마크 468개와 퍼스널 컬러를 정밀 분석하여 최적의 살롱 룩북과 실시간 가상 컬러 시뮬레이션을 제공합니다.
+            카메라 앞에 3초만 앉아계세요. AI가 468개 안면 랜드마크와 퍼스널 컬러를 정밀 분석하여, 당신의 이목구비를 가장 돋보이게 할 인생 헤어스타일과 실시간 가상 컬러 피팅을 제안합니다.
           </p>
 
           {/* Interactive Color Tint Selector (Moving with mouse) */}
@@ -162,7 +162,7 @@ export function InteractiveHero() {
                 <Palette className="h-3.5 w-3.5 text-amber-400" />
                 실시간 헤어 컬러 틴트 체험
               </span>
-              <span className="text-[11px] text-zinc-500 font-mono">CIE-Lab Blend</span>
+              <span className="text-[11px] text-zinc-500 font-mono">밀본 · 로레알 컬러 매칭</span>
             </div>
             <div className="grid grid-cols-4 gap-2">
               {[

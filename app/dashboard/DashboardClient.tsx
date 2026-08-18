@@ -164,14 +164,14 @@ export default function DashboardClient({ salonName, salonPhone }: Props) {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="rounded-full bg-zinc-950/15 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-zinc-900">
-                1분 스마트 워크플로우
+                AI 1:1 맞춤 헤어 솔루션
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-950">
-              새 고객 스타일 컨설팅 시작
+              새 고객 AI 스타일 컨설팅 시작
             </h2>
             <p className="text-xs sm:text-sm text-zinc-900/80 mt-1 font-medium max-w-md">
-              카메라 촬영 1번에 얼굴형 · 퍼스널컬러 분석 및 맞춤 룩북을 즉시 추천합니다.
+              카메라 3초 촬영으로 얼굴형·퍼스널컬러 정밀 분석 및 맞춤 룩북을 즉시 추천합니다.
             </p>
           </div>
         </div>

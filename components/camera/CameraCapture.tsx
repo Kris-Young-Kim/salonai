@@ -222,7 +222,7 @@ function PreviewScreen({ data, customerName, onRetake, onDiagnoseStart }: Previe
             className="group flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 py-4 text-sm font-bold text-zinc-950 shadow-[0_0_25px_rgba(245,208,97,0.35)] hover:brightness-105 active:scale-[0.98] transition-all"
           >
             <Sparkles className="h-5 w-5" />
-            <span>AI 진단 시작하기</span>
+            <span>AI 스타일 컨설팅 시작하기</span>
           </button>
 
           <button
@@ -330,12 +330,21 @@ export function CameraCapture({ customerName, onDiagnoseStart, onBack }: CameraC
 
   // 마운트 시 자동 시작, 언마운트 시 정리
   useEffect(() => {
-    startStream();
+    let isMounted = true;
+
+    const init = async () => {
+      if (isMounted) {
+        await startStream();
+      }
+    };
+
+    init();
+
     return () => {
+      isMounted = false;
       stopStream();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [startStream, stopStream]);
 
   // 촬영 실행
   const handleCapture = useCallback(async () => {

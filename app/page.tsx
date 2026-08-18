@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Camera, Sparkles, Smartphone, CheckCircle2, SlidersHorizontal } from "lucide-react";
 import { InteractiveHero } from "@/components/home/InteractiveHero";
 
@@ -55,11 +54,11 @@ export default function Home() {
                 얼굴형 & 퍼스널 컬러
               </h3>
               <p className="text-xs text-zinc-400 leading-relaxed flex-1 break-keep">
-                468개 3D 랜드마크 분석 및 피부 톤 샘플링을 통한 4계절 웜/쿨 정밀 진단.
+                468개 3D 랜드마크 분석 및 피부 톤 샘플링을 통한 4계절 웜/쿨 정밀 분석.
               </p>
               <div className="mt-4 pt-3 border-t border-zinc-800 flex items-center gap-1.5 text-xs font-semibold text-purple-400">
                 <CheckCircle2 className="h-3.5 w-3.5" />
-                <span>AI 비전 정밀 진단</span>
+                <span>AI 비전 정밀 분석</span>
               </div>
             </div>
 
@@ -75,7 +74,7 @@ export default function Home() {
                 맞춤 룩북 & 시뮬레이터
               </h3>
               <p className="text-xs text-zinc-400 leading-relaxed flex-1 break-keep">
-                진단 태그 기반 24종 K-살롱 스타일 매칭 및 실시간 헤어 Before/After 컬러 시뮬레이션.
+                분석 태그 기반 24종 K-살롱 스타일 매칭 및 실시간 헤어 Before/After 컬러 시뮬레이션.
               </p>
               <div className="mt-4 pt-3 border-t border-zinc-800 flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
                 <CheckCircle2 className="h-3.5 w-3.5" />
@@ -117,7 +116,7 @@ export default function Home() {
           <span>📍 강원 원주시 무실로 91, 한주아파트 상가 101호</span>
         </div>
         <p className="text-[11px] text-zinc-600">
-          © 2026 유니헤어샵. All rights reserved. AI 헤어 진단 & 맞춤 스타일 레시피
+          © 2026 유니헤어샵. All rights reserved. AI 헤어 스타일 컨설팅 & 맞춤 레시피
         </p>
       </footer>
 

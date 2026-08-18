@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { RefreshCw, ArrowRight, CheckCircle2, Sparkles, User, Scissors, FlipHorizontal } from 'lucide-react';
 import { CapturedImage, CustomerQuickMeta } from '@/types/camera';
+import { PrivacyConsentModal } from '@/components/legal/PrivacyConsentModal';
 
 interface CapturePreviewProps {
   image: CapturedImage;
@@ -21,8 +22,11 @@ export function CapturePreview({
   const [gender, setGender] = useState<'female' | 'male' | 'unisex'>('female');
   const [hairLength, setHairLength] = useState<'short' | 'medium' | 'long'>('medium');
   const [isMirrored, setIsMirrored] = useState(false);
+  const [privacyConsent, setPrivacyConsent] = useState(true);
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
 
   const handleConfirm = () => {
+    if (!privacyConsent) return;
     onConfirm(image, {
       name: customerName.trim() || '고객님',
       gender,
@@ -165,13 +169,40 @@ export function CapturePreview({
             </div>
           </div>
 
+          {/* Privacy Consent Checkbox */}
+          <div className="rounded-2xl bg-zinc-950/80 border border-zinc-800 p-3.5 flex items-start gap-2.5">
+            <input
+              id="privacy-consent"
+              type="checkbox"
+              checked={privacyConsent}
+              onChange={(e) => setPrivacyConsent(e.target.checked)}
+              className="mt-0.5 h-4 w-4 rounded accent-amber-400 cursor-pointer"
+            />
+            <div className="flex-1 text-[11px] leading-tight">
+              <label htmlFor="privacy-consent" className="text-zinc-300 font-medium cursor-pointer">
+                <span className="text-amber-400 font-bold">[필수]</span> AI 안면 랜드마크 분석 및 개인정보 수집·이용 동의
+              </label>
+              <div className="flex items-center gap-1.5 mt-1 text-zinc-500">
+                <span>안면 이미지 암호화 및 1년 보관 후 파기</span>
+                <span>•</span>
+                <button
+                  type="button"
+                  onClick={() => setIsTermsOpen(true)}
+                  className="text-amber-400/80 hover:text-amber-300 underline font-medium"
+                >
+                  약관 전체보기
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* Action Buttons */}
-          <div className="pt-3 flex flex-col gap-3">
+          <div className="pt-2 flex flex-col gap-3">
             <button
               type="button"
               onClick={handleConfirm}
-              disabled={isProcessing}
-              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 py-3.5 text-sm font-bold text-zinc-950 shadow-[0_0_25px_rgba(245,208,97,0.4)] hover:brightness-105 active:scale-[0.99] transition disabled:opacity-50"
+              disabled={isProcessing || !privacyConsent}
+              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 py-3.5 text-sm font-bold text-zinc-950 shadow-[0_0_25px_rgba(245,208,97,0.4)] hover:brightness-105 active:scale-[0.99] transition disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {isProcessing ? (
                 <>
@@ -180,7 +211,7 @@ export function CapturePreview({
                 </>
               ) : (
                 <>
-                  <span>AI 얼굴형 & 퍼스널컬러 진단 시작</span>
+                  <span>AI 얼굴형 & 퍼스널컬러 스타일 컨설팅 시작</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-0.5 transition-transform" />
                 </>
               )}
@@ -200,6 +231,13 @@ export function CapturePreview({
         </div>
 
       </div>
+
+      {/* Privacy Terms Modal */}
+      <PrivacyConsentModal
+        isOpen={isTermsOpen}
+        onClose={() => setIsTermsOpen(false)}
+        onAccept={() => setPrivacyConsent(true)}
+      />
     </div>
   );
 }

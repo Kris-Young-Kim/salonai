@@ -40,10 +40,10 @@ export default function DashboardDiagnosePage() {
           <div>
             <div className="flex items-center gap-2 mb-0.5">
               <span className="text-[10px] font-bold tracking-widest text-amber-400">
-                유니헤어샵 AI 진단
+                유니헤어샵 스타일 컨설팅
               </span>
               <span className="rounded-full bg-amber-400/10 px-2 py-0.5 text-[9px] font-semibold text-amber-300 border border-amber-400/20">
-                고객 맞춤 진단
+                1:1 맞춤 분석
               </span>
             </div>
             <h1 className="text-base font-bold text-zinc-100">고객 정보 입력</h1>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ClipboardList, Search, ChevronRight, UserRound, Sparkles, Calendar, Phone, ArrowLeft, Plus } from 'lucide-react';
+import { ClipboardList, Search, ChevronRight, UserRound, Sparkles, Phone, ArrowLeft, Plus } from 'lucide-react';
 import { prisma } from '@/lib/db/prisma';
 
 // ─── 날짜 포맷 헬퍼 ──────────────────────────────────────────────────────────
@@ -116,14 +116,14 @@ export default async function RecordsPage({ searchParams }: PageProps) {
             </Link>
             <span className="rounded-full bg-amber-400/10 px-3 py-1 text-[11px] font-bold text-amber-300 border border-amber-400/20 flex items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5" />
-              유니헤어샵 CRM
+              유니헤어샵 스타일 아카이브
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
-            고객 진단 및 스타일 레시피 보관함
+            고객 스타일 보관함
           </h1>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1 font-medium">
-            살롱 고객별 AI 얼굴형·퍼스널컬러 진단 데이터와 발송된 맞춤 스타일 레시피 이력을 확인합니다.
+            살롱 고객별 AI 얼굴형·퍼스널컬러 컨설팅 데이터와 발송된 맞춤 스타일 레시피 이력을 확인합니다.
           </p>
         </div>
 
@@ -132,7 +132,7 @@ export default async function RecordsPage({ searchParams }: PageProps) {
           className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 px-5 py-3 text-xs font-bold text-zinc-950 shadow-md hover:brightness-105 transition shrink-0"
         >
           <Plus className="h-4 w-4" />
-          <span>새 진단 촬영하기</span>
+          <span>새 스타일 컨설팅</span>
         </Link>
       </header>
 

@@ -212,11 +212,21 @@ export function useCamera({
 
   // Initial startup
   useEffect(() => {
-    startStream();
+    let isMounted = true;
+
+    const init = async () => {
+      if (isMounted) {
+        await startStream();
+      }
+    };
+
+    init();
+
     return () => {
+      isMounted = false;
       stopStream();
     };
-  }, []);
+  }, [startStream, stopStream]);
 
   return {
     videoRef,

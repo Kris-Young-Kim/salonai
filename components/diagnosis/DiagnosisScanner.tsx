@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Sparkles, Scan, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Scan } from 'lucide-react';
 
 interface DiagnosisScannerProps {
   customerName: string;
@@ -61,11 +61,11 @@ export function DiagnosisScanner({ customerName }: DiagnosisScannerProps) {
       <div className="text-center max-w-md w-full">
         <div className="inline-flex items-center gap-2 rounded-full bg-amber-400/10 border border-amber-400/30 px-3.5 py-1 text-xs font-semibold text-amber-300 mb-3">
           <Sparkles className="h-3.5 w-3.5" />
-          <span>FR-102 MediaPipe 랜드마크 분석</span>
+          <span>AI MediaPipe 랜드마크 분석</span>
         </div>
 
         <h3 className="text-xl sm:text-2xl font-bold text-zinc-100 mb-1">
-          {customerName}님의 얼굴형 & 두상 진단 중
+          {customerName}님의 얼굴형 & 두상 분석 중
         </h3>
 
         {/* Animated Status Message */}

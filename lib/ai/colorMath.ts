@@ -1,4 +1,4 @@
-import { RGBColor, HSVColor, LabColor, SkinBrightnessType } from '@/types/personalColor';
+import { HSVColor, LabColor, SkinBrightnessType } from '@/types/personalColor';
 
 export function rgbToHex(r: number, g: number, b: number): string {
   const toHex = (c: number) => {
@@ -18,8 +18,8 @@ export function rgbToHsv(r: number, g: number, b: number): HSVColor {
   const delta = max - min;
 
   let h = 0;
-  let s = max === 0 ? 0 : delta / max;
-  let v = max;
+  const s = max === 0 ? 0 : delta / max;
+  const v = max;
 
   if (delta !== 0) {
     if (max === rn) {

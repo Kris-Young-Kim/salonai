@@ -18,8 +18,6 @@ export function PrescriptionSuccessModal({
   isOpen,
   onClose,
   customerName,
-  customerPhone,
-  prescriptionToken,
   prescriptionUrl,
   onResetDiagnosis,
 }: PrescriptionSuccessModalProps) {
@@ -72,7 +70,7 @@ export function PrescriptionSuccessModal({
           </div>
           <p className="text-zinc-400 leading-relaxed">
             아래 링크를 복사해 카카오톡 · 문자 · SNS로 직접 전송하세요.<br />
-            고객이 링크를 열면 AI 진단 결과와 디자이너 맞춤 시술 레시피를 확인할 수 있습니다.
+            고객이 링크를 열면 AI 스타일 분석 결과와 디자이너 맞춤 시술 레시피를 확인할 수 있습니다.
           </p>
         </div>
 
@@ -119,7 +117,7 @@ export function PrescriptionSuccessModal({
             }}
             className="rounded-2xl border border-zinc-700 bg-zinc-800 px-5 py-3.5 text-xs font-semibold text-zinc-300 hover:text-white transition"
           >
-            새 고객 진단 시작
+            새 고객 스타일 컨설팅
           </button>
         </div>
 

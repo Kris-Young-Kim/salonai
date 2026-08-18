@@ -121,29 +121,101 @@ export function HairDyeRecommendation({
   selectedTintHex,
   className,
 }: HairDyeRecommendationProps) {
+  const [showFormulas, setShowFormulas] = useState(false);
+
   if (!tints.length) return null;
 
   return (
-    <div className={cn('rounded-3xl border border-zinc-800 bg-zinc-900/70 p-5 sm:p-6', className)}>
-      <div className="flex items-center gap-2.5 mb-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-400 border border-emerald-400/20">
-          <Beaker className="h-5 w-5" />
+    <div className={cn('rounded-3xl border border-zinc-800 bg-zinc-900/80 p-5 sm:p-6 backdrop-blur-md shadow-xl', className)}>
+      
+      {/* Customer Friendly Header */}
+      <div className="flex items-center gap-2.5 mb-4">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-400/15 text-rose-400 border border-rose-400/30">
+          <Sparkles className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-sm font-extrabold text-white">브랜드별 실물 염색 레시피</h3>
-          <p className="text-[11px] text-zinc-500">밀본 · 로레알 · 웰라 실제 제품 코드 및 배합비</p>
+          <h3 className="text-sm font-extrabold text-white">퍼스널 추천 헤어 컬러 & 무드</h3>
+          <p className="text-[11px] text-zinc-400">피부톤을 가장 맑고 생기있게 밝혀주는 베스트 헤어 컬러</p>
         </div>
       </div>
 
-      <div className="space-y-3">
-        {tints.map((entry) => (
-          <TintSection
-            key={entry.hex}
-            entry={entry}
-            isHighlighted={selectedTintHex?.toLowerCase() === entry.hex.toLowerCase()}
-          />
-        ))}
+      {/* Recommended Color Cards */}
+      <div className="space-y-3 mb-5">
+        {tints.map((entry) => {
+          const isSelected = selectedTintHex?.toLowerCase() === entry.hex.toLowerCase();
+          return (
+            <div
+              key={entry.hex}
+              className={cn(
+                'rounded-2xl border p-4 transition-all',
+                isSelected
+                  ? 'border-amber-400/60 bg-gradient-to-r from-amber-400/10 via-zinc-900 to-zinc-900 shadow-md'
+                  : 'border-zinc-800 bg-zinc-950/60'
+              )}
+            >
+              <div className="flex items-start gap-3.5">
+                <span
+                  className="h-10 w-10 rounded-2xl shrink-0 border border-white/20 shadow-md mt-0.5"
+                  style={{ backgroundColor: entry.hex }}
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-black text-white">{entry.tintName}</span>
+                    <span className="text-[11px] text-zinc-400">({entry.tintNameEn})</span>
+                    {isSelected && (
+                      <span className="rounded-full bg-amber-400/20 border border-amber-400/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
+                        ✨ 맞춤 추천
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-zinc-300 mt-1.5 leading-relaxed font-medium">
+                    {entry.salonTip}
+                  </p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
+
+      {/* Collapsible Designer Pro Formula Section */}
+      <div className="border-t border-zinc-800/80 pt-3">
+        <button
+          type="button"
+          onClick={() => setShowFormulas((v) => !v)}
+          className="w-full flex items-center justify-between py-2 text-xs font-bold text-zinc-400 hover:text-amber-300 transition"
+        >
+          <span className="flex items-center gap-2">
+            <Beaker className="h-4 w-4 text-amber-400" />
+            <span>다음 방문 시 제시용 전문 살롱 조색 레시피</span>
+          </span>
+          <span className="text-[11px] text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-xl border border-amber-400/20">
+            {showFormulas ? '접기 ▲' : '상세 배합표 보기 ▼'}
+          </span>
+        </button>
+
+        {showFormulas && (
+          <div className="mt-3 pt-3 space-y-3 border-t border-zinc-800/50">
+            <p className="text-[11px] text-zinc-500 leading-relaxed">
+              💡 유니헤어샵 재방문 시 본 화면을 보여주시면 오늘과 동일한 정밀 비율로 시술이 진행됩니다.
+            </p>
+            {tints.map((entry) => (
+              <div key={`formula-${entry.hex}`} className="space-y-2">
+                <p className="text-xs font-bold text-zinc-300 flex items-center gap-1.5 mt-2">
+                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.hex }} />
+                  {entry.tintName} 배합표
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {entry.formulas.map((f) => (
+                    <FormulaCard key={`${f.brand}-${f.formula}`} formula={f} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }

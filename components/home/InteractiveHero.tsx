@@ -119,7 +119,7 @@ export function InteractiveHero() {
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-zinc-950/80 px-4 py-1.5 text-xs font-semibold text-amber-300 backdrop-blur-xl shadow-lg hover:border-amber-400/70 transition-colors">
               <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
-              <span>미용실 태블릿 전용 AI 정밀 진단 & 스타일 레시피</span>
+              <span>유니헤어샵 태블릿 전용 AI 정밀 스타일 컨설팅</span>
             </div>
           </div>
 
@@ -133,7 +133,7 @@ export function InteractiveHero() {
             1분 만에 완성되는
             <br />
             <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(245,208,97,0.45)]">
-              AI 헤어 진단 & 맞춤 레시피
+              AI 스타일 컨설팅 & 맞춤 레시피
             </span>
           </h1>
 
@@ -171,7 +171,7 @@ export function InteractiveHero() {
                 <button
                   key={tint.id}
                   type="button"
-                  onClick={() => setActiveColorTint(tint.id as any)}
+                  onClick={() => setActiveColorTint(tint.id as 'ash' | 'rose' | 'milktea' | 'natural')}
                   className={`flex flex-col items-center gap-1 rounded-xl p-2 text-[11px] font-bold transition-all border ${
                     activeColorTint === tint.id
                       ? 'border-amber-400 bg-amber-400/25 text-white shadow-md scale-105'
@@ -197,15 +197,15 @@ export function InteractiveHero() {
               className="group flex h-14 w-full sm:w-auto items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 px-8 text-base font-extrabold text-zinc-950 shadow-[0_0_40px_rgba(245,208,97,0.5)] hover:brightness-110 active:scale-95 transition-all"
             >
               <Camera className="h-5 w-5 text-zinc-950" />
-              <span>1분 AI 진단 시작하기</span>
+              <span>1분 AI 스타일 컨설팅 시작</span>
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
 
             <Link
-              href="/dashboard"
+              href="/dashboard/records"
               className="flex h-14 w-full sm:w-auto items-center justify-center rounded-2xl border border-zinc-700/70 bg-zinc-950/85 px-8 text-sm font-semibold text-zinc-200 hover:bg-zinc-800 hover:text-white transition shadow-lg backdrop-blur-md"
             >
-              디자이너 CRM 보관함
+              고객 스타일 보관함
             </Link>
           </div>
 
@@ -222,7 +222,7 @@ export function InteractiveHero() {
             </span>
             <span className="flex items-center gap-1.5 bg-zinc-950/60 border border-zinc-800/80 px-3 py-1.5 rounded-full backdrop-blur-md">
               <CheckCircle2 className="h-3.5 w-3.5 text-amber-400" />
-              CIE-Lab 4계절 진단
+              CIE-Lab 4계절 분석
             </span>
             <span className="flex items-center gap-1.5 bg-zinc-950/60 border border-zinc-800/80 px-3 py-1.5 rounded-full backdrop-blur-md">
               <CheckCircle2 className="h-3.5 w-3.5 text-amber-400" />
@@ -245,7 +245,7 @@ export function InteractiveHero() {
           </div>
           <div className="text-left">
             <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 block">
-              AI 얼굴형 정밀 진단
+              AI 얼굴형 정밀 분석
             </span>
             <span className="text-xs font-black text-white block">
               황금비율 계란형 (1 : 1 : 0.98)

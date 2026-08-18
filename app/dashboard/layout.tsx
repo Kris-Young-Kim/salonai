@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "홈" },
-  { href: "/diagnose", icon: Camera, label: "진단 시작" },
-  { href: "/dashboard/records", icon: ClipboardList, label: "진단 기록" },
+  { href: "/diagnose", icon: Camera, label: "스타일 컨설팅" },
+  { href: "/dashboard/records", icon: ClipboardList, label: "스타일 보관함" },
   { href: "/dashboard/settings", icon: Settings, label: "설정" },
 ];
 

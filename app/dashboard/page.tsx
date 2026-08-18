@@ -7,11 +7,9 @@ import {
   Camera,
   Users,
   TrendingUp,
-  Clock,
   ChevronRight,
   Sparkles,
   Calendar,
-  Scissors,
   Palette,
   FileCheck2,
   Layers,
@@ -87,7 +85,7 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* ── 메인 CTA: 1분 AI 헤어 진단 시작 ────────────────────────────────────── */}
+      {/* ── 메인 CTA: 1분 AI 스타일 컨설팅 시작 ─────────────────────────────────── */}
       <Link
         href="/diagnose"
         className="group relative flex items-center justify-between gap-4 rounded-3xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 p-6 sm:p-8 shadow-[0_0_40px_rgba(245,208,97,0.25)] hover:shadow-[0_0_55px_rgba(245,208,97,0.4)] hover:brightness-105 active:scale-[0.99] transition-all mb-8 text-zinc-950 overflow-hidden"
@@ -98,15 +96,15 @@ export default function DashboardPage() {
           </div>
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="rounded-full bg-zinc-950/15 px-2.5 py-0.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-zinc-900">
-                1분 초정밀 분석
+              <span className="rounded-full bg-zinc-950/15 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-zinc-900">
+                1분 스마트 워크플로우
               </span>
             </div>
-            <p className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-950">
-              새 고객 AI 진단 시작하기
-            </p>
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-950">
+              새 고객 스타일 컨설팅 시작
+            </h2>
             <p className="text-xs sm:text-sm text-zinc-900/80 mt-1 font-medium max-w-md">
-              카메라 촬영 1번에 얼굴형 · 3단 안부 · 퍼스널컬러 진단 및 맞춤 룩북을 즉시 추천합니다.
+              카메라 촬영 1번에 얼굴형 · 퍼스널컬러 분석 및 맞춤 룩북을 즉시 추천합니다.
             </p>
           </div>
         </div>
@@ -123,7 +121,7 @@ export default function DashboardPage() {
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="rounded-3xl border border-amber-400/40 bg-zinc-900/90 p-5 backdrop-blur-md shadow-lg flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-amber-400 mb-1">오늘 AI 진단 완료</p>
+            <p className="text-xs font-bold text-amber-400 mb-1">오늘 스타일 컨설팅 완료</p>
             <p className="text-3xl font-black text-white">
               {stats.today}<span className="text-sm font-semibold text-zinc-400 ml-1">건</span>
             </p>
@@ -135,7 +133,7 @@ export default function DashboardPage() {
 
         <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-5 backdrop-blur-md shadow-lg flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-zinc-400 mb-1">이번 달 진단</p>
+            <p className="text-xs font-bold text-zinc-400 mb-1">이번 달 누적 컨설팅</p>
             <p className="text-3xl font-black text-white">
               {stats.thisMonth}<span className="text-sm font-semibold text-zinc-400 ml-1">건</span>
             </p>

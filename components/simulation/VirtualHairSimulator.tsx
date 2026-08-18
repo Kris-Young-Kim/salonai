@@ -87,11 +87,21 @@ export function VirtualHairSimulator({
   const [aiGenerating, setAiGenerating] = useState(false);
   const [aiOutputUrl, setAiOutputUrl] = useState<string | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
+    if (!containerRef.current) return;
+    const el = containerRef.current;
+    const updateWidth = () => {
+      setContainerWidth(el.offsetWidth);
+    };
+    updateWidth();
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(el);
     return () => {
+      observer.disconnect();
       if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
     };
   }, []);
@@ -206,12 +216,27 @@ export function VirtualHairSimulator({
           <div className="flex items-center gap-2 mb-1">
             <span className="rounded-full bg-amber-400/20 px-3 py-1 text-xs font-bold text-amber-300 border border-amber-400/30 flex items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5" />
-              FR-301 AI 가상 헤어 & 컬러 시뮬레이션
+              유니헤어샵 AI 가상 헤어 & 컬러 시뮬레이션
             </span>
           </div>
           <h3 className="text-lg sm:text-xl font-extrabold text-white">
             실시간 Before / After 헤어스타일 가상 체험
           </h3>
+          {selectedStyles && selectedStyles.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5 mt-2">
+              <span className="text-[11px] text-zinc-400 font-medium">선택 스타일:</span>
+              {selectedStyles.map((style, idx) => (
+                <button
+                  key={style.id || idx}
+                  type="button"
+                  onClick={() => onApplyStyle?.(style)}
+                  className="rounded-lg bg-amber-400/15 border border-amber-400/30 px-2 py-0.5 text-[11px] font-semibold text-amber-300 hover:bg-amber-400/25 transition"
+                >
+                  #{style.styleName}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-3 rounded-2xl bg-zinc-950 px-4 py-2 border border-zinc-800 self-start sm:self-auto">
@@ -289,7 +314,7 @@ export function VirtualHairSimulator({
         >
           <div
             className="relative h-full"
-            style={{ width: containerRef.current?.offsetWidth || '100%' }}
+            style={{ width: containerWidth ? `${containerWidth}px` : '100%' }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

@@ -11,6 +11,7 @@ import { LookbookGallery } from '@/components/lookbook/LookbookGallery';
 import { DesignerNotesEditor } from '@/components/prescription/DesignerNotesEditor';
 import { PrescriptionSuccessModal } from '@/components/prescription/PrescriptionSuccessModal';
 import { VirtualHairSimulator } from '@/components/simulation/VirtualHairSimulator';
+import { RealtimeHairFitting } from '@/components/simulation/RealtimeHairFitting';
 import { HairDyeRecommendation } from '@/components/prescription/HairDyeRecommendation';
 import { getRecommendedDyes } from '@/lib/data/hairDyeChart';
 import { detectFaceMesh } from '@/lib/ai/faceMeshService';
@@ -29,20 +30,17 @@ import {
   Scissors,
   Palette,
   Layers,
-  FileCheck2,
-  Share2,
   RefreshCw,
   Phone,
-  User,
   Send,
-  SlidersHorizontal,
+  Wand2,
 } from 'lucide-react';
 
 export default function DiagnosePage() {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [activeReportTab, setActiveReportTab] = useState<'faceShape' | 'personalColor'>('faceShape');
-  const [step3SubTab, setStep3SubTab] = useState<'gallery' | 'simulation'>('gallery');
+  const [step3SubTab, setStep3SubTab] = useState<'gallery' | 'fitting' | 'simulation'>('gallery');
 
   // Customer & Capture State
   const [capturedData, setCapturedData] = useState<{
@@ -206,10 +204,10 @@ export default function DiagnosePage() {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold tracking-widest text-amber-400">
-                유니헤어샵 AI 진단
+                유니헤어샵 스타일 컨설팅
               </span>
               <span className="rounded-full bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold text-amber-300 border border-amber-400/20">
-                {currentStep === 1 ? '1단계 촬영' : currentStep === 2 ? '2단계 AI 정밀 진단' : currentStep === 3 ? '3단계 룩북 & 시뮬레이션' : '4단계 스타일 레시피'}
+                {currentStep === 1 ? '1단계 촬영' : currentStep === 2 ? '2단계 AI 스타일 분석' : currentStep === 3 ? '3단계 룩북 & 시뮬레이션' : '4단계 맞춤 레시피'}
               </span>
             </div>
             <h1 className="text-base sm:text-lg font-bold text-zinc-100">
@@ -351,11 +349,11 @@ export default function DiagnosePage() {
             
             {/* Step 3 View Mode Toggle */}
             <div className="flex items-center justify-center mb-6">
-              <div className="flex rounded-2xl bg-zinc-900 p-1.5 border border-zinc-800 shadow-xl">
+              <div className="flex flex-wrap items-center justify-center rounded-2xl bg-zinc-900 p-1.5 border border-zinc-800 shadow-xl gap-1">
                 <button
                   type="button"
                   onClick={() => setStep3SubTab('gallery')}
-                  className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold transition ${
+                  className={`flex items-center gap-2 rounded-xl px-4 sm:px-5 py-2.5 text-xs font-bold transition ${
                     step3SubTab === 'gallery'
                       ? 'bg-amber-400 text-zinc-950 shadow-md'
                       : 'text-zinc-400 hover:text-white'
@@ -367,20 +365,33 @@ export default function DiagnosePage() {
 
                 <button
                   type="button"
+                  onClick={() => setStep3SubTab('fitting')}
+                  className={`flex items-center gap-2 rounded-xl px-4 sm:px-5 py-2.5 text-xs font-bold transition ${
+                    step3SubTab === 'fitting'
+                      ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-zinc-950 shadow-md'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  <Wand2 className="h-4 w-4" />
+                  <span>0.1초 실시간 가상 헤어 피팅</span>
+                </button>
+
+                <button
+                  type="button"
                   onClick={() => setStep3SubTab('simulation')}
-                  className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold transition ${
+                  className={`flex items-center gap-2 rounded-xl px-4 sm:px-5 py-2.5 text-xs font-bold transition ${
                     step3SubTab === 'simulation'
-                      ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-zinc-950 shadow-md'
+                      ? 'bg-amber-400 text-zinc-950 shadow-md'
                       : 'text-zinc-400 hover:text-white'
                   }`}
                 >
                   <Sparkles className="h-4 w-4" />
-                  <span>가상 헤어 시뮬레이터</span>
+                  <span>가상 컬러 시뮬레이터</span>
                 </button>
               </div>
             </div>
 
-            {step3SubTab === 'gallery' ? (
+            {step3SubTab === 'gallery' && (
               <LookbookGallery
                 matchedLookbooks={matchedLookbooks}
                 faceAnalysis={faceAnalysis}
@@ -388,7 +399,39 @@ export default function DiagnosePage() {
                 customerMeta={capturedData.customerMeta}
                 onProceedToPrescription={handleProceedToPrescription}
               />
-            ) : (
+            )}
+
+            {step3SubTab === 'fitting' && (
+              <div className="space-y-6 max-w-5xl mx-auto pb-24">
+                <RealtimeHairFitting
+                  originalImageUrl={capturedData.image.dataUrl}
+                  landmarks={faceAnalysis.landmarks}
+                  defaultGender={capturedData.customerMeta.gender}
+                />
+
+                {/* Bottom Action */}
+                <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
+                  <button
+                    type="button"
+                    onClick={() => setStep3SubTab('gallery')}
+                    className="rounded-2xl border border-zinc-800 bg-zinc-900 px-6 py-3.5 text-xs font-semibold text-zinc-300 hover:text-white"
+                  >
+                    ← 룩북 갤러리로 돌아가기
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(4)}
+                    className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 px-7 py-3.5 text-xs sm:text-sm font-bold text-zinc-950 shadow-lg hover:brightness-105"
+                  >
+                    <span>맞춤 레시피 리포트 발급으로 이동</span>
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {step3SubTab === 'simulation' && (
               <div className="space-y-6 max-w-5xl mx-auto pb-24">
                 <VirtualHairSimulator
                   originalImageUrl={capturedData.image.dataUrl}

@@ -61,7 +61,8 @@ export async function GET(_req: NextRequest) {
       );
 
       const mainStyle = latestDiagnosis.selectedStyleTags[2] || latestDiagnosis.selectedStyleTags[0] || '헤어스타일';
-      const suggestedMessage = `[유니헤어샵] 안녕하세요, ${c.name} 고객님! 지난번 시술받으신 ${mainStyle} 관리는 만족스러우셨나요? ✨\n\n현재 모발 핏과 예쁜 볼륨을 가장 이상적으로 유지할 수 있는 ${retention.rule.description} 권장 시기입니다.\n\n• 맞춤 케어 팁: ${retention.rule.careAdvice}\n• 예약/상담 문의: 033-734-4754\n고객님의 방문을 따뜻하게 기다리겠습니다.`;
+      const contactInfo = salon.phone ? `• 예약/상담 문의: ${salon.phone}` : '';
+      const suggestedMessage = `[${salon.name}] 안녕하세요, ${c.name} 고객님! 지난번 시술받으신 ${mainStyle} 관리는 만족스러우셨나요? ✨\n\n현재 모발 핏과 예쁜 볼륨을 가장 이상적으로 유지할 수 있는 ${retention.rule.description} 권장 시기입니다.\n\n• 맞춤 케어 팁: ${retention.rule.careAdvice}\n${contactInfo}\n고객님의 방문을 따뜻하게 기다리겠습니다.`.trimEnd();
 
       retentionItems.push({
         customerId: c.id,

@@ -16,6 +16,7 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { RetentionReminderWidget } from '@/components/dashboard/RetentionReminderWidget';
 
 interface Props {
   salonName: string;
@@ -267,6 +268,11 @@ export default function DashboardClient({ salonName, salonPhone }: Props) {
           </div>
         </div>
 
+      </section>
+
+      {/* ── CRM 재방문 리마인더 위젯 ─────────────────────────────────────────── */}
+      <section className="mb-8">
+        <RetentionReminderWidget />
       </section>
 
     </div>

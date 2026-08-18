@@ -24,10 +24,63 @@ interface Props {
   salonPhone: string;
 }
 
+interface DailyStat {
+  date: string;
+  count: number;
+}
+
 interface StatsData {
   today: number;
   thisMonth: number;
   total: number;
+  dailyStats: DailyStat[];
+}
+
+function WeeklyBarChart({ data }: { data: DailyStat[] }) {
+  if (!data.length) return null;
+  const maxCount = Math.max(...data.map((d) => d.count), 1);
+  return (
+    <section className="mb-8 rounded-3xl border border-zinc-800 bg-zinc-900/70 p-5 sm:p-6 backdrop-blur-md">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+          <TrendingUp className="h-3.5 w-3.5 text-amber-400" />
+          최근 7일 컨설팅 추이
+        </h3>
+        <span className="text-[10px] text-zinc-600 font-mono">일별 진단 건수</span>
+      </div>
+      <div className="flex items-end gap-2" style={{ height: '72px' }}>
+        {data.map((day, i) => {
+          const barH = day.count > 0 ? Math.max((day.count / maxCount) * 56, 6) : 2;
+          const isToday = i === data.length - 1;
+          return (
+            <div key={day.date} className="flex-1 flex flex-col items-center justify-end gap-1 h-full">
+              {day.count > 0 && (
+                <span className="text-[9px] text-zinc-400 font-mono leading-none">{day.count}</span>
+              )}
+              <div
+                style={{ height: `${barH}px` }}
+                className={cn(
+                  'w-full rounded-t-md transition-all',
+                  isToday
+                    ? 'bg-amber-400/90 shadow-[0_0_8px_rgba(245,208,97,0.35)]'
+                    : 'bg-zinc-700 hover:bg-zinc-600',
+                )}
+              />
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex gap-2 mt-2">
+        {data.map((day, i) => (
+          <div key={day.date} className="flex-1 text-center">
+            <span className={cn('text-[9px] font-mono', i === data.length - 1 ? 'text-amber-400' : 'text-zinc-600')}>
+              {day.date.slice(8)}
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 function getTodayKorean() {
@@ -42,7 +95,7 @@ function getTodayKorean() {
 
 export default function DashboardClient({ salonName, salonPhone }: Props) {
   const { user, isLoaded } = useUser();
-  const [stats, setStats] = useState<StatsData>({ today: 0, thisMonth: 0, total: 0 });
+  const [stats, setStats] = useState<StatsData>({ today: 0, thisMonth: 0, total: 0, dailyStats: [] });
 
   useEffect(() => {
     fetch('/api/stats')
@@ -173,6 +226,9 @@ export default function DashboardClient({ salonName, salonPhone }: Props) {
       <section className="mb-8">
         <RetentionReminderWidget />
       </section>
+
+      {/* ── 7일 진단 추이 차트 ───────────────────────────────────────────────── */}
+      <WeeklyBarChart data={stats.dailyStats} />
 
       {/* ── 퀵 살롱 액션 및 워크플로우 ──────────────────────────────────────── */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

@@ -5,6 +5,7 @@ import { Camera, ClipboardList } from "lucide-react";
 import { HeaderAuth } from "@/components/layout/HeaderAuth";
 import { FullscreenToggle } from "@/components/common/FullscreenToggle";
 import { PwaInstallPrompt } from "@/components/pwa/PwaInstallPrompt";
+import { ServiceWorkerRegistration } from "@/components/pwa/ServiceWorkerRegistration";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -134,6 +135,7 @@ export default function RootLayout({
             {children}
           </main>
           <PwaInstallPrompt />
+          <ServiceWorkerRegistration />
         </ClerkProvider>
       </body>
     </html>

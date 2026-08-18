@@ -78,7 +78,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
   const diagnosis = await prisma.diagnosis.findUnique({
     where: { prescriptionToken: token },
     include: {
-      customer: true,
+      customer: { include: { salon: true } },
       designer: true,
     },
   });
@@ -88,6 +88,10 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
   }
 
   const { customer, originalImageUrl, faceShape, personalColor, selectedStyleTags, designerNotes, createdAt } = diagnosis;
+  const salon = customer?.salon;
+  const salonName = salon?.name ?? '유니헤어샵';
+  const salonAddress = salon?.address ?? '강원 원주시 무실로 91, 한주아파트 상가 101호';
+  const salonPhone = salon?.phone ?? '033-734-4754';
 
   const dateStr = new Date(createdAt).toLocaleDateString('ko-KR', {
     year: 'numeric',
@@ -120,13 +124,13 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/logo.jpg"
-                alt="유니헤어샵 로고"
+                alt={`${salonName} 로고`}
                 className="h-full w-full object-cover"
               />
             </div>
             <div>
               <span className="text-sm font-extrabold tracking-tight text-white block">
-                유니헤어샵
+                {salonName}
               </span>
               <span className="text-[9px] text-zinc-400 font-mono">
                 MY PERSONAL STYLE RECIPE
@@ -146,7 +150,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
           
           <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-400 uppercase tracking-wider mb-1.5">
             <HeartHandshake className="h-3.5 w-3.5" />
-            유니헤어샵 고객 전용 리포트
+            {salonName} 고객 전용 리포트
           </span>
           <h1 className="text-2xl font-black text-white leading-tight mb-2">
             {customer?.name || '고객'} 님의<br />
@@ -329,7 +333,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/logo.jpg"
-                alt="유니헤어샵"
+                alt={salonName}
                 className="h-full w-full object-cover"
               />
             </div>
@@ -343,7 +347,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
               className="text-xs text-zinc-400 mt-1 flex items-center justify-center gap-1 hover:text-amber-300 transition group"
             >
               <MapPin className="h-3.5 w-3.5 text-zinc-500 group-hover:text-amber-400 transition" />
-              <span>강원 원주시 무실로 91, 한주아파트 상가 101호</span>
+              <span>{salonAddress}</span>
               <ExternalLink className="h-3 w-3 text-zinc-600 group-hover:text-amber-300 transition ml-0.5" />
             </a>
           </div>
@@ -360,7 +364,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
             </a>
 
             <a
-              href="tel:033-734-4754"
+              href={`tel:${salonPhone}`}
               className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 py-3.5 text-xs font-bold text-zinc-950 shadow-[0_0_20px_rgba(245,208,97,0.3)] hover:brightness-105 transition active:scale-[0.99]"
             >
               <Phone className="h-4 w-4" />
@@ -369,7 +373,7 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
           </div>
 
           <p className="text-[10px] text-zinc-600 pt-3 border-t border-zinc-800/80">
-            © 2026 유니헤어샵. All rights reserved. 고객님의 빛나는 스타일을 응원합니다.
+            © 2026 {salonName}. All rights reserved. 고객님의 빛나는 스타일을 응원합니다.
           </p>
         </div>
 

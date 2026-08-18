@@ -221,15 +221,19 @@ export default function DiagnosePage() {
           {steps.map((s, idx) => {
             const isActive = currentStep === s.num;
             const isDone = currentStep > s.num;
+            const isClickable = s.num === 1 || (Boolean(capturedData) && s.num <= (faceAnalysis ? 4 : 2));
 
             return (
               <React.Fragment key={s.num}>
-                <div
-                  className={`flex items-center gap-2 rounded-xl px-3 py-1.5 transition ${
+                <button
+                  type="button"
+                  disabled={!isClickable}
+                  onClick={() => isClickable && setCurrentStep(s.num)}
+                  className={`flex items-center gap-2 rounded-xl px-3 py-1.5 transition cursor-pointer disabled:cursor-not-allowed ${
                     isActive
                       ? 'bg-amber-400/15 border border-amber-400/40 text-amber-300'
                       : isDone
-                      ? 'text-zinc-400'
+                      ? 'text-zinc-400 hover:text-white hover:bg-zinc-800/60'
                       : 'text-zinc-600 opacity-60'
                   }`}
                 >
@@ -245,7 +249,7 @@ export default function DiagnosePage() {
                     {isDone ? <Check className="h-3 w-3" /> : s.num}
                   </div>
                   <span className="text-xs font-semibold">{s.label}</span>
-                </div>
+                </button>
                 {idx < steps.length - 1 && (
                   <ChevronRight className="h-3.5 w-3.5 text-zinc-700" />
                 )}
@@ -256,31 +260,33 @@ export default function DiagnosePage() {
 
       </div>
 
-      {/* Main Diagnosis Content Body */}
+      {/* Main Horizontal Slide Workflow Container */}
       <div className="flex-1 relative w-full h-full overflow-hidden">
-        
-        {/* Step 1: Camera UI (FR-101) */}
-        {currentStep === 1 && (
-          <CameraView onCaptureComplete={handleCaptureComplete} />
-        )}
+        <div
+          className="flex h-full w-full transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${(currentStep - 1) * 100}%)` }}
+        >
+          {/* ─── Slide 1: Camera UI (FR-101) ─── */}
+          <div className="w-full h-full shrink-0 overflow-hidden relative">
+            <CameraView onCaptureComplete={handleCaptureComplete} />
+          </div>
 
-        {/* Step 2: AI Face Mesh (FR-102) & Personal Color (FR-103) */}
-        {currentStep === 2 && capturedData && (
-          <div className="relative h-full w-full overflow-y-auto">
-            {isAnalyzing && (
+          {/* ─── Slide 2: AI Face Mesh (FR-102) & Personal Color (FR-103) ─── */}
+          <div className="w-full h-full shrink-0 overflow-y-auto no-scrollbar relative p-4 sm:p-6 lg:p-8">
+            {isAnalyzing && capturedData && (
               <DiagnosisScanner customerName={capturedData.customerMeta.name} />
             )}
 
-            {!isAnalyzing && faceAnalysis && personalColor && (
-              <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
+            {!isAnalyzing && faceAnalysis && personalColor && capturedData && (
+              <div className="mx-auto max-w-7xl h-full flex flex-col justify-between space-y-6">
                 
-                {/* Tab Switcher */}
-                <div className="flex items-center justify-center mb-6">
+                {/* Top: Tab Switcher & Next CTA */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-2 border-b border-zinc-800/80">
                   <div className="flex rounded-2xl bg-zinc-900 p-1.5 border border-zinc-800 shadow-lg">
                     <button
                       type="button"
                       onClick={() => setActiveReportTab('faceShape')}
-                      className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold transition ${
+                      className={`flex items-center gap-2 rounded-xl px-4 sm:px-5 py-2 text-xs font-bold transition ${
                         activeReportTab === 'faceShape'
                           ? 'bg-amber-400 text-zinc-950 shadow-md'
                           : 'text-zinc-400 hover:text-white'
@@ -293,7 +299,7 @@ export default function DiagnosePage() {
                     <button
                       type="button"
                       onClick={() => setActiveReportTab('personalColor')}
-                      className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold transition ${
+                      className={`flex items-center gap-2 rounded-xl px-4 sm:px-5 py-2 text-xs font-bold transition ${
                         activeReportTab === 'personalColor'
                           ? 'bg-amber-400 text-zinc-950 shadow-md'
                           : 'text-zinc-400 hover:text-white'
@@ -303,12 +309,21 @@ export default function DiagnosePage() {
                       <span>피부톤 & 퍼스널 컬러</span>
                     </button>
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={handleProceedToLookbook}
+                    className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 px-6 py-2.5 text-xs sm:text-sm font-bold text-zinc-950 shadow-lg hover:brightness-105 transition active:scale-95"
+                  >
+                    <span>맞춤 룩북 추천 보기</span>
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                  
-                  {/* Left Column (5 cols): 3D Mesh & Skin ROI Canvas Visualizer */}
-                  <div className="lg:col-span-5 flex flex-col h-[520px] sm:h-[620px]">
+                {/* Main 2-Column Split View for Tablet Landscape */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start flex-1">
+                  {/* Left Column (5 cols): 3D Mesh & Skin ROI Visualizer */}
+                  <div className="lg:col-span-5 flex flex-col h-[480px] sm:h-[560px] lg:h-[600px]">
                     <FaceMeshVisualizer
                       imageUrl={capturedData.image.dataUrl}
                       analysis={faceAnalysis}
@@ -336,298 +351,272 @@ export default function DiagnosePage() {
                       />
                     )}
                   </div>
-
                 </div>
               </div>
             )}
           </div>
-        )}
 
-        {/* Step 3: Lookbook Recommendation & Virtual Hair Simulator */}
-        {currentStep === 3 && capturedData && faceAnalysis && personalColor && (
-          <div className="h-full w-full overflow-y-auto p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
-            
-            {/* Step 3 View Mode Toggle */}
-            <div className="flex items-center justify-center mb-6">
-              <div className="flex flex-wrap items-center justify-center rounded-2xl bg-zinc-900 p-1.5 border border-zinc-800 shadow-xl gap-1">
-                <button
-                  type="button"
-                  onClick={() => setStep3SubTab('gallery')}
-                  className={`flex items-center gap-2 rounded-xl px-4 sm:px-5 py-2.5 text-xs font-bold transition ${
-                    step3SubTab === 'gallery'
-                      ? 'bg-amber-400 text-zinc-950 shadow-md'
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
-                >
-                  <Scissors className="h-4 w-4" />
-                  <span>맞춤 룩북 갤러리</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setStep3SubTab('fitting')}
-                  className={`flex items-center gap-2 rounded-xl px-4 sm:px-5 py-2.5 text-xs font-bold transition ${
-                    step3SubTab === 'fitting'
-                      ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-zinc-950 shadow-md'
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
-                >
-                  <Wand2 className="h-4 w-4" />
-                  <span>0.1초 실시간 가상 헤어 피팅</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setStep3SubTab('simulation')}
-                  className={`flex items-center gap-2 rounded-xl px-4 sm:px-5 py-2.5 text-xs font-bold transition ${
-                    step3SubTab === 'simulation'
-                      ? 'bg-amber-400 text-zinc-950 shadow-md'
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
-                >
-                  <Sparkles className="h-4 w-4" />
-                  <span>가상 컬러 시뮬레이터</span>
-                </button>
-              </div>
-            </div>
-
-            {step3SubTab === 'gallery' && (
-              <LookbookGallery
-                matchedLookbooks={matchedLookbooks}
-                faceAnalysis={faceAnalysis}
-                personalColor={personalColor}
-                customerMeta={capturedData.customerMeta}
-                onProceedToPrescription={handleProceedToPrescription}
-              />
-            )}
-
-            {step3SubTab === 'fitting' && (
-              <div className="space-y-6 max-w-5xl mx-auto pb-24">
-                <RealtimeHairFitting
-                  originalImageUrl={capturedData.image.dataUrl}
-                  landmarks={faceAnalysis.landmarks}
-                  defaultGender={capturedData.customerMeta.gender}
-                />
-
-                {/* Bottom Action */}
-                <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
-                  <button
-                    type="button"
-                    onClick={() => setStep3SubTab('gallery')}
-                    className="rounded-2xl border border-zinc-800 bg-zinc-900 px-6 py-3.5 text-xs font-semibold text-zinc-300 hover:text-white"
-                  >
-                    ← 룩북 갤러리로 돌아가기
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setCurrentStep(4)}
-                    className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 px-7 py-3.5 text-xs sm:text-sm font-bold text-zinc-950 shadow-lg hover:brightness-105"
-                  >
-                    <span>맞춤 레시피 리포트 발급으로 이동</span>
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {step3SubTab === 'simulation' && (
-              <div className="space-y-6 max-w-5xl mx-auto pb-24">
-                <VirtualHairSimulator
-                  originalImageUrl={capturedData.image.dataUrl}
-                  selectedStyles={selectedStyles}
-                  personalColorHex={personalColor.skinTone.hex}
-                  onSynthesized={setSynthesizedImageUrl}
-                />
-
-                {/* Bottom Action */}
-                <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
-                  <button
-                    type="button"
-                    onClick={() => setStep3SubTab('gallery')}
-                    className="rounded-2xl border border-zinc-800 bg-zinc-900 px-6 py-3.5 text-xs font-semibold text-zinc-300 hover:text-white"
-                  >
-                    ← 룩북 갤러리로 돌아가기
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setCurrentStep(4)}
-                    className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 px-7 py-3.5 text-xs sm:text-sm font-bold text-zinc-950 shadow-lg hover:brightness-105"
-                  >
-                    <span>맞춤 레시피 리포트 발급으로 이동</span>
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Step 4: Comprehensive Consultation Report & Prescription Issuer (FR-105 & FR-202) */}
-        {currentStep === 4 && capturedData && faceAnalysis && personalColor && (
-          <div className="h-full w-full overflow-y-auto p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
-            
-            {/* Top Step Banner */}
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-4 mb-6">
-              <div>
-                <span className="rounded-full bg-amber-400/10 px-3 py-1 text-xs font-bold text-amber-300 border border-amber-400/20 mb-1 inline-block">
-                  Step 04 • 전문가 종합 상담 & 맞춤 스타일 레시피 발행
-                </span>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-white">
-                  [{capturedData.customerMeta.name}] 고객님 맞춤 스타일 레시피
-                </h2>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setCurrentStep(3)}
-                className="rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2 text-xs font-semibold text-zinc-300 hover:text-white"
-              >
-                스타일 수정
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-              
-              {/* Left Column: Diagnosis Summary & Selected Styles (6 cols) */}
-              <div className="lg:col-span-6 space-y-5">
+          {/* ─── Slide 3: Lookbook Recommendation & Virtual Simulator ─── */}
+          <div className="w-full h-full shrink-0 overflow-y-auto no-scrollbar relative p-4 sm:p-6 lg:p-8">
+            {capturedData && faceAnalysis && personalColor && (
+              <div className="max-w-7xl mx-auto space-y-6 pb-20">
                 
-                {/* Visual Snapshot Card */}
-                <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-5 backdrop-blur-md">
-                  <div className="flex items-center gap-4 mb-4">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={capturedData.image.dataUrl}
-                      alt="촬영 사진"
-                      className="h-20 w-16 rounded-2xl object-cover border border-amber-400/40 shadow-md"
-                    />
-                    <div>
-                      <h3 className="text-base font-bold text-white">
-                        {capturedData.customerMeta.name} 고객님
-                      </h3>
-                      <p className="text-xs text-amber-300 font-semibold mt-0.5">
-                        {faceAnalysis.faceShapeKorean} • {personalColor.seasonKorean}
-                      </p>
-                      <span className="text-[11px] text-zinc-400 font-mono">
-                        피부톤 {personalColor.skinTone.hex} ({personalColor.skinTone.brightnessKorean})
-                      </span>
-                    </div>
+                {/* Step 3 SubTab Switcher */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-2 border-b border-zinc-800/80">
+                  <div className="flex flex-wrap items-center rounded-2xl bg-zinc-900 p-1.5 border border-zinc-800 shadow-xl gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setStep3SubTab('gallery')}
+                      className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition ${
+                        step3SubTab === 'gallery'
+                          ? 'bg-amber-400 text-zinc-950 shadow-md'
+                          : 'text-zinc-400 hover:text-white'
+                      }`}
+                    >
+                      <Scissors className="h-4 w-4" />
+                      <span>맞춤 룩북 갤러리</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setStep3SubTab('fitting')}
+                      className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition ${
+                        step3SubTab === 'fitting'
+                          ? 'bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-zinc-950 shadow-md'
+                          : 'text-zinc-400 hover:text-white'
+                      }`}
+                    >
+                      <Wand2 className="h-4 w-4" />
+                      <span>0.1초 실시간 헤어 피팅</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setStep3SubTab('simulation')}
+                      className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition ${
+                        step3SubTab === 'simulation'
+                          ? 'bg-amber-400 text-zinc-950 shadow-md'
+                          : 'text-zinc-400 hover:text-white'
+                      }`}
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      <span>AI 정밀 시뮬레이터</span>
+                    </button>
                   </div>
 
-                  {/* 3단 안부 지표 요약 */}
-                  <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                    <div className="rounded-xl bg-zinc-950 p-2 border border-zinc-800">
-                      <span className="text-[10px] text-zinc-500 block">상안부</span>
-                      <span className="font-bold text-amber-200">{faceAnalysis.facialThirds.upperRatio}</span>
-                    </div>
-                    <div className="rounded-xl bg-zinc-950 p-2 border border-amber-400/30">
-                      <span className="text-[10px] text-amber-300 block">중안부</span>
-                      <span className="font-bold text-amber-400">{faceAnalysis.facialThirds.middleRatio}</span>
-                    </div>
-                    <div className="rounded-xl bg-zinc-950 p-2 border border-zinc-800">
-                      <span className="text-[10px] text-zinc-500 block">하안부</span>
-                      <span className="font-bold text-yellow-400">{faceAnalysis.facialThirds.lowerRatio}</span>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep(2)}
+                      className="rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-2 text-xs font-semibold text-zinc-400 hover:text-white transition"
+                    >
+                      ← 진단 결과
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep(4)}
+                      className="flex items-center gap-1.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 px-5 py-2 text-xs sm:text-sm font-bold text-zinc-950 shadow-lg hover:brightness-105 transition"
+                    >
+                      <span>처방전 작성</span>
+                      <ChevronRight className="h-4 w-4" />
+                    </button>
                   </div>
                 </div>
 
-                {/* Selected Styles List */}
-                <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-5 backdrop-blur-md">
-                  <h4 className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <Scissors className="h-4 w-4 text-amber-400" />
-                    선택된 시술 스타일 ({selectedStyles.length}건)
-                  </h4>
-
-                  {selectedStyles.length === 0 ? (
-                    <p className="text-xs text-zinc-500 italic p-3 bg-zinc-950 rounded-2xl">
-                      선택된 스타일이 없습니다. 이전 단계에서 원하는 스타일을 선택하세요.
-                    </p>
-                  ) : (
-                    <div className="space-y-2.5">
-                      {selectedStyles.map((s) => (
-                        <div
-                          key={s.id}
-                          className="flex items-center justify-between rounded-2xl bg-zinc-950 p-3 border border-zinc-800"
-                        >
-                          <div className="flex items-center gap-3">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={s.imageUrl} alt={s.styleName} className="h-11 w-11 rounded-xl object-cover" />
-                            <div>
-                              <span className="text-xs font-bold text-zinc-100 block">{s.styleName}</span>
-                              <span className="text-[10px] text-amber-400 font-semibold">{s.matchScore}% 매칭</span>
-                            </div>
-                          </div>
-                          <span className="text-xs text-zinc-400 font-mono">{s.timeEstimate || '1시간 30분'}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Hair Dye Formula Recommendation (FR-302) */}
-                <HairDyeRecommendation
-                  tints={getRecommendedDyes(personalColor.season)}
-                />
-
-              </div>
-
-              {/* Right Column: Designer Notes & Kakao Dispatch Form (6 cols) */}
-              <div className="lg:col-span-6 space-y-5">
-                
-                {/* Designer Notes Editor (FR-203) */}
-                <DesignerNotesEditor
-                  initialNotes={designerNotes}
-                  onChange={setDesignerNotes}
-                  hairCondition={hairCondition}
-                  onHairConditionChange={setHairCondition}
-                />
-
-                {/* Customer Phone for Kakao Dispatch */}
-                <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-5 backdrop-blur-md space-y-3">
-                  <label className="text-xs font-bold text-zinc-300 flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-amber-400" />
-                    고객 카카오톡 알림톡 수신 번호
-                  </label>
-                  <input
-                    type="tel"
-                    value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
-                    placeholder="010-0000-0000"
-                    className="w-full rounded-2xl bg-zinc-950 border border-zinc-700/80 px-4 py-3 text-sm text-white focus:border-amber-400 focus:outline-none transition font-mono"
+                {step3SubTab === 'gallery' && (
+                  <LookbookGallery
+                    matchedLookbooks={matchedLookbooks}
+                    faceAnalysis={faceAnalysis}
+                    personalColor={personalColor}
+                    customerMeta={capturedData.customerMeta}
+                    onProceedToPrescription={handleProceedToPrescription}
                   />
-                  <p className="text-[11px] text-zinc-500">
-                    발행 즉시 고객님 스마트폰으로 맞춤 헤어 레시피 리포트 웹 링크가 전송됩니다.
-                  </p>
+                )}
+
+                {step3SubTab === 'fitting' && (
+                  <div className="space-y-6 max-w-5xl mx-auto pb-12">
+                    <RealtimeHairFitting
+                      originalImageUrl={capturedData.image.dataUrl}
+                      landmarks={faceAnalysis.landmarks}
+                      defaultGender={capturedData.customerMeta.gender}
+                    />
+                  </div>
+                )}
+
+                {step3SubTab === 'simulation' && (
+                  <div className="space-y-6 max-w-5xl mx-auto pb-12">
+                    <VirtualHairSimulator
+                      originalImageUrl={capturedData.image.dataUrl}
+                      selectedStyles={selectedStyles}
+                      personalColorHex={personalColor.skinTone.hex}
+                      onSynthesized={setSynthesizedImageUrl}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* ─── Slide 4: Comprehensive Consultation Report & Prescription Issuer ─── */}
+          <div className="w-full h-full shrink-0 overflow-y-auto no-scrollbar relative p-4 sm:p-6 lg:p-8">
+            {capturedData && faceAnalysis && personalColor && (
+              <div className="max-w-6xl mx-auto space-y-6 pb-24">
+                
+                {/* Top Banner */}
+                <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+                  <div>
+                    <span className="rounded-full bg-amber-400/10 px-3 py-1 text-xs font-bold text-amber-300 border border-amber-400/20 mb-1 inline-block">
+                      Step 04 • 전문가 종합 상담 & 맞춤 스타일 레시피 발행
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-white">
+                      [{capturedData.customerMeta.name}] 고객님 맞춤 스타일 레시피
+                    </h2>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(3)}
+                    className="rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2 text-xs font-semibold text-zinc-300 hover:text-white transition"
+                  >
+                    ← 스타일 다시 선택
+                  </button>
                 </div>
 
-                {/* Final Submit & Send Button */}
-                <button
-                  type="button"
-                  onClick={handleSaveAndSendPrescription}
-                  disabled={isSaving}
-                  className="w-full flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 py-4 text-sm font-bold text-zinc-950 shadow-[0_0_30px_rgba(245,208,97,0.4)] hover:brightness-105 active:scale-[0.99] transition disabled:opacity-50"
-                >
-                  {isSaving ? (
-                    <>
-                      <RefreshCw className="h-5 w-5 animate-spin" />
-                      <span>Neon DB 저장 및 알림톡 전송 중...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send className="h-4 w-4 text-zinc-950" />
-                      <span>진단 저장 & 카카오톡 스타일 레시피 발송</span>
-                    </>
-                  )}
-                </button>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  {/* Left Column: Diagnosis Summary & Selected Styles (6 cols) */}
+                  <div className="lg:col-span-6 space-y-5">
+                    
+                    {/* Visual Snapshot Card */}
+                    <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-5 backdrop-blur-md">
+                      <div className="flex items-center gap-4 mb-4">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={capturedData.image.dataUrl}
+                          alt="촬영 사진"
+                          className="h-20 w-16 rounded-2xl object-cover border border-amber-400/40 shadow-md"
+                        />
+                        <div>
+                          <h3 className="text-base font-bold text-white">
+                            {capturedData.customerMeta.name} 고객님
+                          </h3>
+                          <p className="text-xs text-amber-300 font-semibold mt-0.5">
+                            {faceAnalysis.faceShapeKorean} • {personalColor.seasonKorean}
+                          </p>
+                          <span className="text-[11px] text-zinc-400 font-mono">
+                            피부톤 {personalColor.skinTone.hex} ({personalColor.skinTone.brightnessKorean})
+                          </span>
+                        </div>
+                      </div>
 
+                      {/* 3단 안부 지표 요약 */}
+                      <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div className="rounded-xl bg-zinc-950 p-2 border border-zinc-800">
+                          <span className="text-[10px] text-zinc-500 block">상안부</span>
+                          <span className="font-bold text-amber-200">{faceAnalysis.facialThirds.upperRatio}</span>
+                        </div>
+                        <div className="rounded-xl bg-zinc-950 p-2 border border-amber-400/30">
+                          <span className="text-[10px] text-amber-300 block">중안부</span>
+                          <span className="font-bold text-amber-400">{faceAnalysis.facialThirds.middleRatio}</span>
+                        </div>
+                        <div className="rounded-xl bg-zinc-950 p-2 border border-zinc-800">
+                          <span className="text-[10px] text-zinc-500 block">하안부</span>
+                          <span className="font-bold text-yellow-400">{faceAnalysis.facialThirds.lowerRatio}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Selected Styles List */}
+                    <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-5 backdrop-blur-md">
+                      <h4 className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                        <Scissors className="h-4 w-4 text-amber-400" />
+                        선택된 시술 스타일 ({selectedStyles.length}건)
+                      </h4>
+
+                      {selectedStyles.length === 0 ? (
+                        <p className="text-xs text-zinc-500 italic p-3 bg-zinc-950 rounded-2xl">
+                          선택된 스타일이 없습니다. 이전 단계에서 원하는 스타일을 선택하세요.
+                        </p>
+                      ) : (
+                        <div className="space-y-2.5">
+                          {selectedStyles.map((s) => (
+                            <div
+                              key={s.id}
+                              className="flex items-center justify-between rounded-2xl bg-zinc-950 p-3 border border-zinc-800"
+                            >
+                              <div className="flex items-center gap-3">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={s.imageUrl} alt={s.styleName} className="h-11 w-11 rounded-xl object-cover" />
+                                <div>
+                                  <span className="text-xs font-bold text-zinc-100 block">{s.styleName}</span>
+                                  <span className="text-[10px] text-amber-400 font-semibold">{s.matchScore}% 매칭</span>
+                                </div>
+                              </div>
+                              <span className="text-xs text-zinc-400 font-mono">{s.timeEstimate || '1시간 30분'}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Hair Dye Formula Recommendation (FR-302) */}
+                    <HairDyeRecommendation
+                      tints={getRecommendedDyes(personalColor.season)}
+                    />
+                  </div>
+
+                  {/* Right Column: Designer Notes & Kakao Dispatch Form (6 cols) */}
+                  <div className="lg:col-span-6 space-y-5">
+                    {/* Designer Notes Editor (FR-203) */}
+                    <DesignerNotesEditor
+                      initialNotes={designerNotes}
+                      onChange={setDesignerNotes}
+                      hairCondition={hairCondition}
+                      onHairConditionChange={setHairCondition}
+                    />
+
+                    {/* Customer Phone for Kakao Dispatch */}
+                    <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-5 backdrop-blur-md space-y-3">
+                      <label className="text-xs font-bold text-zinc-300 flex items-center gap-2">
+                        <Phone className="h-4 w-4 text-amber-400" />
+                        고객 카카오톡 알림톡 수신 번호
+                      </label>
+                      <input
+                        type="tel"
+                        value={customerPhone}
+                        onChange={(e) => setCustomerPhone(e.target.value)}
+                        placeholder="010-0000-0000"
+                        className="w-full rounded-2xl bg-zinc-950 border border-zinc-700/80 px-4 py-3 text-sm text-white focus:border-amber-400 focus:outline-none transition font-mono"
+                      />
+                      <p className="text-[11px] text-zinc-500">
+                        발행 즉시 고객님 스마트폰으로 맞춤 헤어 레시피 리포트 웹 링크가 전송됩니다.
+                      </p>
+                    </div>
+
+                    {/* Final Submit & Send Button */}
+                    <button
+                      type="button"
+                      onClick={handleSaveAndSendPrescription}
+                      disabled={isSaving}
+                      className="w-full flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 py-4 text-sm font-bold text-zinc-950 shadow-[0_0_30px_rgba(245,208,97,0.4)] hover:brightness-105 active:scale-[0.99] transition disabled:opacity-50"
+                    >
+                      {isSaving ? (
+                        <>
+                          <RefreshCw className="h-5 w-5 animate-spin" />
+                          <span>Neon DB 저장 및 알림톡 전송 중...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send className="h-4 w-4 text-zinc-950" />
+                          <span>진단 저장 & 카카오톡 스타일 레시피 발송</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
               </div>
-
-            </div>
-
+            )}
           </div>
-        )}
-
+        </div>
       </div>
 
       {/* Success Modal */}

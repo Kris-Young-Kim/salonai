@@ -57,22 +57,30 @@
 
 ---
 
-### 🟡 Phase 3 — 고도화 & 생성형 AI (P2) (진행 중)
+### 🟢 Phase 3 — 고도화 & 생성형 AI (P2) (완료)
 
 - [x] `[Antigravity]` **[FR-301-UI] 가상 헤어 시뮬레이션 인터랙티브 뷰어**:
   - [x] `VirtualHairSimulator.tsx`: Before / After 좌우 스플릿 슬라이더
   - [x] 실시간 염색약 컬러 틴트(애쉬, 밀크티, 카키, 블루블랙 등) 블렌드 필터 및 농도 조절
   - [x] `/diagnose` Step 3 진단 워크플로우 연동 완료
-- [x] `[Claude Code]` **[FR-301-API] 생성형 AI 가상 헤어 합성 파이프라인 (Inpainting)**:
-  - Stable Diffusion Inpainting (stability-ai/stable-diffusion-inpainting) via Replicate API
-  - 클라이언트 Canvas 헤어 마스크 자동 생성 (타원형, blur 처리)
-  - 클라이언트 사이드 폴링 (2초 간격, 최대 2분) — Vercel 타임아웃 회피
-  - 이미지 768px 자동 리사이징 전처리
-  - 합성 결과 URL DB 저장 (Diagnosis.synthesizedImageUrl)
+- [x] `[Antigravity & Claude Code]` **[FR-301-API] 생성형 AI 가상 헤어 합성 파이프라인 (Inpainting 고도화)**:
+  - [x] Stable Diffusion Inpainting (stability-ai/stable-diffusion-inpainting) via Replicate API
+  - [x] **[품질 고도화] 24종 K-살롱 마스터 룩북별 영문 프롬프트 & 네거티브 매핑 DB (`lib/data/hairPromptMap.ts`)**
+  - [x] **[정밀 마스킹] 안면 윤곽/눈썹/피부톤 보호 쉴드 및 기장별 동적 확장 마스크 엔진 (`lib/ai/hairMaskGenerator.ts`)**
+  - [x] 클라이언트 사이드 폴링 (2초 간격, 최대 2분) — Vercel 타임아웃 회피
+  - [x] 이미지 768px 자동 리사이징 전처리
+  - [x] 합성 결과 URL DB 저장 (Diagnosis.synthesizedImageUrl)
 - [x] `[Claude Code]` **[FR-302] 브랜드별 염색약 실물 차트 매칭 (밀본/로레알 1:1 레시피 매핑)**
   - `lib/data/hairDyeChart.ts`: 6개 컬러 틴트 × 3개 브랜드(밀본/로레알/웰라) 실물 레시피 데이터베이스
   - `app/api/hair-dye/route.ts`: `?season=` 및 `?tintName=` 쿼리 기반 레시피 조회 API
   - `components/prescription/HairDyeRecommendation.tsx`: 아코디언형 브랜드 레시피 UI (Step 4 & 처방전 공개 뷰에 통합)
+- [x] `[Antigravity]` **[PWA & Tablet UX] 태블릿 전용 PWA & 풀스크린 모드 및 좌우 수평 장면 전환 최적화**:
+  - [x] `public/manifest.json` (Standalone 모드, 가로 화면 Landscape 우선, 살롱 브랜드 테마)
+  - [x] PWA 고해상도 앱 아이콘 (192x192, 512x512, Maskable SVG/PNG 생성)
+  - [x] 원터치 풀스크린 토글 컴포넌트 (`components/common/FullscreenToggle.tsx`)
+  - [x] 태블릿 홈 화면 추가 & PWA 설치 유도 모달 (`components/pwa/PwaInstallPrompt.tsx`)
+  - [x] 4단계 진단 워크플로우 **좌우 수평 슬라이드 장면 전환(Horizontal Scene Slide)** 및 가로 2-Column Split 최적화
+  - [x] 터치 제스처(더블 탭 확대 방지, 바운스 방지, 슬라이더 햅틱 피드백) 적용
 
 ---
 

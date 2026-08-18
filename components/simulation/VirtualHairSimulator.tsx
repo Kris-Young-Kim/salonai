@@ -1,8 +1,8 @@
-'use client';
-
 import React, { useState, useRef, useEffect } from 'react';
 import { MatchedLookbookItem } from '@/types/lookbook';
-import { Sparkles, Palette, ArrowLeftRight, Wand2, Loader2 } from 'lucide-react';
+import { Sparkles, Palette, ArrowLeftRight, Wand2, Loader2, Check } from 'lucide-react';
+import { generateRefinedHairMask } from '@/lib/ai/hairMaskGenerator';
+import { getHairPromptConfig } from '@/lib/data/hairPromptMap';
 
 interface VirtualHairSimulatorProps {
   originalImageUrl: string;
@@ -39,40 +39,6 @@ function resizeImage(dataUrl: string, maxDim = 768): Promise<string> {
   });
 }
 
-/**
- * Generate a hair-region mask: white ellipse (top ~35% of frame) on black background.
- * Blurred edges produce smoother SD inpainting transitions.
- */
-function generateHairMask(dataUrl: string): Promise<string> {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d')!;
-
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.filter = 'blur(20px)';
-      ctx.fillStyle = '#fff';
-      ctx.beginPath();
-      ctx.ellipse(
-        canvas.width * 0.5,
-        canvas.height * 0.18,
-        canvas.width * 0.44,
-        canvas.height * 0.28,
-        0, 0, Math.PI * 2
-      );
-      ctx.fill();
-
-      resolve(canvas.toDataURL('image/png'));
-    };
-    img.src = dataUrl;
-  });
-}
-
 export function VirtualHairSimulator({
   originalImageUrl,
   selectedStyles,
@@ -83,13 +49,19 @@ export function VirtualHairSimulator({
   const [sliderPosition, setSliderPosition] = useState<number>(50);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [activeColorTint, setActiveColorTint] = useState<string>(personalColorHex || '#7D7571');
+  const [activeStyle, setActiveStyle] = useState<MatchedLookbookItem | null>(
+    selectedStyles && selectedStyles.length > 0 ? selectedStyles[0] : null
+  );
   const [colorIntensity, setColorIntensity] = useState<number>(65);
   const [aiGenerating, setAiGenerating] = useState(false);
   const [aiOutputUrl, setAiOutputUrl] = useState<string | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const predictionIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -103,10 +75,34 @@ export function VirtualHairSimulator({
     return () => {
       observer.disconnect();
       if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+      if (timerRef.current) clearInterval(timerRef.current);
     };
   }, []);
 
   const activeSwatch = COLOR_SWATCHES.find((c) => c.hex === activeColorTint);
+
+  const startTimer = () => {
+    setElapsedSeconds(0);
+    timerRef.current = setInterval(() => {
+      setElapsedSeconds((s) => s + 1);
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  const handleCancel = () => {
+    if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+    pollIntervalRef.current = null;
+    stopTimer();
+    predictionIdRef.current = null;
+    setAiGenerating(false);
+    setElapsedSeconds(0);
+  };
 
   const startPolling = (predictionId: string) => {
     let pollCount = 0;
@@ -118,6 +114,7 @@ export function VirtualHairSimulator({
       if (pollCount > MAX_POLLS) {
         clearInterval(pollIntervalRef.current!);
         pollIntervalRef.current = null;
+        stopTimer();
         setAiError('생성 타임아웃 (2분 초과). 다시 시도해 주세요.');
         setAiGenerating(false);
         return;
@@ -130,12 +127,14 @@ export function VirtualHairSimulator({
         if (data.status === 'succeeded' && Array.isArray(data.output) && data.output.length > 0) {
           clearInterval(pollIntervalRef.current!);
           pollIntervalRef.current = null;
+          stopTimer();
           setAiOutputUrl(data.output[0]);
           setAiGenerating(false);
           onSynthesized?.(data.output[0]);
         } else if (data.status === 'failed' || data.status === 'canceled') {
           clearInterval(pollIntervalRef.current!);
           pollIntervalRef.current = null;
+          stopTimer();
           setAiError(`생성 실패: ${data.error ?? data.status}`);
           setAiGenerating(false);
         }
@@ -143,6 +142,7 @@ export function VirtualHairSimulator({
       } catch {
         clearInterval(pollIntervalRef.current!);
         pollIntervalRef.current = null;
+        stopTimer();
         setAiError('폴링 중 네트워크 오류가 발생했습니다.');
         setAiGenerating(false);
       }
@@ -153,15 +153,19 @@ export function VirtualHairSimulator({
     if (!activeSwatch) return;
 
     if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+    stopTimer();
     setAiGenerating(true);
     setAiError(null);
     setAiOutputUrl(null);
+    startTimer();
 
     try {
-      const [resizedImage, maskDataUrl] = await Promise.all([
-        resizeImage(originalImageUrl),
-        generateHairMask(originalImageUrl),
-      ]);
+      // 1. 선택된 스타일에 맞춘 정밀 마스크 파라미터 조회
+      const styleConfig = getHairPromptConfig(activeStyle?.id || activeStyle?.styleName);
+
+      // 2. 이미지 리사이징 & 안면 보호 정밀 마스크 생성 병렬 실행
+      const resizedImage = await resizeImage(originalImageUrl);
+      const maskDataUrl = await generateRefinedHairMask(resizedImage, { styleConfig });
 
       const res = await fetch('/api/hair-synthesis', {
         method: 'POST',
@@ -172,29 +176,46 @@ export function VirtualHairSimulator({
           tintName: activeSwatch.name,
           tintHex: activeSwatch.hex,
           colorIntensity,
+          styleId: activeStyle?.id,
+          styleName: activeStyle?.styleName,
         }),
       });
 
       const data = await res.json();
 
       if (!data.success || !data.predictionId) {
+        stopTimer();
         setAiError(data.error ?? 'AI 합성 시작 실패');
         setAiGenerating(false);
         return;
       }
 
+      predictionIdRef.current = data.predictionId;
       startPolling(data.predictionId);
-    } catch {
-      setAiError('네트워크 오류. 다시 시도하세요.');
+    } catch (err) {
+      console.error('AI 합성 오류:', err);
+      setAiError('마스크 생성 또는 네트워크 오류. 다시 시도하세요.');
       setAiGenerating(false);
     }
   };
+
+  const lastHapticRef = useRef<number>(50);
 
   const handleTouchOrMouseMove = (clientX: number) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const percentage = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
     setSliderPosition(percentage);
+
+    // 50% 중심점을 통과할 때 또는 10% 단위로 미세 햅틱 피드백 (Android/지원 브라우저)
+    if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+      const prev = Math.floor(lastHapticRef.current / 10);
+      const curr = Math.floor(percentage / 10);
+      if (prev !== curr) {
+        navigator.vibrate(8);
+        lastHapticRef.current = percentage;
+      }
+    }
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -225,16 +246,27 @@ export function VirtualHairSimulator({
           {selectedStyles && selectedStyles.length > 0 && (
             <div className="flex flex-wrap items-center gap-1.5 mt-2">
               <span className="text-[11px] text-zinc-400 font-medium">선택 스타일:</span>
-              {selectedStyles.map((style, idx) => (
-                <button
-                  key={style.id || idx}
-                  type="button"
-                  onClick={() => onApplyStyle?.(style)}
-                  className="rounded-lg bg-amber-400/15 border border-amber-400/30 px-2 py-0.5 text-[11px] font-semibold text-amber-300 hover:bg-amber-400/25 transition"
-                >
-                  #{style.styleName}
-                </button>
-              ))}
+              {selectedStyles.map((style, idx) => {
+                const isSelected = activeStyle?.id === style.id || (!activeStyle && idx === 0);
+                return (
+                  <button
+                    key={style.id || idx}
+                    type="button"
+                    onClick={() => {
+                      setActiveStyle(style);
+                      onApplyStyle?.(style);
+                    }}
+                    className={`flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-semibold transition border ${
+                      isSelected
+                        ? 'bg-amber-400 text-zinc-950 border-amber-300 shadow-md font-bold'
+                        : 'bg-zinc-950/80 text-amber-300/80 border-amber-400/30 hover:bg-amber-400/20'
+                    }`}
+                  >
+                    {isSelected && <Check className="h-3 w-3" />}
+                    #{style.styleName}
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
@@ -289,10 +321,35 @@ export function VirtualHairSimulator({
           )}
 
           {aiGenerating && (
-            <div className="absolute inset-0 bg-zinc-950/70 flex flex-col items-center justify-center backdrop-blur-sm">
-              <Loader2 className="h-10 w-10 text-amber-400 animate-spin mb-3" />
-              <p className="text-xs text-amber-300 font-bold">AI 헤어 합성 중...</p>
-              <p className="text-[10px] text-zinc-400 mt-1">약 30~60초 소요됩니다</p>
+            <div className="absolute inset-0 bg-zinc-950/75 flex flex-col items-center justify-center backdrop-blur-sm gap-3">
+              <Loader2 className="h-10 w-10 text-amber-400 animate-spin" />
+              <div className="text-center">
+                <p className="text-xs font-bold text-amber-300">
+                  {elapsedSeconds < 8
+                    ? '헤어 마스크 준비 중...'
+                    : elapsedSeconds < 35
+                    ? 'AI 헤어 합성 중...'
+                    : '마무리 중...'}
+                </p>
+                <p className="text-[11px] text-zinc-400 mt-0.5 font-mono">
+                  {String(Math.floor(elapsedSeconds / 60)).padStart(2, '0')}:
+                  {String(elapsedSeconds % 60).padStart(2, '0')} 경과
+                </p>
+              </div>
+              {/* 진행 바 */}
+              <div className="w-36 h-1 rounded-full bg-zinc-700 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-amber-400 transition-all duration-1000"
+                  style={{ width: `${Math.min(95, (elapsedSeconds / 70) * 100)}%` }}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="mt-1 rounded-xl border border-zinc-700 bg-zinc-900/80 px-4 py-1.5 text-[11px] font-semibold text-zinc-400 hover:text-white transition"
+              >
+                취소
+              </button>
             </div>
           )}
 
@@ -378,15 +435,36 @@ export function VirtualHairSimulator({
         {/* AI Synthesis CTA */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 rounded-2xl bg-zinc-950 border border-zinc-800 p-4">
           <div className="flex-1">
-            <p className="text-xs font-bold text-white flex items-center gap-1.5 mb-0.5">
-              <Wand2 className="h-3.5 w-3.5 text-amber-400" />
-              AI 생성 합성 (FR-301-API · SD Inpainting)
-            </p>
+            <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+              <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                <Wand2 className="h-3.5 w-3.5 text-amber-400" />
+                AI 정밀 헤어 합성 (FR-301 · K-Salon SD Inpainting)
+              </p>
+              {activeStyle && (
+                <span className="rounded-full bg-amber-400/20 text-amber-300 text-[10px] px-2 py-0.5 font-bold border border-amber-400/30">
+                  {activeStyle.styleName}
+                </span>
+              )}
+              {activeSwatch && (
+                <span className="rounded-full bg-zinc-800 text-zinc-300 text-[10px] px-2 py-0.5 font-medium border border-zinc-700">
+                  {activeSwatch.name}
+                </span>
+              )}
+            </div>
             <p className="text-[10px] text-zinc-500 leading-relaxed">
-              헤어 마스크를 자동 생성 후 Stable Diffusion Inpainting으로 정밀 합성합니다. 약 30~60초 소요.
+              안면 윤곽 및 눈썹/피부톤을 완벽 보존하는 안면 쉴드 마스크와 K-살롱 스타일 맞춤 프롬프트를 적용합니다. (약 30~50초 소요)
             </p>
             {aiError && (
-              <p className="text-[10px] text-rose-400 mt-1 font-semibold">{aiError}</p>
+              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                <p className="text-[10px] text-rose-400 font-semibold">{aiError}</p>
+                <button
+                  type="button"
+                  onClick={handleAIGenerate}
+                  className="rounded-lg bg-rose-400/10 border border-rose-400/30 px-2.5 py-0.5 text-[10px] font-bold text-rose-300 hover:bg-rose-400/20 transition"
+                >
+                  다시 시도
+                </button>
+              </div>
             )}
           </div>
           <button

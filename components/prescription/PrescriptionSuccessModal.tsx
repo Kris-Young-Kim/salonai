@@ -46,13 +46,23 @@ export function PrescriptionSuccessModal({
           <X className="h-5 w-5" />
         </button>
 
-        {/* Success Icon */}
+        {/* Success Icon & Salon Logo */}
         <div className="flex flex-col items-center text-center mb-6">
-          <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-amber-400/20 text-amber-400 border border-amber-400/40 mb-4 shadow-[0_0_30px_rgba(245,208,97,0.3)]">
-            <CheckCircle2 className="h-9 w-9" />
+          <div className="relative mb-3">
+            <div className="relative h-16 w-16 rounded-3xl overflow-hidden border-2 border-amber-400 shadow-[0_0_30px_rgba(245,208,97,0.4)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.jpg"
+                alt="유니헤어샵 로고"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-400 text-zinc-950 shadow-md">
+              <CheckCircle2 className="h-4 w-4" />
+            </div>
           </div>
           <span className="rounded-full bg-amber-400/10 px-3 py-0.5 text-[11px] font-bold text-amber-300 border border-amber-400/20 mb-1">
-            맞춤 스타일 레시피 발행 완료
+            유니헤어샵 맞춤 스타일 레시피 발행 완료
           </span>
           <h3 className="text-2xl font-extrabold text-white">
             디지털 스타일 레시피가 발행되었습니다!

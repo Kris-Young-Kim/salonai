@@ -1,18 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { getSalonContext } from '@/lib/auth/getSalonContext';
 import { prisma } from '@/lib/db/prisma';
 
+// ─── KST 헬퍼 ────────────────────────────────────────────────────────────────
+
+const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+
+/** KST 기준 해당 날짜의 자정을 UTC Date로 반환 */
+function kstDayStartUTC(date: Date): Date {
+  const kst = new Date(date.getTime() + KST_OFFSET_MS);
+  return new Date(
+    Date.UTC(kst.getUTCFullYear(), kst.getUTCMonth(), kst.getUTCDate()) - KST_OFFSET_MS,
+  );
+}
+
+/** UTC Date를 KST 날짜 문자열(YYYY-MM-DD)로 변환 */
+function toKSTDateStr(date: Date): string {
+  return new Date(date.getTime() + KST_OFFSET_MS).toISOString().slice(0, 10);
+}
+
 // ─── GET /api/stats ──────────────────────────────────────────────────────────
-// 살롱 통계 데이터
-// 응답: { today, thisMonth, total, dailyStats }
 export async function GET(_req: NextRequest) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
+    const ctx = await getSalonContext();
+    if (!ctx) {
       return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
     }
 
-    const salon = await prisma.salon.findFirst();
+    const salon = ctx.salon;
     if (!salon) {
       return NextResponse.json({
         today: 0,
@@ -23,31 +38,14 @@ export async function GET(_req: NextRequest) {
     }
 
     const now = new Date();
-
-    // 오늘 00:00:00 KST → UTC 변환 (KST = UTC+9)
-    const todayStartKST = new Date(
-      Date.UTC(
-        now.getUTCFullYear(),
-        now.getUTCMonth(),
-        now.getUTCDate(),
-        // KST 자정은 전날 UTC 15:00이지만, 서버 환경에 따라 단순 날짜 기준으로 처리
-        0, 0, 0, 0,
-      ),
-    );
-    // KST 기준 오늘 = UTC 기준 오늘 - 9h 오프셋 적용
-    const kstOffsetMs = 9 * 60 * 60 * 1000;
-    const nowKST = new Date(now.getTime() + kstOffsetMs);
-    const todayKSTMidnight = new Date(
-      Date.UTC(nowKST.getUTCFullYear(), nowKST.getUTCMonth(), nowKST.getUTCDate()),
-    );
-    const todayStartUTC = new Date(todayKSTMidnight.getTime() - kstOffsetMs);
+    const todayStartUTC = kstDayStartUTC(now);
     const tomorrowStartUTC = new Date(todayStartUTC.getTime() + 24 * 60 * 60 * 1000);
 
-    // 이번 달 1일 00:00 (KST 기준)
-    const thisMonthStartKST = new Date(
-      Date.UTC(nowKST.getUTCFullYear(), nowKST.getUTCMonth(), 1),
+    // 이번 달 1일 KST 자정 → UTC
+    const nowKST = new Date(now.getTime() + KST_OFFSET_MS);
+    const thisMonthStartUTC = new Date(
+      Date.UTC(nowKST.getUTCFullYear(), nowKST.getUTCMonth(), 1) - KST_OFFSET_MS,
     );
-    const thisMonthStartUTC = new Date(thisMonthStartKST.getTime() - kstOffsetMs);
 
     // 7일 전 시작 (KST 기준 오늘 포함 총 7일)
     const sevenDaysAgoUTC = new Date(todayStartUTC.getTime() - 6 * 24 * 60 * 60 * 1000);
@@ -57,7 +55,7 @@ export async function GET(_req: NextRequest) {
       where: { salonId: salon.id },
       select: { id: true },
     });
-    const customerIds = (salonCustomers as Array<{ id: string }>).map((c) => c.id);
+    const customerIds = salonCustomers.map((c: { id: string }) => c.id);
 
     if (customerIds.length === 0) {
       return NextResponse.json({
@@ -70,43 +68,26 @@ export async function GET(_req: NextRequest) {
 
     const baseWhere = { customerId: { in: customerIds } };
 
-    const [todayCount, thisMonthCount, totalCount, last7DaysDiagnoses] =
-      await Promise.all([
-        // 오늘 진단 건수
-        prisma.diagnosis.count({
-          where: {
-            ...baseWhere,
-            createdAt: { gte: todayStartUTC, lt: tomorrowStartUTC },
-          },
-        }),
-        // 이번 달 진단 건수
-        prisma.diagnosis.count({
-          where: {
-            ...baseWhere,
-            createdAt: { gte: thisMonthStartUTC },
-          },
-        }),
-        // 누적 진단 건수
-        prisma.diagnosis.count({ where: baseWhere }),
-        // 최근 7일 진단 (날짜별 집계를 위해 createdAt만 select)
-        prisma.diagnosis.findMany({
-          where: {
-            ...baseWhere,
-            createdAt: { gte: sevenDaysAgoUTC },
-          },
-          select: { createdAt: true },
-          orderBy: { createdAt: 'asc' },
-        }),
-      ]);
-
-    // 최근 7일 일별 진단 건수 배열 생성
-    const dailyStats = buildDailyStats(last7DaysDiagnoses, todayStartUTC, kstOffsetMs);
+    const [todayCount, thisMonthCount, totalCount, last7DaysDiagnoses] = await Promise.all([
+      prisma.diagnosis.count({
+        where: { ...baseWhere, createdAt: { gte: todayStartUTC, lt: tomorrowStartUTC } },
+      }),
+      prisma.diagnosis.count({
+        where: { ...baseWhere, createdAt: { gte: thisMonthStartUTC } },
+      }),
+      prisma.diagnosis.count({ where: baseWhere }),
+      prisma.diagnosis.findMany({
+        where: { ...baseWhere, createdAt: { gte: sevenDaysAgoUTC } },
+        select: { createdAt: true },
+        orderBy: { createdAt: 'asc' },
+      }),
+    ]);
 
     return NextResponse.json({
       today: todayCount,
       thisMonth: thisMonthCount,
       total: totalCount,
-      dailyStats,
+      dailyStats: buildDailyStats(last7DaysDiagnoses, todayStartUTC),
     });
   } catch (error: any) {
     console.error('[GET /api/stats]', error);
@@ -119,44 +100,28 @@ export async function GET(_req: NextRequest) {
 
 // ─── 헬퍼: 빈 7일 통계 배열 ──────────────────────────────────────────────────
 function buildEmptyDailyStats(): Array<{ date: string; count: number }> {
-  const now = new Date();
-  const kstOffsetMs = 9 * 60 * 60 * 1000;
-  const nowKST = new Date(now.getTime() + kstOffsetMs);
-  const todayStartUTC = new Date(
-    Date.UTC(nowKST.getUTCFullYear(), nowKST.getUTCMonth(), nowKST.getUTCDate()) - kstOffsetMs,
-  );
-  return Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(todayStartUTC.getTime() - (6 - i) * 24 * 60 * 60 * 1000);
-    const kst = new Date(d.getTime() + kstOffsetMs);
-    return {
-      date: kst.toISOString().slice(0, 10),
-      count: 0,
-    };
-  });
+  const todayStartUTC = kstDayStartUTC(new Date());
+  return Array.from({ length: 7 }, (_, i) => ({
+    date: toKSTDateStr(new Date(todayStartUTC.getTime() - (6 - i) * 24 * 60 * 60 * 1000)),
+    count: 0,
+  }));
 }
 
 // ─── 헬퍼: 날짜별 집계 ───────────────────────────────────────────────────────
 function buildDailyStats(
   diagnoses: Array<{ createdAt: Date }>,
   todayStartUTC: Date,
-  kstOffsetMs: number,
 ): Array<{ date: string; count: number }> {
-  // 날짜 문자열(YYYY-MM-DD KST) → count 맵
   const countMap = new Map<string, number>();
-
   for (const d of diagnoses) {
-    const kst = new Date(d.createdAt.getTime() + kstOffsetMs);
-    const dateStr = kst.toISOString().slice(0, 10);
+    const dateStr = toKSTDateStr(d.createdAt);
     countMap.set(dateStr, (countMap.get(dateStr) ?? 0) + 1);
   }
 
-  // 오늘 포함 최근 7일 순서대로 반환
   return Array.from({ length: 7 }, (_, i) => {
-    const dayOffset = new Date(
-      todayStartUTC.getTime() - (6 - i) * 24 * 60 * 60 * 1000,
+    const dateStr = toKSTDateStr(
+      new Date(todayStartUTC.getTime() - (6 - i) * 24 * 60 * 60 * 1000),
     );
-    const kst = new Date(dayOffset.getTime() + kstOffsetMs);
-    const dateStr = kst.toISOString().slice(0, 10);
     return { date: dateStr, count: countMap.get(dateStr) ?? 0 };
   });
 }

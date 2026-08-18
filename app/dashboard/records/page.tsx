@@ -1,5 +1,7 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { ClipboardList, Search, ChevronRight, UserRound, Sparkles, Phone, ArrowLeft, Plus } from 'lucide-react';
+import { getSalonContext } from '@/lib/auth/getSalonContext';
 import { prisma } from '@/lib/db/prisma';
 
 // ─── 날짜 포맷 헬퍼 ──────────────────────────────────────────────────────────
@@ -61,11 +63,13 @@ function EmptyState({ search }: { search: string }) {
 
 // ─── 메인 페이지 (서버 컴포넌트) ─────────────────────────────────────────────
 export default async function RecordsPage({ searchParams }: PageProps) {
+  const ctx = await getSalonContext();
+  if (!ctx) redirect('/sign-in');
+
   const { search = '' } = await searchParams;
   const trimmedSearch = search.trim();
 
-  // 살롱 조회
-  const salon = await prisma.salon.findFirst();
+  const salon = ctx.salon;
 
   // 진단이 1건 이상인 고객 + 최근 진단 포함
   const customers = salon

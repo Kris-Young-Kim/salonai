@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { getSalonContext } from '@/lib/auth/getSalonContext';
 import { prisma } from '@/lib/db/prisma';
 
 // ─── GET /api/customers/[id] ─────────────────────────────────────────────────
-// 고객 상세 + 전체 진단 이력 조회
 export async function GET(
   _req: NextRequest,
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
+    const ctx = await getSalonContext();
+    if (!ctx) {
       return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
     }
 
@@ -40,7 +39,7 @@ export async function GET(
       },
     });
 
-    if (!customer) {
+    if (!customer || customer.salonId !== ctx.salon.id) {
       return NextResponse.json({ error: '고객을 찾을 수 없습니다.' }, { status: 404 });
     }
 
@@ -55,14 +54,13 @@ export async function GET(
 }
 
 // ─── PATCH /api/customers/[id] ───────────────────────────────────────────────
-// 고객 정보 수정 (이름, 전화번호)
 export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
+    const ctx = await getSalonContext();
+    if (!ctx) {
       return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
     }
 
@@ -77,17 +75,16 @@ export async function PATCH(
       );
     }
 
-    // 고객 존재 여부 확인
     const existing = await prisma.customer.findUnique({ where: { id } });
-    if (!existing) {
+
+    if (!existing || existing.salonId !== ctx.salon.id) {
       return NextResponse.json({ error: '고객을 찾을 수 없습니다.' }, { status: 404 });
     }
 
-    // 전화번호 변경 시 동일 살롱 내 중복 체크
     if (phone?.trim() && phone.trim() !== existing.phone) {
       const duplicate = await prisma.customer.findFirst({
         where: {
-          salonId: existing.salonId,
+          salonId: ctx.salon.id,
           phone: phone.trim(),
           NOT: { id },
         },

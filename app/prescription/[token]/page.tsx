@@ -115,8 +115,13 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
         {/* Salon Brand Header */}
         <div className="flex items-center justify-between border-b border-zinc-800 pb-4 mb-6">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-300 to-amber-500 text-zinc-950 font-black text-sm shadow-[0_0_15px_rgba(245,208,97,0.4)]">
-              U
+            <div className="relative h-10 w-10 rounded-2xl overflow-hidden border border-amber-400/40 shadow-[0_0_15px_rgba(245,208,97,0.35)] shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.jpg"
+                alt="유니헤어샵 로고"
+                className="h-full w-full object-cover"
+              />
             </div>
             <div>
               <span className="text-sm font-extrabold tracking-tight text-white block">
@@ -315,8 +320,16 @@ export default async function PrescriptionPage({ params }: PrescriptionPageProps
 
         {/* Section 6: Salon Direct Contact & Action Card */}
         <div className="rounded-3xl bg-gradient-to-b from-zinc-900/90 to-zinc-950 border border-zinc-800 p-6 text-center space-y-4 shadow-2xl">
-          <div>
-            <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest block mb-1">
+          <div className="flex flex-col items-center">
+            <div className="relative h-14 w-14 rounded-2xl overflow-hidden border border-amber-400/40 shadow-[0_0_20px_rgba(245,208,97,0.3)] mb-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.jpg"
+                alt="유니헤어샵"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest block mb-0.5">
               Hair Salon & AI Studio
             </span>
             <p className="font-extrabold text-xl text-white">유니헤어샵</p>

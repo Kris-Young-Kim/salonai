@@ -3,21 +3,26 @@ import { auth } from '@clerk/nextjs/server';
 
 const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
 
+import { getHairPromptConfig, buildCompositePrompt } from '@/lib/data/hairPromptMap';
+
 // Stability AI SD Inpainting — hair region only (mask required)
 const REPLICATE_MODEL_PATH = 'stability-ai/stable-diffusion-inpainting';
 
 export interface HairSynthesisRequest {
   imageDataUrl: string; // resized base64 data URL
   maskDataUrl: string;  // white = inpaint (hair), black = preserve
-  tintName: string;     // e.g. "스모키 애쉬"
-  tintHex: string;      // e.g. "#7D7571"
+  tintName?: string;     // e.g. "스모키 애쉬"
+  tintHex?: string;      // e.g. "#7D7571"
   colorIntensity?: number; // 0-100
+  styleId?: string;     // e.g. "lb-f-01", "lb-m-02"
+  styleName?: string;   // e.g. "소프트 레이어드 컷 & C컬 펌"
 }
 
 export interface HairSynthesisResponse {
   success: boolean;
   predictionId?: string;
   outputImageUrl?: string;
+  promptUsed?: string;
   error?: string;
 }
 
@@ -25,9 +30,9 @@ const koreanColorMap: Record<string, string> = {
   '스모키 애쉬': 'smoky ash gray',
   '밀크티 베이지': 'milk tea beige blonde',
   '올리브 카키': 'olive khaki brown',
-  '블루 블랙': 'blue black deep dark',
-  '로즈 플럼': 'rose plum violet',
-  '다크 초콜릿': 'dark chocolate brown',
+  '블루 블랙': 'midnight blue black deep tone',
+  '로즈 플럼': 'rose plum pink brown',
+  '다크 초콜릿': 'rich dark chocolate espresso brown',
 };
 
 export async function POST(req: NextRequest) {
@@ -44,20 +49,28 @@ export async function POST(req: NextRequest) {
   }
 
   const body = (await req.json()) as HairSynthesisRequest;
-  const { imageDataUrl, maskDataUrl, tintName, tintHex, colorIntensity = 70 } = body;
+  const { imageDataUrl, maskDataUrl, tintName, tintHex, colorIntensity = 70, styleId, styleName } = body;
 
-  if (!imageDataUrl || !maskDataUrl || !tintName || !tintHex) {
+  if (!imageDataUrl || !maskDataUrl) {
     return NextResponse.json(
-      { success: false, error: 'imageDataUrl, maskDataUrl, tintName, tintHex는 필수입니다.' },
+      { success: false, error: 'imageDataUrl과 maskDataUrl은 필수입니다.' },
       { status: 400 }
     );
   }
 
-  const colorEnglish = koreanColorMap[tintName] ?? tintName;
-  const intensityWord = colorIntensity > 70 ? 'vivid' : colorIntensity > 40 ? 'natural' : 'subtle';
+  // 1. 스타일에 특화된 프롬프트 설정 조회
+  const styleConfig = getHairPromptConfig(styleId || styleName);
 
-  const prompt = `Change only the hair color to ${intensityWord} ${colorEnglish}. Keep the face, skin, and background exactly unchanged. Professional Korean salon result, high quality.`;
-  const negativePrompt = 'low quality, blurry, distorted face, changed skin tone, altered background, watermark, extra limbs';
+  // 2. 컬러 영문 변환
+  const colorEnglish = tintName ? (koreanColorMap[tintName] ?? tintName) : undefined;
+
+  // 3. 정밀 복합 프롬프트 및 네거티브 프롬프트 생성
+  const { prompt, negativePrompt } = buildCompositePrompt({
+    styleConfig,
+    tintName: colorEnglish,
+    tintHex,
+    colorIntensity,
+  });
 
   const replicateRes = await fetch(
     `https://api.replicate.com/v1/models/${REPLICATE_MODEL_PATH}/predictions`,
@@ -73,8 +86,8 @@ export async function POST(req: NextRequest) {
           negative_prompt: negativePrompt,
           image: imageDataUrl,
           mask: maskDataUrl,
-          num_inference_steps: 25,
-          guidance_scale: 7.5,
+          num_inference_steps: 30,
+          guidance_scale: 8.0,
           num_outputs: 1,
         },
       }),
@@ -95,6 +108,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({
     success: true,
     predictionId: prediction.id,
+    promptUsed: prompt,
   } satisfies HairSynthesisResponse);
 }
 

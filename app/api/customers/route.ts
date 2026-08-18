@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { getSalonContext } from '@/lib/auth/getSalonContext';
 import { prisma } from '@/lib/db/prisma';
 
 // ─── GET /api/customers ──────────────────────────────────────────────────────
@@ -7,8 +7,8 @@ import { prisma } from '@/lib/db/prisma';
 // Query params: search (이름/전화번호), page, limit
 export async function GET(req: NextRequest) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
+    const ctx = await getSalonContext();
+    if (!ctx) {
       return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
     }
 
@@ -18,8 +18,7 @@ export async function GET(req: NextRequest) {
     const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') ?? '20', 10)));
     const skip = (page - 1) * limit;
 
-    // 단순화된 살롱 조회 (멀티테넌트는 별도 Auth 작업에서 고도화)
-    const salon = await prisma.salon.findFirst();
+    const salon = ctx.salon;
     if (!salon) {
       return NextResponse.json(
         { customers: [], total: 0, page, limit, totalPages: 0 },
@@ -87,8 +86,8 @@ export async function GET(req: NextRequest) {
 // 새 고객 생성
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
+    const ctx = await getSalonContext();
+    if (!ctx) {
       return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
     }
 
@@ -102,7 +101,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '전화번호는 필수입니다.' }, { status: 400 });
     }
 
-    const salon = await prisma.salon.findFirst();
+    const salon = ctx.salon;
     if (!salon) {
       return NextResponse.json({ error: '살롱 정보를 찾을 수 없습니다.' }, { status: 404 });
     }

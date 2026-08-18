@@ -117,8 +117,11 @@ export function InteractiveHero() {
               transform: `translate3d(${mousePos.x * 16}px, ${mousePos.y * 16}px, 0)`,
             }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-zinc-950/80 px-4 py-1.5 text-xs font-semibold text-amber-300 backdrop-blur-xl shadow-lg hover:border-amber-400/70 transition-colors">
-              <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-amber-400/40 bg-zinc-950/80 pl-2 pr-4 py-1 text-xs font-semibold text-amber-300 backdrop-blur-xl shadow-lg hover:border-amber-400/70 transition-colors">
+              <div className="h-5 w-5 rounded-full overflow-hidden border border-amber-400/50 shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logo.jpg" alt="유니헤어샵 로고" className="h-full w-full object-cover" />
+              </div>
               <span>유니헤어샵 태블릿 전용 AI 정밀 스타일 컨설팅</span>
             </div>
           </div>

@@ -31,7 +31,7 @@ export default function DashboardLayout({
           </div>
           <div>
             <p className="text-sm font-bold text-white tracking-tight">유니헤어샵</p>
-            <p className="text-[9px] text-zinc-500 tracking-widest uppercase font-medium">원주 무실점</p>
+            <p className="text-[9px] text-zinc-500 tracking-widest uppercase font-medium">원주 원동점</p>
           </div>
         </div>
 

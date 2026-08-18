@@ -17,8 +17,24 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "유니헤어샵 | AI 헤어 스타일 컨설팅 & 맞춤 레시피",
-  description: "유니헤어샵 전용 AI 얼굴형·퍼스널컬러 스타일 컨설팅 & 맞춤 헤어 레시피 (원주 무실로 91)",
+  metadataBase: new URL("https://salonai-firstmover.vercel.app"),
+  title: {
+    default: "유니헤어샵 | AI 헤어 스타일 컨설팅 & 맞춤 레시피",
+    template: "%s | 유니헤어샵",
+  },
+  description: "원주 원동 유니헤어샵 AI 1분 얼굴형·퍼스널컬러 진단 및 디자이너 맞춤 헤어 레시피 솔루션",
+  keywords: [
+    "유니헤어샵",
+    "원주미용실",
+    "원주헤어샵",
+    "원동미용실",
+    "AI헤어스타일",
+    "퍼스널컬러진단",
+    "얼굴형맞춤헤어",
+    "헤어처방전",
+  ],
+  authors: [{ name: "유니헤어샵 (원주 원동점)" }],
+  creator: "유니헤어샵",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -26,8 +42,40 @@ export const metadata: Metadata = {
     title: "유니헤어샵",
   },
   icons: {
-    icon: "/logo.jpg",
-    apple: "/logo.jpg",
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: "https://salonai-firstmover.vercel.app",
+    siteName: "유니헤어샵 AI 살롱",
+    title: "유니헤어샵 | 1분 AI 헤어 스타일 컨설팅 & 맞춤 레시피",
+    description: "내 얼굴형과 피부톤에 딱 맞는 인생 헤어스타일을 AI로 1분 만에 진단받으세요. (강원 원주시 무실로 91, 원동)",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 800,
+        height: 800,
+        alt: "유니헤어샵 공식 로고",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "유니헤어샵 | AI 헤어 스타일 컨설팅",
+    description: "내 얼굴형과 피부톤에 딱 맞는 인생 헤어스타일 1분 AI 진단 (원주 원동)",
+    images: ["/og-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

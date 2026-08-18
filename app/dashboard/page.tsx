@@ -172,25 +172,25 @@ export default function DashboardPage() {
             {[
               {
                 step: '01',
-                title: '실시간 가이드 촬영 (FR-101)',
+                title: '실시간 가이드 촬영',
                 desc: '황금비율 계란형 오버레이에 맞춰 3초 촬영',
                 color: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
               },
               {
                 step: '02',
-                title: '얼굴형 & 퍼스널컬러 AI 진단 (FR-102, 103)',
+                title: '얼굴형 & 퍼스널컬러 AI 진단',
                 desc: '468 랜드마크 분석 및 CIE-Lab 피부톤 4계절 분류',
                 color: 'text-rose-400 bg-rose-400/10 border-rose-400/30',
               },
               {
                 step: '03',
-                title: '맞춤 룩북 매칭 및 스타일 선택 (FR-104)',
+                title: '맞춤 룩북 매칭 & 가상 시뮬레이터',
                 desc: '24종 K-살롱 마스터 룩북 다차원 적합도 갤러리',
                 color: 'text-sky-400 bg-sky-400/10 border-sky-400/30',
               },
               {
                 step: '04',
-                title: '모바일 헤어 처방전 발송 (FR-202)',
+                title: '모바일 헤어 처방전 발송',
                 desc: '디자이너 시술 메모와 함께 고객 카카오톡으로 즉시 전송',
                 color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30',
               },

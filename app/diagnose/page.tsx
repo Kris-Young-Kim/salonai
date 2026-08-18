@@ -204,7 +204,7 @@ export default function DiagnosePage() {
                 SalonAI Diagnostic
               </span>
               <span className="rounded-full bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold text-amber-300 border border-amber-400/20">
-                {currentStep === 1 ? 'FR-101' : currentStep === 2 ? 'FR-102 & 103' : currentStep === 3 ? 'FR-104 & 301' : 'FR-105 & 202'}
+                {currentStep === 1 ? '1단계 촬영' : currentStep === 2 ? '2단계 AI 정밀 진단' : currentStep === 3 ? '3단계 룩북 & 시뮬레이션' : '4단계 리포트 & 처방전'}
               </span>
             </div>
             <h1 className="text-base sm:text-lg font-bold text-zinc-100">
@@ -284,7 +284,7 @@ export default function DiagnosePage() {
                       }`}
                     >
                       <Layers className="h-4 w-4" />
-                      <span>얼굴형 & 두상 분석 (FR-102)</span>
+                      <span>얼굴형 & 두상 분석</span>
                     </button>
 
                     <button
@@ -297,7 +297,7 @@ export default function DiagnosePage() {
                       }`}
                     >
                       <Palette className="h-4 w-4" />
-                      <span>피부톤 & 퍼스널 컬러 (FR-103)</span>
+                      <span>피부톤 & 퍼스널 컬러</span>
                     </button>
                   </div>
                 </div>
@@ -340,7 +340,7 @@ export default function DiagnosePage() {
           </div>
         )}
 
-        {/* Step 3: Lookbook Recommendation (FR-104) & Virtual Hair Simulator (FR-301) */}
+        {/* Step 3: Lookbook Recommendation & Virtual Hair Simulator */}
         {currentStep === 3 && capturedData && faceAnalysis && personalColor && (
           <div className="h-full w-full overflow-y-auto p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
             
@@ -357,7 +357,7 @@ export default function DiagnosePage() {
                   }`}
                 >
                   <Scissors className="h-4 w-4" />
-                  <span>맞춤 룩북 갤러리 (FR-104)</span>
+                  <span>맞춤 룩북 갤러리</span>
                 </button>
 
                 <button
@@ -370,7 +370,7 @@ export default function DiagnosePage() {
                   }`}
                 >
                   <Sparkles className="h-4 w-4" />
-                  <span>가상 헤어 Before/After 시뮬레이터 (FR-301)</span>
+                  <span>가상 헤어 시뮬레이터</span>
                 </button>
               </div>
             </div>
